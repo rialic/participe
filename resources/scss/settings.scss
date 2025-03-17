@@ -1,0 +1,137 @@
+@use "./utilities" as utils;
+
+$fontSizes : (
+  12x: utils.convertRem(12px), 14x: utils.convertRem(14px), 16x: utils.convertRem(16px), 18x: utils.convertRem(18px), 20x: utils.convertRem(20px),
+  22x: utils.convertRem(22px),  24x: utils.convertRem(24px)
+);
+
+$sizes: (
+    10: 10%, 15: 15%, 20: 20%, 25: 25%, 30: 30%, 35: 35%, 40: 40%, 45: 45%, 50: 50%, 55: 55%, 60: 60%, 65: 65%, 70: 70%, 75: 75%, 80: 80%, 85: 85%, 90: 90%, 95: 95%, 100: 100%,
+    auto: auto, 0x: 0, 1x: utils.convertRem(1px), 2x: utils.convertRem(2px), 4x: utils.convertRem(4px), 6x: utils.convertRem(6px), 8x: utils.convertRem(8px),
+    10x: utils.convertRem(10px), 12x: utils.convertRem(12px), 14x: utils.convertRem(14px), 16x: utils.convertRem(16px), 18x: utils.convertRem(18px),
+    20x: utils.convertRem(20px), 22x: utils.convertRem(22px),  24x: utils.convertRem(24px), 26x: utils.convertRem(26px), 28x: utils.convertRem(28px),
+    30x: utils.convertRem(30px), 32x: utils.convertRem(32px), 34x: utils.convertRem(34px), 36x: utils.convertRem(36px), 38x: utils.convertRem(38px),
+    40x: utils.convertRem(40px), 42x: utils.convertRem(42px),  44x: utils.convertRem(44px), 46x: utils.convertRem(46px), 48x: utils.convertRem(48px),
+    50x: utils.convertRem(50px), 52x: utils.convertRem(52px), 54x: utils.convertRem(54px), 56x: utils.convertRem(56px), 58x: utils.convertRem(58px),
+    60x: utils.convertRem(60px), 62x: utils.convertRem(62px), 64x: utils.convertRem(64px), 66x: utils.convertRem(66px), 68x: utils.convertRem(68px),
+    70x: utils.convertRem(70px), 72x: utils.convertRem(72px), 74x: utils.convertRem(74px), 76x: utils.convertRem(76px), 78x: utils.convertRem(78px),
+    80x: utils.convertRem(80px), 82x: utils.convertRem(82px), 84x: utils.convertRem(84px), 86x: utils.convertRem(86px), 88x: utils.convertRem(88px),
+    90x: utils.convertRem(90px), 92x: utils.convertRem(92px), 94x: utils.convertRem(94px), 96x: utils.convertRem(96px), 98x: utils.convertRem(98px),
+    100x: utils.convertRem(100px), 102x: utils.convertRem(102px), 104x: utils.convertRem(104px), 106x: utils.convertRem(106px), 108x: utils.convertRem(108px),
+    110x: utils.convertRem(110px), 112x: utils.convertRem(112px), 114x: utils.convertRem(114px), 116x: utils.convertRem(116px), 118x: utils.convertRem(118px),
+    120x: utils.convertRem(120px), 122x: utils.convertRem(122px), 124x: utils.convertRem(124px), 126x: utils.convertRem(126px), 128x: utils.convertRem(128px),
+    130x: utils.convertRem(130px), 132x: utils.convertRem(132px), 134x: utils.convertRem(134px), 136x: utils.convertRem(136px), 138x: utils.convertRem(138px),
+    140x: utils.convertRem(140px), 142x: utils.convertRem(142px), 144x: utils.convertRem(144px), 146x: utils.convertRem(146px), 148x: utils.convertRem(148px),
+    150x: utils.convertRem(150px), 152x: utils.convertRem(152px), 154x: utils.convertRem(154px), 156x: utils.convertRem(156px), 158x: utils.convertRem(158px),
+    160x: utils.convertRem(160px), 162x: utils.convertRem(162px), 164x: utils.convertRem(164px), 166x: utils.convertRem(166px), 168x: utils.convertRem(168px),
+    170x: utils.convertRem(170px), 172x: utils.convertRem(172px), 174x: utils.convertRem(174px), 176x: utils.convertRem(176px), 178x: utils.convertRem(178px),
+    180x: utils.convertRem(180px), 182x: utils.convertRem(182px), 184x: utils.convertRem(184px), 186x: utils.convertRem(186px), 188x: utils.convertRem(188px),
+    190x: utils.convertRem(190px), 192x: utils.convertRem(192px), 194x: utils.convertRem(194px), 196x: utils.convertRem(196px), 198x: utils.convertRem(198px),
+    200x: utils.convertRem(200px), 202x: utils.convertRem(202px), 204x: utils.convertRem(204px), 206x: utils.convertRem(206px), 208x: utils.convertRem(208px),
+    210x: utils.convertRem(210px), 212x: utils.convertRem(212px), 214x: utils.convertRem(214px), 216x: utils.convertRem(216px), 218x: utils.convertRem(218px),
+    220x: utils.convertRem(220px), 222x: utils.convertRem(222px), 224x: utils.convertRem(224px), 226x: utils.convertRem(226px), 228x: utils.convertRem(228px),
+    230x: utils.convertRem(230px), 232x: utils.convertRem(232px), 234x: utils.convertRem(234px), 236x: utils.convertRem(236px), 238x: utils.convertRem(238px),
+    240x: utils.convertRem(240px), 242x: utils.convertRem(242px), 244x: utils.convertRem(244px), 246x: utils.convertRem(246px), 248x: utils.convertRem(248px),
+    250x: utils.convertRem(250px), 252x: utils.convertRem(252px), 254x: utils.convertRem(254px), 256x: utils.convertRem(256px), 258x: utils.convertRem(258px),
+    260x: utils.convertRem(260px), 262x: utils.convertRem(262px), 264x: utils.convertRem(264px), 266x: utils.convertRem(266px), 268x: utils.convertRem(268px),
+    270x: utils.convertRem(270px), 272x: utils.convertRem(272px), 274x: utils.convertRem(274px), 276x: utils.convertRem(276px), 278x: utils.convertRem(278px),
+    280x: utils.convertRem(280px), 282x: utils.convertRem(282px), 284x: utils.convertRem(284px), 286x: utils.convertRem(286px), 288x: utils.convertRem(288px),
+    290x: utils.convertRem(290px), 292x: utils.convertRem(292px), 294x: utils.convertRem(294px), 296x: utils.convertRem(296px), 298x: utils.convertRem(298px),
+    300x: utils.convertRem(300px), 302x: utils.convertRem(302px), 304x: utils.convertRem(304px), 306x: utils.convertRem(306px), 308x: utils.convertRem(308px),
+    310x: utils.convertRem(310px), 312x: utils.convertRem(312px), 314x: utils.convertRem(314px), 316x: utils.convertRem(316px), 318x: utils.convertRem(318px),
+    320x: utils.convertRem(320px), 322x: utils.convertRem(322px), 324x: utils.convertRem(324px), 326x: utils.convertRem(326px), 328x: utils.convertRem(328px),
+    330x: utils.convertRem(330px), 332x: utils.convertRem(332px), 334x: utils.convertRem(334px), 336x: utils.convertRem(336px), 338x: utils.convertRem(338px),
+    340x: utils.convertRem(340px), 342x: utils.convertRem(342px), 344x: utils.convertRem(344px), 346x: utils.convertRem(346px), 348x: utils.convertRem(348px),
+    350x: utils.convertRem(350px), 352x: utils.convertRem(352px), 354x: utils.convertRem(354px), 356x: utils.convertRem(356px), 358x: utils.convertRem(358px),
+    360x: utils.convertRem(360px), 362x: utils.convertRem(362px), 364x: utils.convertRem(364px), 366x: utils.convertRem(366px), 368x: utils.convertRem(368px),
+    370x: utils.convertRem(370px), 372x: utils.convertRem(372px), 374x: utils.convertRem(374px), 376x: utils.convertRem(376px), 378x: utils.convertRem(378px),
+    380x: utils.convertRem(380px), 382x: utils.convertRem(382px), 384x: utils.convertRem(384px), 386x: utils.convertRem(386px), 388x: utils.convertRem(388px),
+    390x: utils.convertRem(390px), 392x: utils.convertRem(392px), 394x: utils.convertRem(394px), 396x: utils.convertRem(396px), 398x: utils.convertRem(398px),
+    400x: utils.convertRem(400px), 402x: utils.convertRem(402px), 404x: utils.convertRem(404px), 406x: utils.convertRem(406px), 408x: utils.convertRem(408px),
+    410x: utils.convertRem(410px), 412x: utils.convertRem(412px), 414x: utils.convertRem(414px), 416x: utils.convertRem(416px), 418x: utils.convertRem(418px),
+    420x: utils.convertRem(420px), 422x: utils.convertRem(422px), 424x: utils.convertRem(424px), 426x: utils.convertRem(426px), 428x: utils.convertRem(428px),
+    430x: utils.convertRem(430px), 432x: utils.convertRem(432px), 434x: utils.convertRem(434px), 436x: utils.convertRem(436px), 438x: utils.convertRem(438px),
+    440x: utils.convertRem(440px), 442x: utils.convertRem(442px), 444x: utils.convertRem(444px), 446x: utils.convertRem(446px), 448x: utils.convertRem(448px),
+    450x: utils.convertRem(450px), 452x: utils.convertRem(452px), 454x: utils.convertRem(454px), 456x: utils.convertRem(456px), 458x: utils.convertRem(458px),
+    460x: utils.convertRem(460px), 462x: utils.convertRem(462px), 464x: utils.convertRem(464px), 466x: utils.convertRem(466px), 468x: utils.convertRem(468px),
+    470x: utils.convertRem(470px), 472x: utils.convertRem(472px), 474x: utils.convertRem(474px), 476x: utils.convertRem(476px), 478x: utils.convertRem(478px),
+    480x: utils.convertRem(480px), 482x: utils.convertRem(482px), 484x: utils.convertRem(484px), 486x: utils.convertRem(486px), 488x: utils.convertRem(488px),
+    490x: utils.convertRem(490px), 492x: utils.convertRem(492px), 494x: utils.convertRem(494px), 496x: utils.convertRem(496px), 498x: utils.convertRem(498px),
+    500x: utils.convertRem(500px), 502x: utils.convertRem(502px), 504x: utils.convertRem(504px), 506x: utils.convertRem(506px), 508x: utils.convertRem(508px),
+    510x: utils.convertRem(510px), 512x: utils.convertRem(512px), 514x: utils.convertRem(514px), 516x: utils.convertRem(516px), 518x: utils.convertRem(518px),
+    520x: utils.convertRem(520px), 522x: utils.convertRem(522px), 524x: utils.convertRem(524px), 526x: utils.convertRem(526px), 528x: utils.convertRem(528px),
+    530x: utils.convertRem(530px), 532x: utils.convertRem(532px), 534x: utils.convertRem(534px), 536x: utils.convertRem(536px), 538x: utils.convertRem(538px),
+    540x: utils.convertRem(540px), 542x: utils.convertRem(542px), 544x: utils.convertRem(544px), 546x: utils.convertRem(546px), 548x: utils.convertRem(548px),
+    550x: utils.convertRem(550px), 552x: utils.convertRem(552px), 554x: utils.convertRem(554px), 556x: utils.convertRem(556px), 558x: utils.convertRem(558px),
+    560x: utils.convertRem(560px), 562x: utils.convertRem(562px), 564x: utils.convertRem(564px), 566x: utils.convertRem(566px), 568x: utils.convertRem(568px),
+    570x: utils.convertRem(570px), 572x: utils.convertRem(572px), 574x: utils.convertRem(574px), 576x: utils.convertRem(576px), 578x: utils.convertRem(578px),
+    580x: utils.convertRem(580px), 582x: utils.convertRem(582px), 584x: utils.convertRem(584px), 586x: utils.convertRem(586px), 588x: utils.convertRem(588px),
+    590x: utils.convertRem(590px), 592x: utils.convertRem(592px), 594x: utils.convertRem(594px), 596x: utils.convertRem(596px), 598x: utils.convertRem(598px),
+    600x: utils.convertRem(600px)
+);
+
+@use 'vuetify/settings' with (
+  $input-density: ('default': 0, 'comfortable': -2, 'compact': -4, 'small': -5),
+
+  $utilities: (
+    "height": (
+      property: height,
+      responsive: true,
+      class: h,
+      values: $sizes
+    ),
+    "max-height": (
+      property: max-height,
+      responsive: true,
+      class: max-h,
+      values: $sizes
+    ),
+    "min-height": (
+      property: min-height,
+      responsive: true,
+      class: min-h,
+      values: $sizes
+    ),
+    "width": (
+      property: width,
+      responsive: true,
+      class: w,
+      values: $sizes
+    ),
+    "max-width": (
+      property: max-width,
+      responsive: true,
+      class: max-w,
+      values: $sizes
+    ),
+    "min-width": (
+      property: min-width,
+      responsive: true,
+      class: min-w,
+      values: $sizes
+    ),
+    "font": (
+      property: 'font-size',
+      responsive: true,
+      class: fs,
+      values: $fontSizes
+    ),
+    "z-index": (
+      property: z-index,
+      class: z-index,
+      values: (
+        1: 1,
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 5,
+        10: 10,
+        50: 50,
+        100: 100,
+        500: 500,
+        999: 999,
+        3000: 3000,
+      ),
+    ),
+  )
+);

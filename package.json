@@ -1,0 +1,37 @@
+{
+    "private": true,
+    "type": "module",
+    "packageManager": "yarn@4.6.0",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite",
+        "yarn-enable": "corepack enable && yarn set version stable",
+        "yarn-enable-vscode": "yarn dlx @yarnpkg/sdks vscode",
+        "yarn-destroy": "rm -Rf .yarn; rm -Rf .vscode; rm -Rf .editorconfig; rm -Rf .pnp.cjs; rm -Rf .pnp.loader.mjs; rm -f .yarnrc.yml; rm -f yarn.lock; rm -Rf node_modules;"
+    },
+    "dependencies": {
+        "date-fns": "^4.1.0",
+        "maska": "^3.1.0",
+        "vue": "^3.5.13",
+        "vuetify": "^3.7.13"
+    },
+    "devDependencies": {
+        "@fortawesome/fontawesome-svg-core": "^6.7.2",
+        "@fortawesome/free-regular-svg-icons": "^6.7.2",
+        "@fortawesome/free-solid-svg-icons": "^6.7.2",
+        "@fortawesome/vue-fontawesome": "^3.0.8",
+        "@vitejs/plugin-vue": "^5.2.1",
+        "autoprefixer": "^10.4.20",
+        "axios": "^1.7.4",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^1.2.0",
+        "pinia": "^3.0.1",
+        "postcss": "^8.4.47",
+        "sass": "^1.85.0",
+        "sass-loader": "^16.0.5",
+        "vite": "^6.0.11",
+        "vite-plugin-vuetify": "^2.1.0",
+        "vite-svg-loader": "^5.1.0",
+        "vue-router": "^4.5.0"
+    }
+}

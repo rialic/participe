@@ -1,0 +1,91 @@
+networks:
+  app:
+  nginx:
+  db:
+
+services:
+  nginx:
+    build:
+      context: ./.docker/nginx
+      dockerfile: Dockerfile
+    image: nginx
+    container_name: nginx
+    volumes:
+      - ./:/var/www
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - app
+    networks:
+      - nginx
+
+  app:
+    build:
+      args:
+        UID: 1000
+        GROUP: www-data
+      context: ./.docker/php-fpm
+      dockerfile: Dockerfile
+    image: app
+    container_name: app
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    restart: unless-stopped
+    networks:
+      - app
+      - nginx
+      - db
+
+  db:
+    image: mysql/mysql-server:8.0.23
+    container_name: db
+    volumes:
+      - ./.docker/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      TZ: "America/Campo_Grande"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
+    networks:
+      - db
+
+  #CONTAINER SERVICES
+
+  node:
+    image: node:current-alpine3.16
+    container_name: node
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+
+  composer:
+    image: app
+    container_name: composer
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    entrypoint: ["composer"]
+    networks:
+      - app
+
+  artisan:
+    image: app
+    container_name: artisan
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    entrypoint: ["php", "artisan"]
+    networks:
+      - app
+      - db

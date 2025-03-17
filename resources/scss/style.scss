@@ -1,0 +1,133 @@
+@use "./settings";
+
+/* Theme Light Background */
+
+.theme-bg {
+  background: linear-gradient(to right bottom, #fff5ea, #fff6ec, #fff8ef, #fff9f1, #fffaf4, #fffbf6, #fffbf8, #fffcfa, #fffdfc, #fffdfe, #fffeff, #ffffff);
+}
+
+.pulse-orange-darken-4 {
+  animation: 1.5s pulse-orange-darken-4 infinite ease-in-out;
+}
+
+.pulse-teal-lighten-1 {
+  animation: 1.5s pulse-teal-lighten-1 infinite ease-in-out;
+}
+
+@keyframes pulse-teal-lighten-1 {
+0% {
+  box-shadow: 0 0 0 0 #26A69A;
+}
+
+100% {
+  box-shadow: 0 0 0 14px #69ffa800;
+}
+}
+
+@keyframes pulse-orange-darken-4 {
+0% {
+  box-shadow: 0 0 0 0 #E65100;
+}
+
+100% {
+  box-shadow: 0 0 0 14px #69ffa800;
+}
+}
+
+.v-selection-control__wrapper, .v-selection-control__input {
+  width: auto !important;
+}
+
+.v-checkbox-btn {
+  & label {
+    margin-left: 4px;
+  }
+
+  & .v-selection-control__input {
+    margin-bottom: 2px;
+  }
+}
+
+.v-field__outline {
+    --v-field-border-width: 2px !important;
+    --v-field-border-opacity: 0.5 !important;
+}
+
+.bg-gradient-orange {
+    background-image: linear-gradient(
+      to bottom right,
+      hsl(36, 100%, 52.94%) 0%,
+      hsla(36.05, 100%, 52.92%, 0.99) 8.1%,
+      hsla(36.2, 100%, 52.87%, 0.964) 15.5%,
+      hsla(36.42, 100%, 52.78%, 0.922) 22.5%,
+      hsla(36.72, 100%, 52.66%, 0.868) 29%,
+      hsla(37.06, 100%, 52.52%, 0.806) 35.3%,
+      hsla(37.44, 100%, 52.35%, 0.736) 41.2%,
+      hsla(37.84, 100%, 52.16%, 0.662) 47.1%,
+      hsla(38.25, 100%, 51.96%, 0.588) 52.9%,
+      hsla(38.66, 100%, 51.75%, 0.514) 58.8%,
+      hsla(39.04, 100%, 51.55%, 0.444) 64.7%,
+      hsla(39.38, 100%, 51.37%, 0.382) 71%,
+      hsla(39.66, 100%, 51.21%, 0.328) 77.5%,
+      hsla(39.89, 100%, 51.09%, 0.286) 84.5%,
+      hsla(40.03, 100%, 51.01%, 0.26) 91.9%,
+      hsla(40.08, 100%, 50.98%, 0.25) 100%
+    );
+};
+
+/* alert */
+.v-alert {
+  overflow: unset !important;
+}
+
+/* radio */
+.v-radio {
+  gap: 4px;
+}
+
+/* input details */
+.v-input__details {
+  padding-top: 0 !important;
+  align-items: center;
+}
+
+/* Responsive Table */
+@media screen and (max-width: 1280px) {
+  .mobile table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mobile table tr {
+    max-width: 100% !important;
+    position: relative !important;
+    display: block !important;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  }
+
+  .mobile table tr:nth-child(odd) {
+    border-left: 6px solid rgba(var(--v-theme-primary)) !important;
+  }
+
+  .mobile table tr:nth-child(even) {
+    border-left: 6px solid rgba(var(--v-theme-success)) !important;
+  }
+
+  .mobile table tr td {
+    display: flex !important;
+    width: 100% !important;
+    border-bottom: 1px solid #f5f5f5 !important;
+    height: auto !important;
+    padding: 10px !important;
+  }
+
+  .mobile table tr td div[data-label]::before {
+    display: block !important;
+    content: attr(data-label) !important;
+    padding-right: .5em !important;
+    text-align: left !important;
+    color: #000000 !important;
+    font-weight: 700
+  }
+}

@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('tb_micro_zones', function (Blueprint $table) {
+            $table->id();
+            $table->uuid()->unique();
+            $table->string('name');
+            $table->softDeletes();
+            $table->timestamps();
+
+            $table->unsignedBigInteger('deleted_by')->index()->nullable();
+            $table->unsignedBigInteger('created_by')->index()->nullable();
+            $table->unsignedBigInteger('macro_zone_id')->index()->nullable();
+
+            $table->foreign('created_by')->references('id')->on('tb_users');
+            $table->foreign('deleted_by')->references('id')->on('tb_users');
+            $table->foreign('macro_zone_id')->references('id')->on('tb_macro_zones');
+
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('tb_micro_zones');
+    }
+};
