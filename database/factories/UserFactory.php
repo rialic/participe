@@ -30,7 +30,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => 'rhiali.candido@outlook.com',
             'cpf' => '010.528.351-71',
-            'sexo' => 'Masculino',
+            'sex' => 'Masculino',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),

@@ -22,45 +22,54 @@
                                                             </p>
                                                         </div>
 
-                                                        <v-text-field
-                                                            label="Email"
-                                                            placeholder="email"
-                                                            density="compact"
-                                                            clearable
-                                                            variant="outlined"
-                                                            color="orange-darken-4"
-                                                            autocomplete="false">
-                                                        </v-text-field>
+                                                        <v-form @submit.prevent="logMeIn">
+                                                            <v-col col="12" class="py-1">
+                                                                <v-text-field
+                                                                    label="Email"
+                                                                    placeholder="Email"
+                                                                    v-model="form.email"
+                                                                    :error-messages="errorMessage('email')"
+                                                                    density="small"
+                                                                    clearable
+                                                                    variant="outlined"
+                                                                    color="orange-darken-4"
+                                                                    autocomplete="false">
+                                                                </v-text-field>
+                                                            </v-col>
 
-                                                        <v-text-field
-                                                            label="Senha"
-                                                            placeholder="senha"
-                                                            density="compact"
-                                                            variant="outlined"
-                                                            color="orange-darken-4"
-                                                            autocomplete="falase"
-                                                            type="password">
-                                                        </v-text-field>
+                                                            <v-col cols="12" class="py-1">
+                                                                <v-text-field
+                                                                    label="Senha"
+                                                                    placeholder="Senha"
+                                                                    v-model="form.password"
+                                                                    density="small"
+                                                                    variant="outlined"
+                                                                    color="orange-darken-4"
+                                                                    autocomplete="falase"
+                                                                    type="password">
+                                                                </v-text-field>
+                                                            </v-col>
 
-                                                        <div class="d-lg-flex justify-space-center align-center mb-6">
-                                                            <v-checkbox-btn
-                                                                density="comfortable"
-                                                                class="justify-center justify-lg-start"
-                                                                label="Lembrar me"
-                                                                color="orange-darken-4">
-                                                            </v-checkbox-btn>
+                                                            <div class="d-lg-flex justify-space-center align-center mb-6">
+                                                                <v-checkbox-btn
+                                                                    density="comfortable"
+                                                                    class="justify-center justify-lg-start"
+                                                                    label="Lembrar me"
+                                                                    color="orange-darken-4">
+                                                                </v-checkbox-btn>
 
-                                                            <router-link class="d-flex d-lg-block justify-center font-weight-bold">Esqueceu a senha?</router-link>
-                                                        </div>
+                                                                <router-link class="d-flex d-lg-block justify-center font-weight-bold">Esqueceu a senha?</router-link>
+                                                            </div>
 
-                                                        <v-btn variant="flat" color="orange-darken-4" class="font-weight-bold mb-8" block>
-                                                            Entrar
-                                                        </v-btn>
+                                                            <v-btn type="sumit" variant="flat" color="orange-darken-4" class="font-weight-bold mb-8" block>
+                                                                Entrar
+                                                            </v-btn>
+                                                        </v-form>
 
                                                         <v-divider class="border-opacity-25">Ou continue</v-divider>
 
                                                         <div class="d-flex justify-center mt-4">
-                                                            <v-btn variant="outlined" color="gray-lighten-1" prepend-icon="fas fa-envelope" class="font-weight-bold">
+                                                            <v-btn variant="outlined" color="gray-lighten-1" :prepend-icon="icon('fas fa-envelope')" class="font-weight-bold">
                                                                 Email
                                                             </v-btn>
                                                         </div>
@@ -148,10 +157,42 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import useAuth from '@/composables/useAuth'
+import useIcon from '@/composables/useIcon'
+import { errorMessage } from '@/helpers'
 
+import { useAlertStore } from '@/stores/alertStore'
+
+const alertStore = useAlertStore()
+
+const { login } = useAuth()
+const { icon } = useIcon()
 const router = useRouter()
-
 const step = ref(1)
+const errors = ref([])
+const form = ref({
+    email: null,
+    password: null
+})
+
+/* functions */
+async function logMeIn() {
+    const response = await login(form.value)
+
+    if (response.status === 422) {
+        alertStore.showAlert = true
+        alertStore.setTypeAlert('error')
+        alertStore.setMessage(`ReqId: ${response.data.requestId || response.headers['x-request-id']} - Erros foram encontrados.`)
+
+        errors.value = response.data.errors
+    }
+
+    if (response.status === 500) {
+        alertStore.showAlert = true
+        alertStore.setTypeAlert('error')
+        alertStore.setMessage(`ReqId: ${response.data.requestId || response.headers['x-request-id']} - Ops... tivemos algum erro em nosso sistema.`)
+    }
+}
 </script>
 
 <style scoped>

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->unsignedBigInteger('deleted_by')->index();
-            $table->unsignedBigInteger('created_by')->index();
+            $table->unsignedBigInteger('deleted_by')->index()->nullable();
+            $table->unsignedBigInteger('created_by')->index()->nullable();
 
             $table->foreign('created_by')->references('id')->on('tb_users');
             $table->foreign('deleted_by')->references('id')->on('tb_users');

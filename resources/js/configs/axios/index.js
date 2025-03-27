@@ -1,13 +1,14 @@
+import { computed } from 'vue'
 import axios from 'axios'
-import { useAlertStore } from '@/stores/AlertStore'
-import { useAppStore } from '@/stores/AppStore'
+import { useAlertStore } from '@/stores/alertStore'
+import { useAppStore } from '@/stores/appStore'
 
 export default (() => {
   let instance
-  const alertStore = useAlertStore()
-  const appStore = useAppStore()
+  const alertStore = computed(() => useAlertStore())
+  const appStore = computed(() => useAppStore())
   const domain = import.meta.env.VITE_URL
-  const baseUrl = `https://${domain}/api`
+  const baseUrl = `${domain}/api`
 
   function Axios() {
     if (instance) {
@@ -18,13 +19,14 @@ export default (() => {
       baseURL: baseUrl,
       withCredentials: true,
       headers: {
-        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Accept: 'application/json, application/octet-stream',
         'X-Requested-With': 'XMLHttpRequest',
       },
     })
 
     instance.interceptors.request.use(function(config) {
-    appStore.setOverlay(true)
+    appStore.value.setOverlay(true)
 
       return config
     }, null)
@@ -37,12 +39,12 @@ export default (() => {
       const data = (Object.values(response.data).length || isDataBlob) ? response.data.data || response.data : null
 
       if (isMethodDiffGet && isSuccessStatus && isSuccessStatusWithMessage) {
-        alertStore.showAlert = true
-        alertStore.setTypeAlert('success')
-        alertStore.setMessage(response.data.message)
+        alertStore.value.showAlert = true
+        alertStore.value.setTypeAlert('success')
+        alertStore.value.setMessage(response.data.message)
       }
 
-      appStore.setOverlay(false)
+      appStore.value.setOverlay(false)
 
       return {
         ok: true,
@@ -55,22 +57,22 @@ export default (() => {
     },
     function({ response, message }) {
       if (response.status === 422 || response.status === 400) {
-        alertStore.showAlert = true
-        alertStore.setTypeAlert('error')
-        alertStore.setMessage(`ReqId: ${response.data.requestId || response.headers['x-request-id']} - Erros foram encontrados.`)
+        alertStore.value.showAlert = true
+        alertStore.value.setTypeAlert('error')
+        alertStore.value.setMessage(`ReqId: ${response.data.requestId || response.headers['x-request-id']} - Erros foram encontrados.`)
       }
 
       if (response.status === 500) {
-        alertStore.showAlert = true
-        alertStore.setTypeAlert('error')
-        alertStore.setMessage(`ReqId: ${response.data.requestId || response.headers['x-request-id']} - Ops... tivemos algum erro em nosso sistema.`)
+        alertStore.value.showAlert = true
+        alertStore.value.setTypeAlert('error')
+        alertStore.value.setMessage(`ReqId: ${response.data.requestId || response.headers['x-request-id']} - Ops... tivemos algum erro em nosso sistema.`)
 
-        appStore.setOverlay(false)
+        appStore.value.setOverlay(false)
 
         return
       }
 
-      appStore.setOverlay(false)
+      appStore.value.setOverlay(false)
 
       return {
         ok: false,

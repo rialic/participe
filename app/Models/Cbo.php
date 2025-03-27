@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\HasIdWithUuids;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Cbo extends Model
 {
@@ -18,8 +19,8 @@ class Cbo extends Model
     ];
 
     // RELATIONSHIP
-    public function users()
+    public function users(): BelongsToMany
     {
-        $this->belongsToMany(User::class, 'tb_establishment_users', 'cbo_id', 'user_id');
+        return $this->belongsToMany(User::class, 'tb_establishment_users', 'cbo_id', 'user_id');
     }
 }

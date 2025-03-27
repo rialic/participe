@@ -3,6 +3,7 @@ import { format, toDate } from 'date-fns'
 export const {
     maskDate,
     deepCopy,
+    errorMessage,
     cpfValidated
   } = (() => {
     function maskDate(date) {
@@ -11,6 +12,12 @@ export const {
 
     function deepCopy(obj) {
       return JSON.parse(JSON.stringify(obj))
+    }
+
+    function errorMessage(label) {
+      if (Object.keys(this.errors).length) {
+        return this.errors[label]?.join(' ') || null
+      }
     }
 
     function cpfValidated(cpf) {
@@ -71,6 +78,7 @@ export const {
     return {
       maskDate,
       deepCopy,
+      errorMessage,
       cpfValidated
     }
   })()

@@ -11,4 +11,9 @@ class UserServiceLayer extends ServiceResource {
     {
         $this->repository = $userRepository;
     }
+
+    public function me($data): ?object
+    {
+        return $data;
+    }
 }

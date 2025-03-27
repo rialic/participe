@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
-// TODO - FAZER A PARTE DE AUTENTICAÇÃO
+// TODO - CRIAR O COMPONENT V-CAN para o vue
+// TODO - Testar o session timeout do usuário quando o mesmo estiver logado
 // TODO - COMPONENTIZAR o Webclass - Final de Semana
 
 Route::group(['prefix' => 'v1'], function () {

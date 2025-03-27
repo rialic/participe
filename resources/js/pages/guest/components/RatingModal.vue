@@ -2,7 +2,7 @@
 <v-dialog v-model="certificateStore.showRatingModal" max-width="1000">
       <v-card subtitle="Gostariamos de saber sua opinião sobre a web-aula">
         <template #prepend>
-          <v-icon icon="fas fa-file-pen" class="text-grey-darken-2"></v-icon>
+          <v-icon icon="fas fa-file-pen" size="small" class="text-grey-darken-2"></v-icon>
         </template>
 
         <template #title>
@@ -17,7 +17,7 @@
 
                 <v-radio-group class="mt-1" v-model="form.rating_event" density="compact" inline>
                   <div class="d-flex flex-wrap ga-4">
-                    <v-radio label="Não informado" color="orange-darken-4" density="small" :value="9"></v-radio>
+                    <v-radio label="Não informado" color="orange-darken-4" :value="9"></v-radio>
                     <v-radio label="Muito Insatisfeito" color="orange-darken-4" :value="1"></v-radio>
                     <v-radio label="Insatisfeito" color="orange-darken-4" :value="2"></v-radio>
                     <v-radio label="Indiferente" color="orange-darken-4" :value="3"></v-radio>
@@ -61,7 +61,7 @@
           <v-spacer></v-spacer>
 
           <v-btn
-            prepend-icon="fas fa-paper-plane"
+            :prepend-icon="icon('fas fa-paper-plane')"
             color="teal-lighten-1"
             class="font-weight-bold text-none fs-14x"
             variant="tonal"
@@ -76,10 +76,13 @@
 
 <script setup>
 import { ref } from 'vue'
+import useIcon from '@/composables/useIcon'
 
-import { useCertificateStore } from '@/stores/CertificateStore'
+import { useCertificateStore } from '@/stores/certificateStore'
 
 const certificateStore = useCertificateStore()
+
+const { icon } = useIcon()
 
 const emit = defineEmits(['print', 'close'])
 

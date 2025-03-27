@@ -30,8 +30,8 @@
 
 <script setup>
 import { watch } from 'vue'
-import { useAlertStore } from '@/stores/AlertStore'
-import { useAppStore } from '@/stores/AppStore'
+import { useAlertStore } from '@/stores/alertStore'
+import { useAppStore } from '@/stores/appStore'
 
 const alertStore = useAlertStore()
 const appStore = useAppStore()

@@ -15,14 +15,9 @@ return new class extends Migration
             $table->id();
             $table->uuid()->unique();
             $table->string('name');
+            $table->text('description')->nullable();
             $table->softDeletes();
             $table->timestamps();
-
-            $table->unsignedBigInteger('deleted_by')->index();
-            $table->unsignedBigInteger('created_by')->index();
-
-            $table->foreign('created_by')->references('id')->on('tb_users');
-            $table->foreign('deleted_by')->references('id')->on('tb_users');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';

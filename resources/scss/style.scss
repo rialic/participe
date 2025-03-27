@@ -1,7 +1,7 @@
 @use "./settings";
+@use "./hamburguers";
 
 /* Theme Light Background */
-
 .theme-bg {
   background: linear-gradient(to right bottom, #fff5ea, #fff6ec, #fff8ef, #fff9f1, #fffaf4, #fffbf6, #fffbf8, #fffcfa, #fffdfc, #fffdfe, #fffeff, #ffffff);
 }
@@ -18,7 +18,7 @@
 0% {
   box-shadow: 0 0 0 0 #26A69A;
 }
-
+//
 100% {
   box-shadow: 0 0 0 14px #69ffa800;
 }
@@ -89,6 +89,10 @@
 .v-input__details {
   padding-top: 0 !important;
   align-items: center;
+}
+
+.v-list-item__append .v-icon--size-default {
+  font-size: 16px;
 }
 
 /* Responsive Table */

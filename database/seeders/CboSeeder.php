@@ -15,11 +15,12 @@ class CboSeeder extends Seeder
         $dataCNESProxy = app('App\Proxy\DataCNES\DataCNESProxy');
         $responseDataCNES = $dataCNESProxy->fetch('cbo');
 
-        collect($responseDataCNES)->each(function($dataCNESCBO, $cboCode) use ($cbo){
+        collect($responseDataCNES)->each(function($dataCNESCBO, $cboCode) use ($cbo) {
             $cbo::firstOrCreate([
                 'code' => $cboCode,
                 'name' => $dataCNESCBO['name']
             ]);
         });
+
     }
 }

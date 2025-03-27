@@ -15,10 +15,14 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(ModuleSeeder::class);
         $this->call(SubmoduleSeeder::class);
+        $this->call(RoleSeeder::class);
+        $this->call(PermissionSeeder::class);
+        $this->call(RolePermissionSeeder::class);
         $this->call(CboSeeder::class);
         $this->call(DescsSeeder::class);
         $this->call(StateSeeder::class);
         $this->call(CitySeeder::class);
         $this->call(EstablishmentSeeder::class);
+        $this->call(TeamSeeder::class);
     }
 }

@@ -19,7 +19,8 @@ class CertificateRepository extends DBRepository implements CertificateInterface
         $query = parent::query($params);
 
         return $query->with(['events' => function($event) {
-            $event->whereRaw('DATE_ADD(end_at, INTERVAL end_minutes_additions MINUTE) <= current_timestamp()');
+            $event->select(['uuid', 'name', 'start_at', 'end_at', 'rated_at'])
+                ->whereRaw('DATE_ADD(end_at, INTERVAL end_minutes_additions MINUTE) <= current_timestamp()');
         }]);
     }
 

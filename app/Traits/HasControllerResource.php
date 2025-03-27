@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Exceptions\ApiException;
+use DateTime;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -17,8 +18,9 @@ trait HasControllerResource
    */
 
   protected int $limit = -1;
+  protected ?DateTime $deletedAt = null;
   protected array $filterFields = [];
-  protected array $params = ['limit', 'orderBy', 'direction', 'page'];
+  protected array $params = ['limit', 'orderBy', 'direction', 'page', 'deletedAt'];
 
   protected $showValidatorRequest = null;
   protected $indexValidatorRequest = null;
@@ -133,6 +135,7 @@ trait HasControllerResource
   private function getParams()
   {
     $params = [];
+    $params['deletedAt'] = $this->deletedAt;
 
     if (!is_null($this->limit)) {
       $params['limit'] = (int) $this->limit;

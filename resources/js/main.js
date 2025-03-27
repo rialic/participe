@@ -6,11 +6,14 @@ import App from '@/App.vue'
 import { createPinia } from 'pinia'
 import router from '@/routes'
 import vuetify from '@/plugins/vuetify'
-import { vMaska } from 'maska/vue'
 
 /* Components */
 import FontAwesomeIcon from '@/font-awesome'
 import NoContentFound from '@/components/NoContentFound.vue'
+
+/* Directives */
+import { vMaska } from 'maska/vue'
+import vCan from '@/directives/VCan'
 
 export default (() => {
     const app = createApp(App)
@@ -21,6 +24,7 @@ export default (() => {
 
     /* Directives */
     app.directive('maska', vMaska)
+    app.directive('can', vCan)
 
-    return app.use(router).use(vuetify).use(createPinia()).mount('#app')
+    app.use(router).use(createPinia()).use(vuetify).mount('#app')
 })()

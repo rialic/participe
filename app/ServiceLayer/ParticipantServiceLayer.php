@@ -51,7 +51,7 @@ class ParticipantServiceLayer extends ServiceResource {
 
         $this->user->fill(['name' => $data['name'], 'cpf' => $data['cpf'], 'email' => $data['email'], 'sex' => $data['sex'], 'password' => Hash::make('password')]);
         $this->user->save();
-        $this->user->establishments()->syncWithPivotValues([$establishment->id], ['cbo_id' => $cbo->id, 'primary_bond' => true]);
+        $this->user->establishments()->syncWithPivotValues([$establishment->id], ['cbo_id' => $cbo->id, 'primary_bond' => true], false);
 
         return $this->user;
     }
@@ -62,9 +62,13 @@ class ParticipantServiceLayer extends ServiceResource {
         $establishment = $this->establishmentRepository->getUuidToId($data['establishment']);
         $cbo = $this->cboRepository->getUuidToId($data['cbo']);
 
-        $user->establishments()->syncWithPivotValues([$establishment->id], ['cbo_id' => $cbo->id, 'primary_bond' => true]);
+        $user->establishments()->syncWithPivotValues([$establishment->id], ['cbo_id' => $cbo->id, 'primary_bond' => true], false);
 
-        return $user;
+        return $user->load(['establishments' => fn($establishment) => [
+            $establishment->with('city', fn($city) => [
+                $city->with('state')
+            ])
+        ]]);
     }
 
     private function storeParticipant($user, $cpf)
@@ -75,10 +79,25 @@ class ParticipantServiceLayer extends ServiceResource {
         $this->user->save();
 
         if (is_array($userBonds)) {
-            $cbo = $this->cboRepository->getFirstDataOrNew(['code' => $userBonds[0]['cbo']]);
-            $establishment = $this->establishmentRepository->getFirstDataOrNew(['cnes' => $userBonds[0]['cnes']]);
+            $establishmentCboList = [];
 
-            $this->user->establishments()->syncWithPivotValues([$establishment->id], ['cbo_id' => $cbo->id, 'primary_bond' => true]);
+            $establishmentCboList += collect($userBonds)->reduce(function($acc, $bond) {
+                $establishment = $this->establishmentRepository->getFirstData(['cnes' => $bond['cnes']]);
+                $cbo = $this->cboRepository->getFirstData(['code' => $bond['cbo']]);
+
+                $acc[] = ['establishment' => $establishment->id, 'cbo' => $cbo->id];
+
+                return $acc;
+            });
+
+            $establishmentCboList = collect($establishmentCboList)->unique();
+            $primaryEstablishment = $establishmentCboList->first();
+            $establishmentCboList = $establishmentCboList
+                                        ->filter(fn($_, $index) => $index !== 0)
+                                        ->reduce(fn($acc, $establishmentCbo) => $acc += [$establishmentCbo['establishment'] => ['cbo_id' => $establishmentCbo['cbo']]], []);
+
+            $this->user->establishments()->syncWithPivotValues($primaryEstablishment['establishment'], ['cbo_id' => $primaryEstablishment['cbo'], 'primary_bond' => true]);
+            $this->user->establishments()->attach($establishmentCboList);
         }
     }
 }

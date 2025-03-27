@@ -18,17 +18,13 @@ class SubmoduleSeeder extends Seeder
 
         $moduleList->each(function($module, $key) {
             if ($module->name === 'Tele-educação') {
-                Submodule::firstOrCreate(['name' => 'Web-aulas', 'module_id' => $module->id]);
-                Submodule::firstOrCreate(['name' => 'Cursos', 'module_id' => $module->id]);
+                Submodule::firstOrCreate(['name' => 'Web-aulas', 'module_id' => $module->id, 'order' => 1]);
+                Submodule::firstOrCreate(['name' => 'Cursos', 'module_id' => $module->id, 'order' => 2]);
             }
 
             if ($module->name === 'Configurações') {
-                Submodule::firstOrCreate(['name' => 'Smart', 'module_id' => $module->id]);
-                Submodule::firstOrCreate(['name' => 'Usuários', 'module_id' => $module->id]);
-                Submodule::firstOrCreate(['name' => 'Ocupações', 'module_id' => $module->id]);
-                Submodule::firstOrCreate(['name' => 'Estabelecimentos', 'module_id' => $module->id]);
-                Submodule::firstOrCreate(['name' => 'Papéis', 'module_id' => $module->id]);
-                Submodule::firstOrCreate(['name' => 'Permissões', 'module_id' => $module->id]);
+                Submodule::firstOrCreate(['name' => 'Usuários', 'module_id' => $module->id, 'order' => 1]);
+                Submodule::firstOrCreate(['name' => 'Papéis', 'module_id' => $module->id, 'order' => 2]);
             }
         });
     }

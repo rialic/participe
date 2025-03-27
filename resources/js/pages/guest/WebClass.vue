@@ -17,7 +17,7 @@
                                 <div class="d-flex flex-wrap justify-end mt-6 mb-4 ga-4">
                                     <template v-if="participantList.length">
                                       <v-btn
-                                          prepend-icon="fas fa-plus"
+                                          :prepend-icon="icon('fas fa-plus')"
                                           variant="flat"
                                           color="primary"
                                           rounded="sm"
@@ -29,7 +29,7 @@
                                     </template>
 
                                     <v-btn
-                                      prepend-icon="fas fa-file-lines"
+                                      :prepend-icon="icon('fas fa-file-lines')"
                                       variant="flat"
                                       color="primary"
                                       rounded="sm"
@@ -41,7 +41,7 @@
 
                                     <template v-if="participantList.length">
                                       <v-btn
-                                        append-icon="fas fa-circle-right"
+                                        :append-icon="icon('fas fa-circle-right')"
                                         variant="flat"
                                         color="teal-lighten-1"
                                         rounded="sm"
@@ -79,6 +79,7 @@
                                                 <v-checkbox-btn
                                                   :model-value="isSelected(item)"
                                                   color="orange-darken-4"
+                                                  density="compact"
                                                   @update:model-value="toggleSelect(item)">
                                                   <span class="font-weight-bold me-2">Selecione</span>
                                                 </v-checkbox-btn>
@@ -109,6 +110,7 @@
                                                     <v-checkbox-btn
                                                         :model-value="isSelected(item)"
                                                         color="orange-darken-4"
+                                                        density="compact"
                                                         @update:model-value="toggleSelect(item)">
                                                     </v-checkbox-btn>
                                                 </td>
@@ -138,7 +140,7 @@
                                   <v-card elevation="0" border="thin" width="100%">
                                       <div class="d-flex justify-center mt-6 mb-4">
                                         <v-btn
-                                            prepend-icon="fas fa-plus"
+                                            :prepend-icon="icon('fas fa-plus')"
                                             variant="flat"
                                             color="orange-darken-4"
                                             rounded="sm"
@@ -181,7 +183,7 @@
                                                   </td>
 
                                                   <td class="text-right">
-                                                    <v-icon icon="fas fa-trash" size="small" @click="onRemoveParticipant(event, item, index)"></v-icon>
+                                                    <v-icon icon="fas fa-trash" size="x-small" @click="onRemoveParticipant(event, item, index)"></v-icon>
                                                   </td>
                                               </tr>
                                           </template>
@@ -243,7 +245,15 @@
     </v-container>
 
     <v-dialog v-model="showSignUpParticipantModal" max-width="1000" @afterLeave="onCloseSignUpParticipantModal">
-      <v-card prepend-icon="fas fa-user" title="Cadastro de Participante">
+      <v-card>
+        <template #prepend>
+          <v-icon icon="fas fa-user" size="small" class="text-grey-darken-2"></v-icon>
+        </template>
+
+        <template #title>
+          <span class="fs-20x text-grey-darken-3 font-weight-bold">Cadastro de Participante</span>
+        </template>
+
         <v-card-text>
           <v-row>
             <v-col cols="12" class="pt-2 pb-1" md="6">
@@ -251,7 +261,7 @@
                 label="CPF *"
                 v-model="form.cpf"
                 :rules="[rules.cpf]"
-                :error-messages="errors['cpf']?.join(' ') || null"
+                :error-messages="errorMessage('cpf')"
                 density="small"
                 required variant="outlined"
                 color="orange-darken-4"
@@ -267,7 +277,7 @@
                       variant="flat"
                       rounded="sm"
                       color="teal-lighten-1"
-                      prepend-icon="fas fa-magnifying-glass"
+                      :prepend-icon="icon('fas fa-magnifying-glass')"
                       size="small"
                       @click="onSearchParticipant">
                       Pesquisar
@@ -283,7 +293,7 @@
               <v-text-field
                 label="Nome *"
                 v-model="form.name"
-                :error-messages="errors['name']?.join(' ') || null"
+                :error-messages="errorMessage('name')"
                 density="small"
                 required variant="outlined"
                 color="orange-darken-4"
@@ -298,7 +308,7 @@
                 label="Sexo *"
                 v-model="form.sex"
                 :items="['Masculino', 'Feminino']"
-                :error-messages="errors['sex']?.join(' ') || null"
+                :error-messages="errorMessage('sex')"
                 density="small"
                 required variant="outlined"
                 color="orange-darken-4"
@@ -312,7 +322,7 @@
               <v-text-field
                 label="Email *"
                 v-model="form.email"
-                :error-messages="errors['email']?.join(' ') || null"
+                :error-messages="errorMessage('email')"
                 density="small"
                 hint="Informe seu melhor e-mail"
                 :persistent-hint="true"
@@ -329,7 +339,7 @@
                 label="Ocupação *"
                 v-model="form.cbo"
                 :items="cboStore.list"
-                :error-messages="errors['cbo']?.join(' ') || null"
+                :error-messages="errorMessage('cbo')"
                 hint="Digite o nome da sua profissão ou código CBO"
                 density="small"
                 required variant="outlined"
@@ -366,7 +376,7 @@
                 label="Cidade *"
                 v-model="form.city"
                 :items="cityStore.list"
-                :error-messages="errors['city']?.join(' ') || null"
+                :error-messages="errorMessage('city')"
                 density="small"
                 no-data-text="Nenhum item encontrado."
                 required variant="outlined"
@@ -385,7 +395,7 @@
                 label="Estabelecimento *"
                 v-model="form.establishment"
                 :items="establishmentStore.list"
-                :error-messages="errors['establishment']?.join(' ') || null"
+                :error-messages="errorMessage('establishment')"
                 density="small"
                 no-data-text="Nenhum item encontrado."
                 required variant="outlined"
@@ -409,7 +419,7 @@
 
           <v-btn
             v-if="showAllInputs || showEmailSexInputs || showEstablishmentsInputs"
-            prepend-icon="fas fa-circle-check"
+            :prepend-icon="icon('fas fa-circle-check')"
             color="teal-lighten-1"
             class="font-weight-bold text-none fs-13x"
             variant="tonal"
@@ -431,7 +441,15 @@
     </v-dialog>
 
     <v-dialog v-model="showDeleteParticipantModal" max-width="1000">
-      <v-card prepend-icon="fas fa-user" title="Excluir Participante">
+      <v-card>
+        <template #prepend>
+          <v-icon icon="fas fa-user-xmark" size="small" class="text-grey-darken-2"></v-icon>
+        </template>
+
+        <template #title>
+          <span class="fs-20x text-grey-darken-3 font-weight-bold">Excluir Participante</span>
+        </template>
+
         <v-card-text class="d-flex flex-column align-center ga-2">
             <h4>Tem certeza que deseja excluir o participante?</h4>
 
@@ -442,7 +460,7 @@
           <v-spacer></v-spacer>
 
           <v-btn
-            prepend-icon="fas fa-circle-check"
+            :prepend-icon="icon('fas fa-circle-check')"
             color="teal-lighten-1"
             class="font-weight-bold"
             variant="tonal"
@@ -452,7 +470,7 @@
           </v-btn>
 
           <v-btn
-            prepend-icon="fas fa-circle-xmark"
+            :prepend-icon="icon('fas fa-circle-xmark')"
             class="font-weight-bold"
             color="black"
             variant="tonal"
@@ -466,18 +484,19 @@
 </template>
 
 <script setup>
-import { cpfValidated, maskDate } from '@/helpers'
+import { cpfValidated, maskDate, errorMessage } from '@/helpers'
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useDisplay } from 'vuetify'
+import useIcon from '@/composables/useIcon'
 
-import { useAlertStore } from '@/stores/AlertStore'
-import { useCboStore } from '@/stores/CboStore'
-import { useCityStore } from '@/stores/CityStore'
-import { useEstablishmentStore } from '@/stores/EstablishmentStore'
-import { useEventStore } from '@/stores/EventStore'
-import { useParticipantStore } from '@/stores/ParticipantStore'
-import { useStateStore } from '@/stores/StateStore'
+import { useAlertStore } from '@/stores/alertStore'
+import { useCboStore } from '@/stores/cboStore'
+import { useCityStore } from '@/stores/cityStore'
+import { useEstablishmentStore } from '@/stores/establishmentStore'
+import { useEventStore } from '@/stores/eventStore'
+import { useParticipantStore } from '@/stores/participantStore'
+import { useStateStore } from '@/stores/stateStore'
 
 const participantStore = useParticipantStore()
 const eventStore = useEventStore()
@@ -487,6 +506,7 @@ const establishmentStore = useEstablishmentStore()
 const cboStore = useCboStore()
 const alertStore = useAlertStore()
 const router = useRouter()
+const { icon } = useIcon()
 
 const { mobile } = useDisplay()
 const showSignUpParticipantModal = ref(false)
@@ -646,8 +666,8 @@ async function onSearchParticipant() {
       form.value.cbo = data.cbo?.uuid
       form.value.state = data.establishment?.city.state.uuid || form.value.state.uuid
 
-      loadCity(form.value.state, data.establishment?.city.uuid)
-      loadEstablishment(data.establishment?.city.uuid, data.establishment?.uuid)
+      await loadCity(form.value.state, data.establishment?.city.uuid)
+      await loadEstablishment(data.establishment?.city.uuid, data.establishment?.uuid)
     }
 }
 

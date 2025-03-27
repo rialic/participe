@@ -69,6 +69,18 @@ class User extends Authenticatable
             ->withPivot('rating_event', 'rating_event_schedule', 'hint', 'rated_at');
     }
 
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'tb_user_roles', 'user_id', 'role_id');
+    }
+
+    public function cbos(): BelongsToMany
+    {
+        return $this->belongsToMany(Cbo::class, 'tb_establishment_users', 'user_id', 'cbo_id')
+            ->using(EstablishmentUser::class)
+            ->withPivot('primary_bond', 'establishment_id');
+    }
+
     public function establishments(): BelongsToMany
     {
         return $this->belongsToMany(Establishment::class, 'tb_establishment_users', 'user_id', 'establishment_id')

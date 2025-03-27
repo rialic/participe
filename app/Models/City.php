@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Traits\HasIdWithUuids;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class City extends Model
 {
@@ -22,17 +24,17 @@ class City extends Model
     ];
 
     // RELATIONSHIPS
-    public function state()
+    public function state(): BelongsTo
     {
         return $this->belongsTo(State::class, 'state_id');
     }
 
-    public function microZone()
+    public function microZone(): BelongsTo
     {
         return $this->belongsTo(MicroZone::class, 'state_id');
     }
 
-    public function establishments()
+    public function establishments(): HasMany
     {
         return $this->hasMany(Establishment::class);
     }

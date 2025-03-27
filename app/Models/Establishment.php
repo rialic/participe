@@ -5,6 +5,9 @@ namespace App\Models;
 use App\Traits\HasIdWithUuids;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Establishment extends Model
 {
@@ -22,12 +25,17 @@ class Establishment extends Model
     ];
 
     // RELATIONSHIPS
-    public function city()
+    public function city(): BelongsTo
     {
         return $this->belongsTo(City::class, 'city_id');
     }
 
-    public function users()
+    public function teams(): HasMany
+    {
+        return $this->hasMany(Team::class);
+    }
+
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'tb_establishment_users', 'establishment_id', 'user_id')
             ->using(EstablishmentUser::class)

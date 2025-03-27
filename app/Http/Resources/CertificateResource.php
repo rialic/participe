@@ -24,13 +24,7 @@ class CertificateResource extends JsonResource
         return [
             'uuid' => $this->uuid,
             'name' => $this->name,
-            'events' => $this->whenLoaded('events', $this->events->map(fn($event) => [
-                'uuid' => $event->uuid,
-                'name' => $event->name,
-                'start_at' => $event->start_at,
-                'end_at' => $event->end_at,
-                'rated_at' => $event->pivot->rated_at,
-            ]))
+            'events' => $this->whenLoaded('events'),
         ];
     }
 }

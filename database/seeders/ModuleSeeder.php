@@ -12,8 +12,9 @@ class ModuleSeeder extends Seeder
      */
     public function run(): void
     {
-        Module::firstOrCreate(['name' => 'Dashboard']);
-        Module::firstOrCreate(['name' => 'Tele-educação']);
-        Module::firstOrCreate(['name' => 'Configurações']);
+        Module::firstOrCreate(['name' => 'Dashboard', 'order' => 1]);
+        Module::firstOrCreate(['name' => 'Tele-educação', 'order' => 2]);
+        Module::firstOrCreate(['name' => 'Smart', 'order' => 3]);
+        Module::firstOrCreate(['name' => 'Configurações', 'order' => 4]);
     }
 }

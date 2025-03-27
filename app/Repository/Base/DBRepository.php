@@ -177,7 +177,9 @@ class DBRepository implements DBRepositoryInterface
     {
         $isPaginable = Arr::get($params, 'page');
         $limit = Arr::get($params, 'limit') ?: -1;
+        $deletedAt = Arr::get($params, 'deleted');
         $model = $this->query($params);
+        $model = (!$deletedAt) ? $model->whereNull('deleted_at') : $model->where('deleted_at', $deletedAt);
 
         if ($isPaginable) {
             return ($limit !== -1) ? $model->paginate($limit)->onEachSide(1) : $model->paginate()->onEachSide(1);
@@ -210,7 +212,8 @@ class DBRepository implements DBRepositoryInterface
     {
         $this->params = $params;
         $params = collect($params);
-        $params = $params->filter(fn($value, $key) => $key !== 'page' && $key !== 'limit' && $key !== 'orderBy' && $key !== 'direction');
+        $exceptedKeyList = ['page', 'limit', 'orderBy', 'direction', 'deletedAt'];
+        $params = $params->filter(fn($value, $key) => !in_array($key, $exceptedKeyList));
 
         if ($params->isEmpty()) {
             return $model;

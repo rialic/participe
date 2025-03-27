@@ -27,7 +27,8 @@ class DataCNESProxy
 			'cities' => fn() => $this->fetchCities(),
 			'establishments' => fn() => $this->fetchEstablishments(),
 			'cbo' => fn() => $this->fetchCBO(),
-			'user' => fn() => $this->fetchUser($data)
+			'user' => fn() => $this->fetchUser($data),
+			'team' => fn() => $this->fetchTeam($data)
 		];
 
 		return call_user_func($fetchList[$typeObject]);
@@ -153,6 +154,64 @@ class DataCNESProxy
 		return $establishmentList;
 	}
 
+	private function fetchTeam()
+	{
+		$state = app('App\Models\State');
+		$city = app('App\Models\City');
+		$establishment = app('App\Models\Establishment');
+
+		$state = $state::where('acronym', 'MS')->first();
+		$cityList = $city::where('state_id', $state->id)->get();
+		$establishmentList = $cityList->flatMap(fn($city) => $establishment::where('city_id', $city->id)->where('legal_nature', 'ADMINISTRAÇÃO PÚBLICA')->where('sus', 'SIM')->get())->all();
+		$establishmentTeamList = [];
+
+		ini_set('memory_limit', '-1');
+
+		foreach($establishmentList as $key => $establishment) {
+			if ($establishment->cnes === '9999999') {
+				continue;
+			}
+
+			try {
+				$response = Http::withOptions(['verify' => base_path('datacnes.pem')])
+					->withHeaders($this->dataCNESHeaders->getEstablishmentTeamsHeader())
+					->retry(3, 15000)
+					->get(env('DTACNES_ESTABLISHMENT_TEAMS_URL') . $establishment->datacnes_id);
+			} catch (\Exception $e) {
+				$response = null;
+
+				ApiException::handleException($e, func_get_args());
+			}
+
+			if($response?->ok()) {
+				$dataCNESEstablishmentTeamList = $response->json();
+
+				if(collect($dataCNESEstablishmentTeamList)->isNotEmpty()) {
+					$establishmentTeamList += collect($dataCNESEstablishmentTeamList)->reduce(function ($acc, $establishmentTeam) use ($establishment) {
+						$acc[$establishmentTeam['coEquipe']] = [
+							'name_team' => $establishmentTeam['nomeEquipe'],
+							'type_team' => $establishmentTeam['dsEquipe'],
+							'active_at' => $establishmentTeam['dtAtivacao'],
+							'deactivate_at' => $establishmentTeam['dtDesativacao'],
+							'datacnes_city_id' => $establishmentTeam['coMunicipio'],
+							'datacnes_area_id' => $establishmentTeam['coArea'],
+							'datacnes_team_id' => $establishmentTeam['coEquipe'],
+							'establishment_id' => $establishment->id
+						];
+
+						return $acc;
+					}, []);
+				}
+
+				continue;
+			}
+
+			$response->throw()->json();
+		}
+
+		return $establishmentTeamList;
+	}
+
 	private function fetchCBO()
 	{
 		$response = Http::withHeaders($this->dataCNESHeaders->getCBOHeader())->get(env('DTACNES_CBO_URL'));
@@ -173,7 +232,6 @@ class DataCNESProxy
 
 	private function fetchUser($data)
 	{
-		// 011.736.351-06
 		try {
 			$response = Http::withOptions(['verify' => base_path('datacnes.pem')])
 				->withHeaders($this->dataCNESHeaders->getProfessionalsHeader())

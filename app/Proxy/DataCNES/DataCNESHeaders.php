@@ -20,6 +20,14 @@ class DataCNESHeaders
         return array_merge($this->getHeader(), $establishmentHeader);
     }
 
+    public function getEstablishmentTeamsHeader()
+    {
+        $establishmentHeader['referer'] = 'https://cnes.datasus.gov.br/pages/estabelecimentos/ficha/equipes/';
+        $establishmentHeader['Host'] = 'cnes.datasus.gov.br';
+
+        return array_merge($this->getHeader(), $establishmentHeader);
+    }
+
     public function getDescsHeader()
     {
         $cboHeader['Authorization'] = 'Token ' . env('TOKEN');

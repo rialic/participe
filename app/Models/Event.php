@@ -44,17 +44,29 @@ class Event extends Model
     // GETTERS
     public function getStartAtFormattedAttribute()
     {
-        return $this->start_at->format('d/m/Y');
+        if ($this->start_at) {
+            return $this->start_at->format('d/m/Y');
+        }
+
+        return $this->start_at;
     }
 
     public function getEndAtFormattedAttribute()
     {
-        return $this->end_at->format('d/m/Y');
+        if ($this->end_at) {
+            return $this->end_at->format('d/m/Y');
+        }
+
+        return $this->end_at;
     }
 
     public function getWorkloadFormattedAttribute()
     {
-        return $this->start_at->diffForHumans($this->end_at, ['syntax' => CarbonInterface::DIFF_ABSOLUTE, 'join' => true, 'parts' => 2]);
+        if ($this->start_at) {
+            return $this->start_at->diffForHumans($this->end_at, ['syntax' => CarbonInterface::DIFF_ABSOLUTE, 'join' => true, 'parts' => 2]);
+        }
+
+        return $this->start_at;
     }
 
     // RELATIONSHIPS

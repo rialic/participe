@@ -19,7 +19,7 @@
                                         label="CPF *"
                                         v-model="cpf"
                                         :rules="[rules.cpf]"
-                                        :error-messages="errors['cpf']?.join(' ') || null"
+                                        :error-messages="errorMessage('cpf')"
                                         density="small"
                                         required variant="outlined"
                                         color="orange-darken-4"
@@ -35,7 +35,7 @@
                                             variant="flat"
                                             rounded="sm"
                                             color="teal-lighten-1"
-                                            prepend-icon="fas fa-magnifying-glass"
+                                            :prepend-icon="icon('fas fa-magnifying-glass')"
                                             size="small"
                                             @click="onSearchParticipant">
                                             Pesquisar
@@ -104,7 +104,7 @@
                                                 </td>
 
                                                 <td class="text-right">
-                                                    <v-icon icon="fas fa-file-arrow-down" @click="onPrintCertificate(item)"></v-icon>
+                                                    <v-icon icon="fas fa-file-arrow-down" size="small" @click="onPrintCertificate(item)"></v-icon>
                                                 </td>
                                             </tr>
                                         </template>
@@ -126,18 +126,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { maskDate, cpfValidated } from '@/helpers'
-import RatingModal from '@/pages/guest/components/RatingModal.vue'
+import { ref, onMounted, h } from 'vue'
+import { maskDate, cpfValidated, errorMessage } from '@/helpers'
 import { useDisplay } from 'vuetify'
+import useIcon from '@/composables/useIcon'
 
-import { useCertificateStore } from '@/stores/CertificateStore'
-import { useEventStore } from '@/stores/EventStore'
-import { useAlertStore } from '@/stores/AlertStore'
+import RatingModal from '@/pages/guest/components/RatingModal.vue'
+
+import { useCertificateStore } from '@/stores/certificateStore'
+import { useEventStore } from '@/stores/eventStore'
+import { useAlertStore } from '@/stores/alertStore'
 
 const alertStore = useAlertStore()
 const certificateStore = useCertificateStore()
 const eventStore = useEventStore()
+const { icon } = useIcon()
 
 const { mobile } = useDisplay()
 const cpf = ref()
