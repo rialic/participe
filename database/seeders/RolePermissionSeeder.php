@@ -25,10 +25,17 @@ class RolePermissionSeeder extends Seeder
     public function run(): void
     {
         /* ADMIN */
-        $isCreated = $this->hasRolePermission('ADMIN', 'ADMIN');
-        $this->createRolePermission($isCreated);
+        $permissionList = $this->permissionRepository->findAll();
+
+        $permissionList->each(function($permission) {
+            $isCreated = $this->hasRolePermission('ADMIN', $permission->name);
+            $this->createRolePermission($isCreated);
+        });
 
         /* ADJUTOR */
+        $isCreated = $this->hasRolePermission('ADJUTOR', 'API.MODULES');
+        $this->createRolePermission($isCreated);
+
         $isCreated = $this->hasRolePermission('ADJUTOR', 'MENU.DASHBOARD');
         $this->createRolePermission($isCreated);
 
@@ -47,16 +54,16 @@ class RolePermissionSeeder extends Seeder
         $isCreated = $this->hasRolePermission('ADJUTOR', 'EVENT.WEBCLASS-CREATE');
         $this->createRolePermission($isCreated);
 
-        $isCreated = $this->hasRolePermission('ADJUTOR', 'EVENT.WEBCLASS-SAVE');
+        $isCreated = $this->hasRolePermission('ADJUTOR', 'API.EVENT.WEBCLASS-SAVE');
         $this->createRolePermission($isCreated);
 
         $isCreated = $this->hasRolePermission('ADJUTOR', 'EVENT.WEBCLASS-EDIT');
         $this->createRolePermission($isCreated);
 
-        $isCreated = $this->hasRolePermission('ADJUTOR', 'EVENT.WEBCLASS-UPDATE');
+        $isCreated = $this->hasRolePermission('ADJUTOR', 'API.EVENT.WEBCLASS-UPDATE');
         $this->createRolePermission($isCreated);
 
-        $isCreated = $this->hasRolePermission('ADJUTOR', 'EVENT.WEBCLASS-DELETE');
+        $isCreated = $this->hasRolePermission('ADJUTOR', 'API.EVENT.WEBCLASS-DELETE');
         $this->createRolePermission($isCreated);
 
         $isCreated = $this->hasRolePermission('ADJUTOR', 'EVENT.WEBCLASS-CERTIFICATE');
@@ -65,8 +72,17 @@ class RolePermissionSeeder extends Seeder
         $isCreated = $this->hasRolePermission('ADJUTOR', 'SETTINGS.USER-PROFILE');
         $this->createRolePermission($isCreated);
 
+        $isCreated = $this->hasRolePermission('ADJUTOR', 'API.USER-ME');
+        $this->createRolePermission($isCreated);
+
         /* USUÁRIO */
+        $isCreated = $this->hasRolePermission('USUARIO', 'API.MODULES');
+        $this->createRolePermission($isCreated);
+
         $isCreated = $this->hasRolePermission('USUARIO', 'SETTINGS.USER-PROFILE');
+        $this->createRolePermission($isCreated);
+
+        $isCreated = $this->hasRolePermission('USUARIO', 'API.USER-ME');
         $this->createRolePermission($isCreated);
     }
 

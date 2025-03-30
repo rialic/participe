@@ -2255,6 +2255,7 @@ __metadata:
     vite-svg-loader: "npm:^5.1.0"
     vue: "npm:^3.5.13"
     vue-router: "npm:^4.5.0"
+    vue3-autocounter: "npm:^1.0.8"
     vuetify: "npm:^3.7.13"
   languageName: unknown
   linkType: soft
@@ -2673,6 +2674,15 @@ __metadata:
   peerDependencies:
     vue: ^3.2.0
   checksum: 10c0/5521c8d0ab7634ea75118824d4b4cae3748964725b3d3b4064eb3dbd44013381ea3163d4d856af61655936cd897b84f8eeebb312d0668532c3074d53814bd953
+  languageName: node
+  linkType: hard
+
+"vue3-autocounter@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "vue3-autocounter@npm:1.0.8"
+  peerDependencies:
+    vue: ^3.0.5
+  checksum: 10c0/6ac86551795270e7012570383fff4c693d17fb4eeffeb1116b08bb19a56bf3b4e02fa77cc044ac9185a0808ed5ea3bd617f11464ba419efcf72b209d0d023c04
   languageName: node
   linkType: hard
 

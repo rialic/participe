@@ -1,11 +1,9 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-
 // import {} from '@fortawesome/free-brands-svg-icons'
 
 import {
-    fas,
     faEnvelope,
     faUser,
     faUserXmark,
@@ -24,18 +22,24 @@ import {
     faAngleUp,
     faAngleDown,
     faLightbulb,
+    faCalendarDays,
+    faUsers,
+    faMapLocationDot,
+    faArrowLeft,
+    faWandSparkles,
+    faSquareCheck,
+    faTriangleExclamation
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
-    far,
-    faSquareCheck,
-    faFileLines
+    faFileLines,
+    faPaperPlane,
+    faSquare,
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
-    fas,
-    far,
     faEnvelope,
+    faSquare,
     faSquareCheck,
     faUser,
     faUserXmark,
@@ -54,7 +58,14 @@ library.add(
     faGear,
     faAngleUp,
     faAngleDown,
-    faLightbulb
+    faLightbulb,
+    faCalendarDays,
+    faUsers,
+    faMapLocationDot,
+    faPaperPlane,
+    faArrowLeft,
+    faWandSparkles,
+    faTriangleExclamation
 )
 
 export default FontAwesomeIcon

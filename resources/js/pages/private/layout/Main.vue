@@ -8,6 +8,7 @@
       </template>
 
       <v-list
+        v-if="user"
         v-model:selected="selectedMenuItem"
         density="comfortable"
         nav>
@@ -62,7 +63,8 @@
           nav>
             <v-list-item v-for="(footerItem, index) in footerItems" :key="index"
               :value="footerItem"
-              color="orange-darken-4">
+              color="orange-darken-4"
+              @click="logout()">
                 <v-list-item-title class="fs-14x text-white font-weight-bold" v-text="footerItem.name"></v-list-item-title>
 
                 <template #append>
@@ -112,7 +114,7 @@
         </div>
 
         <v-sheet class="pa-6" color="white" height="500" width="100%" elevation="1" border="thin" rounded>
-          <router-view></router-view>
+            <router-view></router-view>
         </v-sheet>
       </div>
     </v-main>
@@ -132,7 +134,7 @@ import { useModuleStore } from '@/stores/moduleStore'
 const appStore = useAppStore()
 const moduleStore = useModuleStore()
 
-const { user } = useAuth()
+const { user, logout } = useAuth()
 const router = useRouter()
 const { icon } = useIcon()
 const drawer = ref(false)

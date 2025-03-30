@@ -40,10 +40,6 @@ class FortifyServiceProvider extends ServiceProvider
                 throw ValidationException::withMessages(['email' => 'Email ou Senha inválido.']);
             }
 
-            // TODO MUDAR O CURRENT SUBDOMAIN DO USUÁRIO AO SE LOGAR
-
-            // TODO SE O USUÁRIO JÁ FOR CADASTRADO E TENTAR ACESSAR UM SUBDOMAIN QUE ELE NÃO TEM ACESSO, ENTRAR CADASTRAR ELE NO NOVO SUDOMAIN
-            // E DEPOIS LOGAR ELE
             return $user;
         });
 

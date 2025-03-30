@@ -2,8 +2,11 @@
 
 namespace App\ServiceLayer;
 
+use App\Jobs\MagicLoginLinkJob;
+use App\Mail\MagicLoginLink;
 use App\Repository\UserRepository;
 use App\ServiceLayer\Base\ServiceResource;
+use Illuminate\Support\Facades\Mail;
 
 class UserServiceLayer extends ServiceResource {
 
@@ -15,5 +18,13 @@ class UserServiceLayer extends ServiceResource {
     public function me($data): ?object
     {
         return $data;
+    }
+
+    public function sendMagicLink($data)
+    {
+        $user = $this->repository->getFirstData(['email' => $data['email']]);
+
+        Mail::to($data['email'])
+            ->queue(new MagicLoginLink($user->name, $data['email']));
     }
 }

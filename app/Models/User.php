@@ -63,6 +63,7 @@ class User extends Authenticatable
         return substr($this->name, 0, strpos($this->name, ' '));
     }
 
+    // RELATIONSHIP
     public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'tb_event_participants', 'user_id', 'event_id')
@@ -86,5 +87,17 @@ class User extends Authenticatable
         return $this->belongsToMany(Establishment::class, 'tb_establishment_users', 'user_id', 'establishment_id')
             ->using(EstablishmentUser::class)
             ->withPivot('primary_bond', 'cbo_id');
+    }
+
+
+    public function hasAnyPermissions($user, $permission)
+    {
+        $abilities = $user->roles->map(fn ($role) => $role->permissions->map(fn ($permission) => $permission->name))->flatten();
+
+        if (is_array($permission) || is_object($permission)) {
+            return !!$abilities->intersect($permission)->count();
+        }
+
+        return !!$abilities->first(fn ($ability) => $ability === $permission);
     }
 }

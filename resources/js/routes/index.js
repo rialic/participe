@@ -19,20 +19,22 @@ export default (() => {
     const hasAnyAuthRouteTo = to.matched.some((route) => route.meta.requiresAuth)
 
     if (hasAnyAuthRouteTo) {
-      await attemptAuth()
+      if(!user.value) await attemptAuth()
+
+      const routeToHasGuards = guards?.length > 0
+      const userHasGuards = guards?.every((guard) => user.value?.abilities.includes(guard))
 
       if (!authenticated.value) {
         return next({ name: 'guest.login' })
       }
 
-      if(guards?.length > 0 && !guards?.every((guard) => user.value.abilities.includes(guard))) {
-        console.log('Here 1')
+      if(routeToHasGuards && !userHasGuards) {
         return next({ name: 'home' })
       }
     }
 
     if (authRoutes.includes(to.name)) {
-      await attemptAuth()
+      if(!user.value) await attemptAuth()
 
       if (authenticated.value) {
         return next({ name: 'home' })

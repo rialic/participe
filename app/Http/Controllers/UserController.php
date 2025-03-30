@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ApiException;
+use App\Http\Requests\User\SendMagicLinkRequest;
 use App\Http\Resources\UserResource;
 use App\ServiceLayer\UserServiceLayer;
 use App\Traits\HasControllerResource;
@@ -25,6 +26,18 @@ class UserController extends Controller
             $data = $this->service->me($data);
 
             return new $this->resourceCollection($data);
+        } catch (\Exception $e) {
+            return ApiException::handleException($e, func_get_args());
+        }
+    }
+
+    public function sendMagicLink(SendMagicLinkRequest $request): JsonResource|JsonResponse
+    {
+        try {
+            $data = $request->validated();
+            $this->service->sendMagicLink($data);
+
+            return response()->json(['status' => 200, 'data' => null, 'message' => 'Verifique seu email com o link mágico de login.']);
         } catch (\Exception $e) {
             return ApiException::handleException($e, func_get_args());
         }

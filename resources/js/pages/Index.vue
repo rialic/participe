@@ -11,19 +11,15 @@
                                         <v-card-text class="h-100">
                                             <div class="d-flex flex-column justify-end h-100">
                                                 <v-row align="center" justify="center">
-                                                    <v-col cols="12" sm="8">
+                                                    <v-col v-if="!showEmailForm" cols="12" sm="8">
                                                         <div class="d-flex flex-column ga-2 mb-4">
                                                             <h3 class="text-center">
-                                                                Acesse ao sistema
+                                                                Sistema Participe
                                                             </h3>
-
-                                                            <p class="text-center font-weight-medium">
-                                                                Entre em nosso sistemas para aproveitar todos os seriços oferecidos
-                                                            </p>
                                                         </div>
 
                                                         <v-form @submit.prevent="logMeIn">
-                                                            <v-col col="12" class="py-1">
+                                                            <div class="d-flex flex-column">
                                                                 <v-text-field
                                                                     label="Email"
                                                                     placeholder="Email"
@@ -35,44 +31,94 @@
                                                                     color="orange-darken-4"
                                                                     autocomplete="false">
                                                                 </v-text-field>
-                                                            </v-col>
 
-                                                            <v-col cols="12" class="py-1">
                                                                 <v-text-field
                                                                     label="Senha"
                                                                     placeholder="Senha"
                                                                     v-model="form.password"
+                                                                    :error-messages="errorMessage('password')"
                                                                     density="small"
                                                                     variant="outlined"
                                                                     color="orange-darken-4"
                                                                     autocomplete="falase"
                                                                     type="password">
                                                                 </v-text-field>
-                                                            </v-col>
+                                                            </div>
 
                                                             <div class="d-lg-flex justify-space-center align-center mb-6">
                                                                 <v-checkbox-btn
                                                                     density="comfortable"
+                                                                    v-model="form.remember"
                                                                     class="justify-center justify-lg-start"
                                                                     label="Lembrar me"
                                                                     color="orange-darken-4">
                                                                 </v-checkbox-btn>
 
-                                                                <router-link class="d-flex d-lg-block justify-center font-weight-bold">Esqueceu a senha?</router-link>
+                                                                <v-btn
+                                                                    @click.prevent="showEmailForm = true; errors = []"
+                                                                    variant="plain"
+                                                                    class="d-flex d-lg-block justify-center pa-0 font-weight-bold text-decoration-underline text-none opacity-90 text-blue-darken-4">
+                                                                    Esqueceu a senha?
+                                                                </v-btn>
                                                             </div>
 
-                                                            <v-btn type="sumit" variant="flat" color="orange-darken-4" class="font-weight-bold mb-8" block>
-                                                                Entrar
+                                                            <v-btn :loading="loadingSignInBtn" type="sumit" variant="flat" color="orange-darken-4" class="font-weight-bold mb-8" block>
+                                                                Acessar
                                                             </v-btn>
                                                         </v-form>
 
                                                         <v-divider class="border-opacity-25">Ou continue</v-divider>
 
                                                         <div class="d-flex justify-center mt-4">
-                                                            <v-btn variant="outlined" color="gray-lighten-1" :prepend-icon="icon('fas fa-envelope')" class="font-weight-bold">
-                                                                Email
+                                                            <v-btn
+                                                                variant="outlined"
+                                                                @click="showEmailForm = true; errors = []"
+                                                                color="gray-lighten-1"
+                                                                :prepend-icon="icon('fas fa-wand-sparkles')"
+                                                                class="font-weight-bold text-none">
+                                                                Login mágico
                                                             </v-btn>
                                                         </div>
+                                                    </v-col>
+
+                                                    <v-col v-if="showEmailForm" cols="12" sm="8">
+                                                        <div class="d-flex flex-column align-center ga-2 mb-4">
+                                                            <h3 class="text-center">
+                                                                Sistema Participe
+                                                            </h3>
+
+                                                            <span>Informe o seu email de acesso e então enviaremos um link mágico para que você possa acessar o sistema sem usar senha.</span>
+                                                        </div>
+
+                                                        <v-form @submit.prevent="logMeInWithEmail">
+                                                            <div class="d-flex flex-column">
+                                                                <v-text-field
+                                                                    label="Email"
+                                                                    placeholder="Email"
+                                                                    v-model="form.email"
+                                                                    :error-messages="errorMessage('email')"
+                                                                    density="small"
+                                                                    clearable
+                                                                    variant="outlined"
+                                                                    color="orange-darken-4"
+                                                                    autocomplete="false">
+                                                                </v-text-field>
+
+                                                                <div class="d-flex justify-center mt-4 ga-2">
+                                                                    <v-btn type="button" variant="flat" color="teal-lighten-1" min-width="40" @click.prevent="showEmailForm = false">
+                                                                        <v-icon icon="fas fa-arrow-left"></v-icon>
+                                                                    </v-btn>
+
+                                                                    <v-btn
+                                                                        :loading="loadingSignInMagicBtn"
+                                                                        type="submit"
+                                                                        variant="flat" color="orange-darken-4" @click.prevent="logMeInWithEmail"
+                                                                        :prepend-icon="icon('far fa-paper-plane')" class="font-weight-bold text-none">
+                                                                        Enviar email
+                                                                    </v-btn>
+                                                                </div>
+                                                            </div>
+                                                        </v-form>
                                                     </v-col>
                                                 </v-row>
                                             </div>
@@ -165,19 +211,51 @@ import { useAlertStore } from '@/stores/alertStore'
 
 const alertStore = useAlertStore()
 
-const { login } = useAuth()
+const { login, loginWithEmail } = useAuth()
 const { icon } = useIcon()
 const router = useRouter()
+const loadingSignInBtn = ref(false)
+const loadingSignInMagicBtn = ref(false)
 const step = ref(1)
 const errors = ref([])
+const showEmailForm = ref(false)
 const form = ref({
     email: null,
-    password: null
+    password: null,
+    remember: false
 })
 
 /* functions */
 async function logMeIn() {
+    loadingSignInBtn.value = true
     const response = await login(form.value)
+    loadingSignInBtn.value = false
+
+    if (response.status === 422) {
+        alertStore.showAlert = true
+        alertStore.setTypeAlert('error')
+        alertStore.setMessage(`ReqId: ${response.data.requestId || response.headers['x-request-id']} - Erros foram encontrados.`)
+
+        errors.value = response.data.errors
+    }
+
+    if (response.status === 500) {
+        alertStore.showAlert = true
+        alertStore.setTypeAlert('error')
+        alertStore.setMessage(`ReqId: ${response.data.requestId || response.headers['x-request-id']} - Ops... tivemos algum erro em nosso sistema.`)
+    }
+}
+
+async function logMeInWithEmail() {
+    loadingSignInMagicBtn.value = true
+    const response = await loginWithEmail(form.value)
+    loadingSignInMagicBtn.value = false
+
+    if (response.status === 200) {
+        alertStore.showAlert = true
+        alertStore.setTypeAlert('success')
+        alertStore.setMessage(response.message)
+    }
 
     if (response.status === 422) {
         alertStore.showAlert = true

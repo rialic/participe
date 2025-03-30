@@ -55,24 +55,36 @@ export default function useAuth() {
         }
       }
 
-    //   async function logout() {
-    //     try {
-    //       const response = await axios.post('logout')
+      async function loginWithEmail(data) {
+        try {
+          const response = await axios({ method: 'post', url: `/api/v1/magic-link`, data: data })
 
-    //       if (response.status === 200 || response.status === 204) {
-    //         setAuthenticated(false)
-    //         setUser({})
-    //         sessionStorage.removeItem('user')
-    //         router.push({ name: 'auth', replace: true })
-    //       }
-    //     } catch (exception) {
-    //       //
-    //     }
-    //   }
+          if (response.status === 200) {
+            return response.data
+          }
+        } catch (errors) {
+          return { status: errors.response.status, headers: errors.response.headers, data: errors.response.data }
+        }
+      }
+
+      async function logout() {
+        try {
+          const response = await axios({ method: 'post', url: `/api/logout` })
+
+          if (response.status === 200 || response.status === 204) {
+            authenticate(null, false)
+            router.push({ name: 'guest.login' })
+          }
+        } catch (errors) {
+          return { status: errors.response.status, headers: errors.response.headers, data: errors.response.data }
+        }
+      }
 
     return {
       attemptAuth,
       login,
+      loginWithEmail,
+      logout,
       user: getUser,
       authenticated: getAuthenticated
     }

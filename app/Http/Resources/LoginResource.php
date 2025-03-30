@@ -15,12 +15,13 @@ class LoginResource implements LoginResponseContract
      */
     public function toResponse($request)
     {
-        $user = auth()->user();
+        $user = auth()->user()->load('roles');
 
         return response()->json([
             'uuid' => $user->uuid,
             'name' => $user->name,
-            'email' => $user->email
+            'email' => $user->email,
+            'abilities' => $user->roles->isNotEmpty() ? $user->roles->map(fn ($role) => $role->permissions->map(fn ($permission) => $permission->name))->flatten() : null
         ]);
     }
 }

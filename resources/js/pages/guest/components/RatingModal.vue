@@ -61,7 +61,7 @@
           <v-spacer></v-spacer>
 
           <v-btn
-            :prepend-icon="icon('fas fa-paper-plane')"
+            :prepend-icon="icon('far fa-paper-plane')"
             color="teal-lighten-1"
             class="font-weight-bold text-none fs-14x"
             variant="tonal"

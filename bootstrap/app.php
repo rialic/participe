@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ACLMiddleware;
 use App\Http\Middleware\RequestId;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,7 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(RequestId::class);
         $middleware->statefulApi();
-
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
