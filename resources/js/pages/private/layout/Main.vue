@@ -106,17 +106,23 @@
     </v-app-bar>
 
     <v-main>
-      <div class="pa-4">
-        <div class="d-flex flex-column mb-4">
-          <h2 class="text-grey-darken-3">{{ appStore.pageTitle }}</h2>
+      <v-toolbar height="110" color="orange-darken-3">
+        <v-toolbar-title class="pb-10 px-4">
+          <h3 class="text-white">{{ appStore.pageTitle }}</h3>
+        </v-toolbar-title>
+      </v-toolbar>
 
-          <!-- <span>Breadcrumb</span> -->
-        </div>
+        <v-container fluid class="position-relative mt-n16 px-0 pb-0 pb-md-4 px-md-4">
+            <!-- <div class="d-flex flex-column mb-4">
+              <h2 class="text-grey-darken-3">{{ appStore.pageTitle }}</h2>
 
-        <v-sheet class="pa-6" color="white" height="500" width="100%" elevation="1" border="thin" rounded>
-            <router-view></router-view>
-        </v-sheet>
-      </div>
+              <span>Breadcrumb</span>
+            </div> -->
+
+            <v-sheet class="pa-6" color="white" height="100%" width="100%" elevation="1" border="thin" rounded>
+              <router-view></router-view>
+            </v-sheet>
+        </v-container>
     </v-main>
   </v-layout>
 </template>
@@ -176,7 +182,7 @@ const moduleRoute = computed(() => {
 const submoduleRoute = computed(() => {
   return (moduleName) => {
     return {
-      'web-aulas': 'event',
+      'webaulas': 'webs.view',
     }[moduleName.toLowerCase()]
   }
 })
@@ -195,7 +201,7 @@ const modulePermission = computed(() => {
 const submodulePermission = computed(() => {
   return (moduleName) => {
     return {
-      'web-aulas': 'MENU.EVENT-WEBCLASS',
+      'webaulas': 'MENU.EVENT-WEBCLASS',
       'cursos': 'MENU.EVENT-COURSE',
       'usuários': 'MENU.SETTINGS-USER',
       'papéis': 'MENU.SETTINGS-ROLES',

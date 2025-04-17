@@ -36,6 +36,12 @@ class RolePermissionSeeder extends Seeder
         $isCreated = $this->hasRolePermission('ADJUTOR', 'API.MODULES');
         $this->createRolePermission($isCreated);
 
+        $isCreated = $this->hasRolePermission('ADJUTOR', 'API.DESCS');
+        $this->createRolePermission($isCreated);
+
+        $isCreated = $this->hasRolePermission('ADJUTOR', 'API.DASHBOARD');
+        $this->createRolePermission($isCreated);
+
         $isCreated = $this->hasRolePermission('ADJUTOR', 'MENU.DASHBOARD');
         $this->createRolePermission($isCreated);
 

@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Facade;
+use Mailjet\LaravelMailjet\MailjetServiceProvider;
+
 return [
 
     /*
@@ -123,4 +126,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'admin_emails' => explode(',', env('ADMIN_EMAILS')),
+    'mail_from_name' => env('MAIL_FROM_NAME'),
+    'mail_from_address' => env('MAIL_FROM_ADDRESS'),
 ];

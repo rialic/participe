@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ApiException;
+use App\Http\Requests\Event\StoreEventRequest;
 use App\Http\Requests\Event\StoreParticipantRatingRequest;
 use App\Http\Requests\Event\SyncParticipantsRequest;
 use App\Http\Resources\EventResource;
@@ -15,9 +16,9 @@ class EventController extends Controller
     public function __construct(
         protected readonly EventServiceLayer $service,
         protected readonly string $resourceCollection = EventResource::class
-    )
-    {
-        $this->filterFields = ['start_at', 'end_at', 'events_availables'];
+    ){
+        $this->filterFields = ['typeEvent', 'name', 'startAt', 'endAt', 'organization', 'biremeCode', 'eventsAvailables'];
+        $this->storeValidatorRequest = StoreEventRequest::class;
     }
 
     public function syncParticipants(SyncParticipantsRequest $request): JsonResource|JsonResponse

@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Enums\TypeEvent;
+use App\Observers\EventObserver;
 use App\Traits\HasIdWithUuids;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy([EventObserver::class])]
 class Event extends Model
 {
     use HasFactory, HasUuids, HasIdWithUuids, HasIdWithUuids { HasIdWithUuids::uniqueIds insteadof HasUuids; }
@@ -25,12 +29,24 @@ class Event extends Model
         'workload',
         'created_by',
         'deleted_by',
+        'type_event',
+        'type_notification',
+        'cities_to_notify',
+        'select_group_emails',
+        'summary_emails',
     ];
 
     protected $appends = [
         'start_at_formatted',
+        'start_at_datetime_formatted',
         'end_at_formatted',
-        'workload_formatted'
+        'end_at_datetime_formatted',
+        'workload_formatted',
+        'created_at_datetime_formatted',
+    ];
+
+    protected $cast = [
+        'type_event' => TypeEvent::class
     ];
 
     public function casts(): array
@@ -38,6 +54,7 @@ class Event extends Model
         return [
             'start_at' => 'datetime',
             'end_at' => 'datetime',
+            'created_at' => 'datetime'
         ];
     }
 
@@ -46,6 +63,15 @@ class Event extends Model
     {
         if ($this->start_at) {
             return $this->start_at->format('d/m/Y');
+        }
+
+        return $this->start_at;
+    }
+
+    public function getStartAtDatetimeFormattedAttribute()
+    {
+        if ($this->start_at) {
+            return $this->start_at->format('d/m/Y H:i:s');
         }
 
         return $this->start_at;
@@ -60,6 +86,15 @@ class Event extends Model
         return $this->end_at;
     }
 
+    public function getEndAtDatetimeFormattedAttribute()
+    {
+        if ($this->end_at) {
+            return $this->end_at->format('d/m/Y H:i:s');
+        }
+
+        return $this->end_at;
+    }
+
     public function getWorkloadFormattedAttribute()
     {
         if ($this->start_at) {
@@ -67,6 +102,15 @@ class Event extends Model
         }
 
         return $this->start_at;
+    }
+
+    public function getCreatedAtDatetimeFormattedAttribute()
+    {
+        if ($this->created_at) {
+            return $this->created_at->format('d/m/Y H:i:s');
+        }
+
+        return $this->created_at;
     }
 
     // RELATIONSHIPS

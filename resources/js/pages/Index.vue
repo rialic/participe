@@ -145,10 +145,10 @@
 
                                             <div class="d-flex flex-column ga-6 bg-white py-6 mx-16 elevation-1 rounded-lg">
                                                 <div class="d-flex flex-column ga-2">
-                                                    <h3 class="text-center">Participe das web-aulas</h3>
+                                                    <h3 class="text-center">Participe das webaulas</h3>
 
                                                     <h5 class="text-center">
-                                                        Clique no botão abaixo para participar das web-aulas
+                                                        Clique no botão abaixo para participar das webaulas
                                                     </h5>
                                                 </div>
 

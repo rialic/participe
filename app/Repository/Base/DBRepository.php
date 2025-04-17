@@ -224,7 +224,7 @@ class DBRepository implements DBRepositoryInterface
 
             // Check if any method has name like filterByMethod
             if (method_exists($this, $method)) {
-                $accModel = $this->{$method}($accModel, $value, $field);
+                $accModel = $this->{$method}($accModel, $value, Str::snake($field));
 
                 return $accModel;
             }

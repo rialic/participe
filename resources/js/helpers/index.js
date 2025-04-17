@@ -1,17 +1,41 @@
 import { format, toDate } from 'date-fns'
 
 export const {
+    presetForm,
+    presetFilter,
     maskDate,
     deepCopy,
+    truncateText,
     errorMessage,
     cpfValidated
   } = (() => {
+    function presetForm(form) {
+      return Object.entries({ ...form })
+              .map(([key, value]) => [key, (value && Object.prototype.toString.call(value) === '[object String]') ? value.trim() : value ])
+              .reduce((acc, [key, value]) => acc = { ...acc, [key]: value }, {})
+    }
+
+    function presetFilter(search, filter) {
+      return Object.entries({ ...filter })
+              .map(([key, value]) => [key, value || search?.trim() ])
+              .filter(([_, value]) => value)
+              .reduce((acc, [key, value]) => acc = { ...acc, [key]: value }, {})
+    }
+
     function maskDate(date) {
-      return format(toDate(date), 'dd/MM/yyyy H:mm:ss')
+      return format(toDate(date), 'dd/MM/yyyy HH:mm:ss')
     }
 
     function deepCopy(obj) {
       return JSON.parse(JSON.stringify(obj))
+    }
+
+    function truncateText(value, limit) {
+      if (value.length <= limit) {
+        return value
+      }
+
+      return value.slice(0, limit).trim() + '...'
     }
 
     function errorMessage(label) {
@@ -76,8 +100,11 @@ export const {
     }
 
     return {
+      presetForm,
+      presetFilter,
       maskDate,
       deepCopy,
+      truncateText,
       errorMessage,
       cpfValidated
     }

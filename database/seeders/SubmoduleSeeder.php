@@ -18,7 +18,7 @@ class SubmoduleSeeder extends Seeder
 
         $moduleList->each(function($module, $key) {
             if ($module->name === 'Tele-educação') {
-                Submodule::firstOrCreate(['name' => 'Web-aulas', 'module_id' => $module->id, 'order' => 1]);
+                Submodule::firstOrCreate(['name' => 'Webaulas', 'module_id' => $module->id, 'order' => 1]);
                 Submodule::firstOrCreate(['name' => 'Cursos', 'module_id' => $module->id, 'order' => 2]);
             }
 

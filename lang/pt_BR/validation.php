@@ -238,6 +238,12 @@ return [
         'birth_date' => 'data de nascimento',
         'establishment' => 'Estabelecimento',
         'cbo' => 'Ocupação',
+        'organization' => 'Organização',
+        'descs' => 'Descritor Bireme',
+        'room_link' => 'Link',
+        'start_at' => 'Data início',
+        'end_at' => 'Data fim',
+        'cities' => 'Cidades',
     ],
 
 ];

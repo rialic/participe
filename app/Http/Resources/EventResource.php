@@ -31,11 +31,14 @@ class EventResource extends JsonResource
         return [
             'uuid' => $this->uuid,
             'name' => $this->name,
+            'desc_bireme' => $this->descs->isNotEmpty() ? $this->whenLoaded('descs', $this->descs->map(fn($bireme) => [
+                'bireme_code' => $bireme->bireme_code
+            ])) : null,
             'start_at' => $this->start_at,
             'start_minutes_additions' => $this->start_minutes_additions,
             'end_at' => $this->end_at,
             'end_minutes_additions' => $this->end_minutes_additions,
-            'organisation' => $this->organisation,
+            'organization' => $this->organization,
             'room_link' => $this->room_link,
             'workload' => $this->workload
         ];

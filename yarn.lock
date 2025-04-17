@@ -759,6 +759,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vuepic/vue-datepicker@npm:^11.0.2":
+  version: 11.0.2
+  resolution: "@vuepic/vue-datepicker@npm:11.0.2"
+  dependencies:
+    date-fns: "npm:^4.1.0"
+  peerDependencies:
+    vue: ">=3.3.0"
+  checksum: 10c0/fc8e29411a41284d973c9548ca5b32621baf176bc6ea990e828c61434eb2e319cfec75be7a66171c8601d0568ad910c4b8b7ace9ab6e8d18dde0973ed27ea1f6
+  languageName: node
+  linkType: hard
+
 "@vuetify/loader-shared@npm:^2.1.0":
   version: 2.1.0
   resolution: "@vuetify/loader-shared@npm:2.1.0"
@@ -2240,6 +2251,7 @@ __metadata:
     "@fortawesome/free-solid-svg-icons": "npm:^6.7.2"
     "@fortawesome/vue-fontawesome": "npm:^3.0.8"
     "@vitejs/plugin-vue": "npm:^5.2.1"
+    "@vuepic/vue-datepicker": "npm:^11.0.2"
     autoprefixer: "npm:^10.4.20"
     axios: "npm:^1.7.4"
     concurrently: "npm:^9.0.1"
@@ -2256,7 +2268,7 @@ __metadata:
     vue: "npm:^3.5.13"
     vue-router: "npm:^4.5.0"
     vue3-autocounter: "npm:^1.0.8"
-    vuetify: "npm:^3.7.13"
+    vuetify: "npm:^3.8.1"
   languageName: unknown
   linkType: soft
 
@@ -2704,14 +2716,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuetify@npm:^3.7.13":
-  version: 3.7.13
-  resolution: "vuetify@npm:3.7.13"
+"vuetify@npm:^3.8.1":
+  version: 3.8.1
+  resolution: "vuetify@npm:3.8.1"
   peerDependencies:
     typescript: ">=4.7"
-    vite-plugin-vuetify: ">=1.0.0"
-    vue: ^3.3.0
-    webpack-plugin-vuetify: ">=2.0.0"
+    vite-plugin-vuetify: ">=2.1.0"
+    vue: ^3.5.0
+    webpack-plugin-vuetify: ">=3.1.0"
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -2719,7 +2731,7 @@ __metadata:
       optional: true
     webpack-plugin-vuetify:
       optional: true
-  checksum: 10c0/3501d3a9696bb5763373477d73fcb075f7bb9dda018bf3ff139be4204092f86522a020f67d8a2024d3c64f9bedf48bbbf6d75a96213c9e2066e15db60a2fc8fa
+  checksum: 10c0/b6fd1a96325b16a1f88acd1ef9d385118c09f25793bc7eddc3da2fe57e84a17d200d77dc14a2e0bc1b67fb6f301ce15b760185d2faafeaf61c584a92df6b0b45
   languageName: node
   linkType: hard
 

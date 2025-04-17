@@ -10,11 +10,12 @@
         "yarn-destroy": "rm -Rf .yarn; rm -Rf .vscode; rm -Rf .editorconfig; rm -Rf .pnp.cjs; rm -Rf .pnp.loader.mjs; rm -f .yarnrc.yml; rm -f yarn.lock; rm -Rf node_modules;"
     },
     "dependencies": {
+        "@vuepic/vue-datepicker": "^11.0.2",
         "date-fns": "^4.1.0",
         "maska": "^3.1.0",
         "vue": "^3.5.13",
         "vue3-autocounter": "^1.0.8",
-        "vuetify": "^3.7.13"
+        "vuetify": "^3.8.1"
     },
     "devDependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.7.2",

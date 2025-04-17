@@ -1,11 +1,13 @@
+import Index from '@/pages/Index.vue'
+
 export default [
     {
         path: '/',
         name: 'guest.login',
-        component: () => import('@/pages/Index.vue'),
+        component: Index
     },
     {
-        path: '/web-aulas',
+        path: '/webaulas',
         name: 'guest.webclass',
         component: () => import('@/pages/guest/WebClass.vue'),
     },

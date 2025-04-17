@@ -6,9 +6,11 @@ import App from '@/App.vue'
 import { createPinia } from 'pinia'
 import router from '@/routes'
 import vuetify from '@/plugins/vuetify'
+import '@vuepic/vue-datepicker/dist/main.css'
 
 /* Components */
 import FontAwesomeIcon from '@/font-awesome'
+import VueDatePicker from '@vuepic/vue-datepicker';
 import NoContentFound from '@/components/NoContentFound.vue'
 
 /* Directives */
@@ -20,6 +22,7 @@ export default (() => {
 
     /* Components */
     app.component('font-awesome-icon', FontAwesomeIcon)
+    app.component('vue-date-picker', VueDatePicker)
     app.component('no-content-found', NoContentFound)
 
     /* Directives */

@@ -1,17 +1,20 @@
+import Main from '@/pages/private/layout/Main.vue'
+import Dashboard from '@/pages/private/Dashboard.vue'
 import Event from '@/routes/private/event'
 import Smart from '@/routes/private/smart'
 
 export default [
     {
-        path: '/main',
+        path: '',
         name: 'main',
-        component: () => import('@/pages/private/layout/Main.vue'),
+        component: Main,
+        redirect: () => ({ name: 'home' }),
         meta: { requiresAuth: true },
         children: [
             {
-                path: '/home',
+                path: '/dashboard',
                 name: 'home',
-                component: () => import('@/pages/private/Dashboard.vue'),
+                component: Dashboard,
                 meta: { requiresAuth: true }
             },
             ...Event,

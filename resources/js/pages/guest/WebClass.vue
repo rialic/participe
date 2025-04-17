@@ -7,10 +7,10 @@
                         <v-row>
                             <v-col col="12" :md="`${mobile || !participantList.length ? '12' : 7 }`">
                                 <div class="mb-8">
-                                    <h3 class="text-grey-darken-3">Web Aulas</h3>
+                                    <h3 class="text-grey-darken-3">Webaulas</h3>
 
                                     <span class="fs-14x font-weight-bold text-grey-darken-2">
-                                      Escolha na lista abaixo o tema que gostaria de participar e inscreva-se para acessar a web-aula e ter acesso ao certificado
+                                      Escolha na lista abaixo o tema que gostaria de participar e inscreva-se para acessar a webaula e ter acesso ao certificado
                                     </span>
                                 </div>
 
@@ -29,7 +29,7 @@
                                     </template>
 
                                     <v-btn
-                                      :prepend-icon="icon('fas fa-file-lines')"
+                                      :prepend-icon="icon('far fa-file-lines')"
                                       variant="flat"
                                       color="primary"
                                       rounded="sm"
@@ -183,7 +183,14 @@
                                                   </td>
 
                                                   <td class="text-right">
-                                                    <v-icon icon="fas fa-trash" size="x-small" @click="onRemoveParticipant(event, item, index)"></v-icon>
+                                                    <v-btn
+                                                        variant="plain"
+                                                        size="x-small"
+                                                        density="compact"
+                                                        icon="fas fa-trash"
+                                                        class="px-0"
+                                                        @click="onRemoveParticipant(event, item, index)">
+                                                    </v-btn>
                                                   </td>
                                               </tr>
                                           </template>
@@ -229,7 +236,14 @@
                                                     </td>
 
                                                     <td class="text-right">
-                                                      <v-icon icon="fas fa-trash" size="x-small" @click="onRemoveParticipant(event, item, index)"></v-icon>
+                                                      <v-btn
+                                                        variant="plain"
+                                                        size="x-small"
+                                                        density="compact"
+                                                        icon="fas fa-trash"
+                                                        class="px-0"
+                                                        @click="onRemoveParticipant(event, item, index)">
+                                                      </v-btn>
                                                     </td>
                                                 </tr>
                                             </template>
@@ -705,10 +719,10 @@ function clearParticipantForm() {
 }
 
 async function loadEvent() {
-  const reponse = await eventStore.index({events_availables: 'today'})
+  const response = await eventStore.index({eventsAvailables: 'today'})
 
-  if (reponse.ok) {
-    const data = reponse.data
+  if (response.ok) {
+    const data = response.data
     eventStore.list = data || []
     eventList.value = eventStore.list.map((event) => ({
         uuid: event.uuid,

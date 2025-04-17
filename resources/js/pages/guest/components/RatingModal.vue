@@ -1,6 +1,6 @@
 <template>
 <v-dialog v-model="certificateStore.showRatingModal" max-width="1000">
-      <v-card subtitle="Gostariamos de saber sua opinião sobre a web-aula">
+      <v-card subtitle="Gostariamos de saber sua opinião sobre a webaula">
         <template #prepend>
           <v-icon icon="fas fa-file-pen" size="small" class="text-grey-darken-2"></v-icon>
         </template>
@@ -10,19 +10,19 @@
         </template>
 
         <v-card-text class="d-flex flex-column align-center ga-2 px-10">
-            <h4 class="text-grey-darken-2 align-self-start">Sobre a web-aula: {{ props.event.name }}</h4>
+            <h4 class="text-grey-darken-2 align-self-start">Sobre a webaula: {{ props.event.name }}</h4>
 
             <div class="w-100 mt-4">
                 <span>Qual seu grau de satisfação com a webaula?</span>
 
                 <v-radio-group class="mt-1" v-model="form.rating_event" density="compact" inline>
                   <div class="d-flex flex-wrap ga-4">
-                    <v-radio label="Não informado" color="orange-darken-4" :value="9"></v-radio>
-                    <v-radio label="Muito Insatisfeito" color="orange-darken-4" :value="1"></v-radio>
-                    <v-radio label="Insatisfeito" color="orange-darken-4" :value="2"></v-radio>
-                    <v-radio label="Indiferente" color="orange-darken-4" :value="3"></v-radio>
-                    <v-radio label="Satisfeito" color="orange-darken-4" :value="4"></v-radio>
-                    <v-radio label="Muito Satisfeito" color="orange-darken-4" :value="5"></v-radio>
+                    <v-radio label="Não informado" color="orange-darken-4" class="fs-12x" :value="9"></v-radio>
+                    <v-radio label="Muito Insatisfeito" color="orange-darken-4" class="fs-12x" :value="1"></v-radio>
+                    <v-radio label="Insatisfeito" color="orange-darken-4" class="fs-12x" :value="2"></v-radio>
+                    <v-radio label="Indiferente" color="orange-darken-4" class="fs-12x" :value="3"></v-radio>
+                    <v-radio label="Satisfeito" color="orange-darken-4" class="fs-12x" :value="4"></v-radio>
+                    <v-radio label="Muito Satisfeito" color="orange-darken-4" class="fs-12x" :value="5"></v-radio>
                   </div>
                 </v-radio-group>
             </div>
@@ -32,12 +32,12 @@
 
                 <v-radio-group class="mt-1" v-model="form.rating_event_schedule" density="compact" inline>
                   <div class="d-flex flex-wrap ga-4">
-                    <v-radio label="Não informado" color="orange-darken-4" density="small" :value="9"></v-radio>
-                    <v-radio label="Muito Insatisfeito" color="orange-darken-4" :value="1"></v-radio>
-                    <v-radio label="Insatisfeito" color="orange-darken-4" :value="2"></v-radio>
-                    <v-radio label="Indiferente" color="orange-darken-4" :value="3"></v-radio>
-                    <v-radio label="Satisfeito" color="orange-darken-4" :value="4"></v-radio>
-                    <v-radio label="Muito Satisfeito" color="orange-darken-4" :value="5"></v-radio>
+                    <v-radio label="Não informado" color="orange-darken-4" density="small" class="fs-12x" :value="9"></v-radio>
+                    <v-radio label="Muito Insatisfeito" color="orange-darken-4" class="fs-12x" :value="1"></v-radio>
+                    <v-radio label="Insatisfeito" color="orange-darken-4" class="fs-12x" :value="2"></v-radio>
+                    <v-radio label="Indiferente" color="orange-darken-4" class="fs-12x" :value="3"></v-radio>
+                    <v-radio label="Satisfeito" color="orange-darken-4" class="fs-12x" :value="4"></v-radio>
+                    <v-radio label="Muito Satisfeito" color="orange-darken-4" class="fs-12x" :value="5"></v-radio>
                   </div>
                 </v-radio-group>
             </div>

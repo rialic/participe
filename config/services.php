@@ -14,6 +14,28 @@ return [
     |
     */
 
+    'mailjet' => [
+        'key' => env('MAILJET_APIKEY'),
+        'secret' => env('MAILJET_APISECRET'),
+        'transactional' => [
+            'call' => true,
+            'options' => [
+                'url' => 'api.mailjet.com',
+                'version' => env('MAILJET_APIVERSION'),
+                'call' => true,
+                'secured' => true
+            ]
+            ],
+        'common' => [
+          'call' => true,
+            'options' => [
+                'url' => 'api.mailjet.com',
+                'version' => env('MAILJET_APIVERSION'),
+                'call' => true,
+                'secured' => true
+            ]
+        ]
+    ],
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

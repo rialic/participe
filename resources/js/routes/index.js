@@ -5,12 +5,26 @@ import useAuth from '@/composables/useAuth'
 import guestRoutes from '@/routes/guest'
 import privateRoutes from '@/routes/private'
 
+
 const { user, authenticated, attemptAuth } = useAuth()
 
 export default (() => {
   const router = createRouter({
     history: createWebHistory(),
-    routes: Array.prototype.concat(guestRoutes, privateRoutes)
+    routes: Array.prototype.concat(
+      guestRoutes,
+      privateRoutes,
+      [
+        {
+          path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/pages/NotFound.vue')
+        }
+      ]
+    ),
+    scrollBehavior(to, from, savedPosition) {
+      return savedPosition || new Promise((resolve) => {
+        return setTimeout(() => resolve({ top: 0, behavior: 'smooth' }), 300)
+      })
+    }
   })
 
   router.beforeEach(async (to, from, next) => {

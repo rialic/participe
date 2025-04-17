@@ -3,6 +3,7 @@ import axios from '@/configs/axios'
 
 export const useEventStore = defineStore('eventStore', {
     state: () => ({
+        eventTitle: null,
         list: []
     }),
     actions: {
@@ -10,6 +11,9 @@ export const useEventStore = defineStore('eventStore', {
             const query = new URLSearchParams(payload)
 
             return await axios.get(`v1/event?${query}`)
+        },
+        async store(payload) {
+            return await axios.post('v1/event/store', payload)
         },
         async syncParticipants(payload) {
             return await axios.post('v1/event/sync-participants', payload)

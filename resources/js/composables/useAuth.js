@@ -46,7 +46,7 @@ export default function useAuth() {
             const user = response.data
 
             authenticate(user)
-            router.push({ name: 'home' })
+            router.replace({ name: 'home' })
           }
 
           return response

@@ -19,17 +19,17 @@ class PermissionSeeder extends Seeder
 
         Permission::firstOrCreate(['name' => 'MENU.DASHBOARD'], ['description' => 'Permite visualizar o menu lateral Dashboard']);
         Permission::firstOrCreate(['name' => 'MENU.EVENT'], ['description' => 'Permite visualizar o menu lateral de Tele-educação']);
-        Permission::firstOrCreate(['name' => 'MENU.EVENT-WEBCLASS'], ['description' => 'Permite visualizar o menu lateral Web-aulas']);
+        Permission::firstOrCreate(['name' => 'MENU.EVENT-WEBCLASS'], ['description' => 'Permite visualizar o menu lateral Webaulas']);
         Permission::firstOrCreate(['name' => 'MENU.EVENT-COURSE'], ['description' => 'Permite visualizar o menu lateral Cursos']);
         Permission::firstOrCreate(['name' => 'MENU.SMART'], ['description' => 'Permite visualizar o menu lateral Smart']);
         Permission::firstOrCreate(['name' => 'MENU.SETTINGS'], ['description' => 'Permite visualizar o menu lateral Configurações']);
         Permission::firstOrCreate(['name' => 'MENU.SETTINGS-USER'], ['description' => 'Permite visualizar o menu lateral Usuários']);
         Permission::firstOrCreate(['name' => 'MENU.SETTINGS-ROLES'], ['description' => 'Permite visualizar o menu lateral Papéis']);
 
-        Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-VIEW'], ['description' => 'Permite o usuário acessar à página de listagem de web-aulas e realizar pesquisas']);
-        Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-CREATE'], ['description' => 'Permite o usuário acessar à página para criar web-aulas']);
-        Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-EDIT'], ['description' => 'Permite o usuário acessar à página para editar web-aulas']);
-        Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-CERTIFICATE'], ['description' => 'Permite o usuário gerar certificados de web-aulas']);
+        Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-VIEW'], ['description' => 'Permite o usuário acessar à página de listagem de webaulas e realizar pesquisas']);
+        Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-CREATE'], ['description' => 'Permite o usuário acessar à página para criar webaulas']);
+        Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-EDIT'], ['description' => 'Permite o usuário acessar à página para editar webaulas']);
+        Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-CERTIFICATE'], ['description' => 'Permite o usuário gerar certificados de webaulas']);
 
         Permission::firstOrCreate(['name' => 'EVENT.COURSE-VIEW'], ['description' => 'Permite o usuário acessar à página de listagem de cursos e realizar pesquisas']);
         Permission::firstOrCreate(['name' => 'EVENT.COURSE-CREATE'], ['description' => 'Permite o usuário acessar à página para criar cursos']);
@@ -51,12 +51,14 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'SETTINGS.ROLES-EDIT'], ['description' => 'Permite o usuário acessar à página para editar papéis']);
 
         Permission::firstOrCreate(['name' => 'API.MODULES'], ['description' => 'Permite o usuário fazer request na api de módulos do sistema']);
-        Permission::firstOrCreate(['name' => 'API.EVENT.WEBCLASS-SAVE'], ['description' => 'Permite o usuário fazer request na api para inserir novas web-aulas']);
-        Permission::firstOrCreate(['name' => 'API.EVENT.WEBCLASS-UPDATE'], ['description' => 'Permite o usuário fazer request na api para alterar web-aulas']);
-        Permission::firstOrCreate(['name' => 'API.EVENT.WEBCLASS-DELETE'], ['description' => 'Permite o usuário fazer request na api para excluir web-aulas']);
+        Permission::firstOrCreate(['name' => 'API.DASHBOARD'], ['description' => 'Permite o usuário fazer request na api de dashboard do sistema']);
+        Permission::firstOrCreate(['name' => 'API.EVENT.WEBCLASS-SAVE'], ['description' => 'Permite o usuário fazer request na api para inserir novas webaulas']);
+        Permission::firstOrCreate(['name' => 'API.EVENT.WEBCLASS-UPDATE'], ['description' => 'Permite o usuário fazer request na api para alterar webaulas']);
+        Permission::firstOrCreate(['name' => 'API.EVENT.WEBCLASS-DELETE'], ['description' => 'Permite o usuário fazer request na api para excluir webaulas']);
         Permission::firstOrCreate(['name' => 'API.EVENT.COURSE-SAVE'], ['description' => 'Permite o usuário fazer request na api para criar novos cursos']);
         Permission::firstOrCreate(['name' => 'API.EVENT.COURSE-UPDATE'], ['description' => 'Permite o usuário fazer request na api para alterar cursos']);
         Permission::firstOrCreate(['name' => 'API.EVENT.COURSE-DELETE'], ['description' => 'Permite o usuário fazer request na api para excluir os cursos']);
+        Permission::firstOrCreate(['name' => 'API.DESCS'], ['description' => 'Permite o usuário fazer request na api de módulos do sistema']);
 
         Permission::firstOrCreate(['name' => 'API.USER-SAVE'], ['description' => 'Permite o usuário fazer request na api para salvar novos usuários']);
         Permission::firstOrCreate(['name' => 'API.USER-UPDATE'], ['description' => 'Permite o usuário fazer request na api para alterar usuários']);

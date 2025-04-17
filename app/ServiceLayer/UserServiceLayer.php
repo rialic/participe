@@ -24,7 +24,6 @@ class UserServiceLayer extends ServiceResource {
     {
         $user = $this->repository->getFirstData(['email' => $data['email']]);
 
-        Mail::to($data['email'])
-            ->queue(new MagicLoginLink($user->name, $data['email']));
+        Mail::to($data['email'])->queue(new MagicLoginLink($user->name, $data['email']));
     }
 }

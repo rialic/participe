@@ -57,7 +57,7 @@
                                         hover="true">
                                         <template #top>
                                             <v-toolbar density="small" class="px-2" color="grey-lighten-4">
-                                                <h4>Certificado - Web Aulas</h4>
+                                                <h4>Certificado - Webaulas</h4>
                                             </v-toolbar>
                                         </template>
 
@@ -82,7 +82,14 @@
                                                   <div data-label="Fim">{{ maskDate(item.end_at) }}</div>
 
                                                   <div data-label="Imprimir">
-                                                    <v-icon icon="fas fa-file-arrow-down" size="small" @click="onPrintCertificate(item)"></v-icon>
+                                                    <v-btn
+                                                        variant="plain"
+                                                        size="small"
+                                                        density="compact"
+                                                        icon="fas fa-file-arrow-down"
+                                                        class="px-0"
+                                                        @click="onPrintCertificate(item)">
+                                                    </v-btn>
                                                   </div>
                                                 </div>
                                             </td>
@@ -103,8 +110,15 @@
                                                     <span>{{ maskDate(item.end_at) }}</span>
                                                 </td>
 
-                                                <td class="text-right">
-                                                    <v-icon icon="fas fa-file-arrow-down" size="small" @click="onPrintCertificate(item)"></v-icon>
+                                                <td class="d-flex justify-end align-center">
+                                                    <v-btn
+                                                        variant="plain"
+                                                        size="small"
+                                                        density="compact"
+                                                        icon="fas fa-file-arrow-down"
+                                                        class="px-0"
+                                                        @click="onPrintCertificate(item)">
+                                                    </v-btn>
                                                 </td>
                                             </tr>
                                         </template>

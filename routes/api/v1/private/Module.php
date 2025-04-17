@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ModuleController;
-use App\Http\Middleware\ACLMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('module')->controller(ModuleController::class)->group(function() {

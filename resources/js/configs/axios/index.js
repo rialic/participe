@@ -50,8 +50,8 @@ export default (() => {
         ok: true,
         status: response.status,
         data: data,
-        links: data?.links,
-        meta: data?.meta,
+        links: response.data?.links,
+        meta: response.data?.meta,
         message: data?.message
       }
     },
