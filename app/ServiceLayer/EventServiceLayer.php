@@ -2,9 +2,9 @@
 
 namespace App\ServiceLayer;
 
-use App\Repository\DescsRepository;
-use App\Repository\EventRepository;
-use App\Repository\UserRepository;
+use App\Repository\Interfaces\DescsInterface as DescsRepository;
+use App\Repository\Interfaces\EventInterface as EventRepository;
+use App\Repository\Interfaces\UserInterface as UserRepository;
 use App\ServiceLayer\Base\ServiceResource;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;

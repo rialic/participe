@@ -20,6 +20,6 @@ RUN apk --no-cache --update add git curl tzdata shadow imagemagick imagemagick-d
 && docker-php-ext-install pdo pdo_mysql gd \
 && docker-php-ext-enable imagick \
 && usermod -u $UID $GROUP \
-&& apk del git gcc g++ make autoconf pkgconfig imagemagick-dev libpng-dev libzip-dev \
+&& apk del git imagemagick-dev gcc g++ autoconf libpng libpng-dev libjpeg libwebp make pkgconfig libzip libzip-dev \
 && rm -Rf /var/cache/apk/* \
 && mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"

@@ -2,7 +2,7 @@
 
 namespace App\ServiceLayer;
 
-use App\Repository\CertificateRepository;
+use App\Repository\Interfaces\CertificateInterface as CertificateRepository;
 use App\Repository\EventRepository;
 use App\ServiceLayer\Base\ServiceResource;
 use Carbon\Carbon;

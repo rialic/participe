@@ -2,7 +2,7 @@
 
 namespace App\ServiceLayer;
 
-use App\Repository\CityRepository;
+use App\Repository\Interfaces\CityInterface as CityRepository;
 use App\ServiceLayer\Base\ServiceResource;
 
 class CityServiceLayer extends ServiceResource

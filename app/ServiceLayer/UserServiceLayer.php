@@ -2,9 +2,8 @@
 
 namespace App\ServiceLayer;
 
-use App\Jobs\MagicLoginLinkJob;
 use App\Mail\MagicLoginLink;
-use App\Repository\UserRepository;
+use App\Repository\Interfaces\UserInterface as UserRepository;
 use App\ServiceLayer\Base\ServiceResource;
 use Illuminate\Support\Facades\Mail;
 

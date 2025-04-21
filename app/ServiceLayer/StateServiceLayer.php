@@ -2,7 +2,7 @@
 
 namespace App\ServiceLayer;
 
-use App\Repository\StateRepository;
+use App\Repository\Interfaces\StateInterface as StateRepository;
 use App\ServiceLayer\Base\ServiceResource;
 
 class StateServiceLayer extends ServiceResource {

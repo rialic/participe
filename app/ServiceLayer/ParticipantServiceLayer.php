@@ -3,9 +3,9 @@
 namespace App\ServiceLayer;
 
 use App\Models\User;
-use App\Repository\CboRepository;
-use App\Repository\EstablishmentRepository;
-use App\Repository\ParticipantRepository;
+use App\Repository\Interfaces\CboInterface as CboRepository;
+use App\Repository\Interfaces\EstablishmentInterface as EstablishmentRepository;
+use App\Repository\Interfaces\ParticipantInterface as ParticipantRepository;
 use App\ServiceLayer\Base\ServiceResource;
 use Illuminate\Support\Facades\Hash;
 

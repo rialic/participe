@@ -2,7 +2,7 @@
 
 namespace App\ServiceLayer;
 
-use App\Repository\DescsRepository;
+use App\Repository\Interfaces\DescsInterface as DescsRepository;
 use App\ServiceLayer\Base\ServiceResource;
 
 class DescsServiceLayer extends ServiceResource {

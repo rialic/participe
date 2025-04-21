@@ -2,7 +2,7 @@
 
 namespace App\ServiceLayer;
 
-use App\Repository\ModuleRepository;
+use App\Repository\Interfaces\ModuleInterface as ModuleRepository;
 use App\ServiceLayer\Base\ServiceResource;
 
 class ModuleServiceLayer extends ServiceResource

@@ -2,7 +2,7 @@
 
 namespace App\ServiceLayer;
 
-use App\Repository\CboRepository;
+use App\Repository\Interfaces\CboInterface as CboRepository;
 use App\ServiceLayer\Base\ServiceResource;
 
 class CboServiceLayer extends ServiceResource {

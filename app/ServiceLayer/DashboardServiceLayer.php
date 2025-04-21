@@ -2,7 +2,7 @@
 
 namespace App\ServiceLayer;
 
-use App\Repository\DashboardRepository;
+use App\Repository\Interfaces\DashboardInterface as DashboardRepository;
 use App\ServiceLayer\Base\ServiceResource;
 
 class DashboardServiceLayer extends ServiceResource

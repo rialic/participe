@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Cbo extends Model
 {
-    use HasUuids, HasIdWithUuids, HasIdWithUuids { HasIdWithUuids::uniqueIds insteadof HasUuids; }
+    use HasUuids, HasIdWithUuids { HasIdWithUuids::uniqueIds insteadof HasUuids; }
 
     protected $table = 'tb_cbos';
 
