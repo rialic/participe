@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Models\User;
+use App\Models\Event;
 use App\Repository\Base\DBRepository;
 use App\Repository\Interfaces\CertificateInterface;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,21 +11,13 @@ class CertificateRepository extends DBRepository implements CertificateInterface
 {
     protected function model()
     {
-        return User::class;
-    }
-
-    public function query(array $params = []): Builder
-    {
-        $query = parent::query($params);
-
-        return $query->with(['events' => function($event) {
-            $event->select(['uuid', 'name', 'start_at', 'end_at', 'rated_at'])
-                ->whereRaw('DATE_ADD(end_at, INTERVAL end_minutes_additions MINUTE) <= current_timestamp()');
-        }]);
+        return Event::class;
     }
 
     public function filterByCpf($query, $data, $field): Builder
     {
-        return $query->where($field, $data);
+        return $query->whereHas('participants', fn($query) => $query->where($field, $data))
+        ->with(['participants' => fn($query) => $query->select(['tb_users.uuid', 'tb_users.name'])->where('cpf', $data)])
+        ->whereRaw('DATE_ADD(end_at, INTERVAL end_minutes_additions MINUTE) <= current_timestamp()');
     }
 }

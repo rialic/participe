@@ -2,9 +2,8 @@
 
 namespace App\ServiceLayer;
 
-use App\Repository\Interfaces\CertificateInterface as CertificateRepository;
-use App\Repository\EventRepository;
 use App\ServiceLayer\Base\ServiceResource;
+use App\Repository\Interfaces\CertificateInterface as CertificateRepository;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Intervention\Image\Laravel\Facades\Image;
@@ -13,20 +12,14 @@ class CertificateServiceLayer extends ServiceResource
 {
     public function __construct(
         private readonly CertificateRepository $certificateRepository,
-        private readonly EventRepository $eventRepository
     )
     {
         $this->repository = $this->certificateRepository;
     }
 
-    public function show(string|array $data): ?object
-    {
-        return $this->repository->getFirstData($data);
-    }
-
     public function print($data)
     {
-        $event = $this->eventRepository->getModel()->where('uuid', $data['event_uuid'])
+        $event = $this->repository->getModel()->where('uuid', $data['event_uuid'])
                             ->with('participants', fn($participant) => $participant->where('uuid', $data['user_uuid']))
                             ->first();
 
@@ -38,7 +31,7 @@ class CertificateServiceLayer extends ServiceResource
         return $response;
     }
 
-    public function generateFiocruzCertificate($event)
+    private function generateFiocruzCertificate($event)
     {
             $image = Image::read(resource_path('images/certificado-fiocruz.jpg'));
             $imageWidth = $image->width() / 2;
@@ -84,7 +77,7 @@ class CertificateServiceLayer extends ServiceResource
             return response()->image($image, quality: 65);
     }
 
-    public function generateTSMSCertificate($event)
+    private function generateTSMSCertificate($event)
     {
         $logoTSMS = 'data:image/png;base64,' . base64_encode(file_get_contents(resource_path('/images/logo-telessaude.png')));
         $logoSES = 'data:image/png;base64,' . base64_encode(file_get_contents(resource_path('/images/logo-ses.png')));

@@ -13,6 +13,6 @@ class DescsController extends Controller
         protected readonly string $resourceCollection = DescsResource::class
     )
     {
-        $this->filterFields = ['name', 'biremeCode'];
+        $this->filterFields = ['name', 'bireme_code', 'autocomplete_descs_search'];
     }
 }

@@ -15,9 +15,9 @@ export const {
               .reduce((acc, [key, value]) => acc = { ...acc, [key]: value }, {})
     }
 
-    function presetFilter(search, filter) {
+    function presetFilter(filter) {
       return Object.entries({ ...filter })
-              .map(([key, value]) => [key, value || search?.trim() ])
+              .map(([key, value]) => [key, value?.trim() ])
               .filter(([_, value]) => value)
               .reduce((acc, [key, value]) => acc = { ...acc, [key]: value }, {})
     }
@@ -31,11 +31,11 @@ export const {
     }
 
     function truncateText(value, limit) {
-      if (value.length <= limit) {
+      if (value?.length <= limit) {
         return value
       }
 
-      return value.slice(0, limit).trim() + '...'
+      return value?.slice(0, limit).trim() + '...'
     }
 
     function errorMessage(label) {

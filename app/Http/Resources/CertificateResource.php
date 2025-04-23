@@ -17,14 +17,15 @@ class CertificateResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        if (!$this->resource || $this->events->isEmpty() ) {
-            return [];
-        }
-
         return [
             'uuid' => $this->uuid,
             'name' => $this->name,
-            'events' => $this->whenLoaded('events'),
+            'start_at' => $this->start_at,
+            'end_at' => $this->end_at,
+            'participant' => [
+                'uuid' => $this->participants->first()->uuid,
+                'name' => $this->participants->first()->name
+            ]
         ];
     }
 }

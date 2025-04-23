@@ -451,7 +451,7 @@
 <script setup>
 import { onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { errorMessage, presetForm, presetFilter, truncateText } from '@/helpers'
+import { errorMessage, presetForm, truncateText, presetFilter } from '@/helpers'
 import useIcon from '@/composables/useIcon'
 
 import { useAppStore } from '@/stores/appStore'
@@ -494,7 +494,7 @@ const form = ref({
     banner: null,
 })
 const filter = ref({
-    biremeCode: null,
+    autocomplete_descs_search: null,
 })
 
 /* onMounted */
@@ -505,6 +505,13 @@ onMounted(() => {
 })
 
 /* watch */
+watch(() => filter.value.autocomplete_descs_search, (newValue, oldValue) => {
+    if (!newValue || (newValue !== oldValue)) {
+        descsStore.list = descsStore.list.filter((desc) => form.value.descs?.some((descsUuid) => desc.uuid === descsUuid))
+    }
+})
+
+
 watch(() => form.value.type_notification, (type_notification) => {
     form.value.select_group_emails = null
     emailNotificationList.value = []
@@ -569,8 +576,8 @@ async function loadCity(state, selectedCity = null) {
 }
 
 async function loadDescs(value, page = 1) {
-    const payload = presetFilter(value, filter.value)
-    const reponse = await descsStore.index({ page, limit: 15, orderBy: 'bireme_code', direction: 'asc', ...payload })
+    filter.value.autocomplete_descs_search = value.trim()
+    const reponse = await descsStore.index({ page, limit: 15, order_by: 'bireme_code', direction: 'asc', ...presetFilter(filter.value) })
 
     if (reponse.ok) {
         const data = reponse.data

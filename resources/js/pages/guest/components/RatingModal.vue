@@ -13,7 +13,7 @@
             <h4 class="text-grey-darken-2 align-self-start">Sobre a webaula: {{ props.event.name }}</h4>
 
             <div class="w-100 mt-4">
-                <span>Qual seu grau de satisfação com a webaula?</span>
+                <span>Qual seu grau de satisfação com o tema da webaula?</span>
 
                 <v-radio-group class="mt-1" v-model="form.rating_event" density="compact" inline>
                   <div class="d-flex flex-wrap ga-4">
@@ -28,7 +28,7 @@
             </div>
 
             <div class="w-100">
-                <span>Qual seu grau de satisfação com o horário da webaula?</span>
+                <span>Qual seu grau de satisfação com o horário da webaula?</span> <strong>({{ maskDate(props.event.start_at) }})</strong>
 
                 <v-radio-group class="mt-1" v-model="form.rating_event_schedule" density="compact" inline>
                   <div class="d-flex flex-wrap ga-4">
@@ -76,6 +76,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { maskDate } from '@/helpers'
 import useIcon from '@/composables/useIcon'
 
 import { useCertificateStore } from '@/stores/certificateStore'

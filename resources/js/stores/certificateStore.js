@@ -4,14 +4,16 @@ import axios from '@/configs/axios'
 export const useCertificateStore = defineStore('certificateStore', {
     state: () => ({
         showRatingModal: false,
-        participant: null
+        list: null
     }),
     actions: {
-        async show(payload) {
-            return await axios.get(`v1/certificate?cpf=${payload}`)
+        async index(payload) {
+            const query = new URLSearchParams(payload)
+
+            return await axios.get(`v1/certificate?${query}`)
         },
         async print(params) {
-            return await axios({ url: `v1/certificate/print/${params.participant.uuid}/${params.event.uuid}`, method: 'get', responseType: 'blob'})
+            return await axios({ url: `v1/certificate/print/${params.participant}/${params.event}`, method: 'get', responseType: 'blob'})
         }
     }
 })

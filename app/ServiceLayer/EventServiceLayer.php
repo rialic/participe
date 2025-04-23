@@ -8,6 +8,7 @@ use App\Repository\Interfaces\UserInterface as UserRepository;
 use App\ServiceLayer\Base\ServiceResource;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EventServiceLayer extends ServiceResource
 {
@@ -28,8 +29,16 @@ class EventServiceLayer extends ServiceResource
 
         return DB::transaction(function() use($data) {
             $event = parent::store($data);
+            $fileName = $data['banner']->hashName();
 
             $event->descs()->sync($data['descs']);
+
+            if (isset($data['banner'])) {
+                $event->attachments()->create([
+                    'name' => substr($fileName, 0, strpos($fileName, '.')),
+                    'path' => Storage::putFileAs('attachments', $data['banner'], $fileName)
+                ]);
+            }
 
             return $event;
         });
@@ -50,13 +59,15 @@ class EventServiceLayer extends ServiceResource
         $event = $this->repository->findByUuid($data['event_uuid']);
         $user = $this->userRepository->findByUuid($data['participant']);
 
-        $event->participants()->updateExistingPivot($user->id, [
-            'rating_event' => $data['rating_event'],
-            'rating_event_schedule' => $data['rating_event_schedule'],
-            'hint' => $data['hint'],
-            'rated_at' => now(),
-        ]);
+        return DB::transaction(function() use($data, $event, $user) {
+            $event->participants()->updateExistingPivot($user->id, [
+                'rating_event' => $data['rating_event'],
+                'rating_event_schedule' => $data['rating_event_schedule'],
+                'hint' => $data['hint'],
+                'rated_at' => now(),
+            ]);
 
-        return $event;
+            return $event;
+        });
     }
 }

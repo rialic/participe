@@ -5,7 +5,7 @@ namespace App\Http\Requests\Certificate;
 use App\Traits\HasRequestResource;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ShowCertificateRequest extends FormRequest
+class IndexCertificateRequest extends FormRequest
 {
     use HasRequestResource;
 

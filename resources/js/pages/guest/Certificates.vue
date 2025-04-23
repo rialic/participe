@@ -44,10 +44,10 @@
                                     </v-text-field>
                                 </div>
 
-                                <v-card v-if="certificateStore.participant?.events?.length" elevation="0" border="thin" rounded="md">
+                                <v-card v-if="certificateStore.list?.length" elevation="0" border="thin" rounded="md">
                                     <v-data-table
                                         :headers="eventsDtHeader"
-                                        :items="certificateStore.participant.events"
+                                        :items="certificateStore.list"
                                         item-value="theme"
                                         density="comfortable"
                                         v-model="selectedEvent"
@@ -166,7 +166,7 @@ const eventsDtHeader = ref([{ title: 'Tema', key: 'webclass' }, { title: 'Iníci
 
 /* onMounted */
 onMounted(() => {
-    certificateStore.participant = null
+    certificateStore.list = null
     showNotContentFound.value = false
 })
 
@@ -183,8 +183,8 @@ const rules = ref({
         return 'CPF Inválido.'
     }
 
-        if (certificateStore.participant?.events.length) {
-            certificateStore.participant.events = []
+        if (certificateStore.list?.length) {
+            certificateStore.list = []
         }
 
         showNotContentFound.value = false
@@ -195,14 +195,14 @@ const rules = ref({
 
 /* functions */
 async function onSearchParticipant() {
-    const response = await certificateStore.show(cpf.value)
+    const response = await certificateStore.index({'cpf': cpf.value, 'order_by': 'start_at', 'direction': 'desc'})
     showNotContentFound.value = false
 
     if(response.ok) {
         const data = response.data
-        certificateStore.participant = Array.isArray(data) ? null : data
+        certificateStore.list = data
 
-        if(!certificateStore.participant) {
+        if(!certificateStore.list) {
             showNotContentFound.value = true
         }
 
@@ -225,7 +225,7 @@ async function onPrintCertificate(item) {
 
 async function printCertificate(form) {
     certificateStore.showRatingModal = false
-    const response = await eventStore.storeParticipantRating(selectedEvent.value.uuid, { participant: certificateStore.participant.uuid, ...form })
+    const response = await eventStore.storeParticipantRating(selectedEvent.value.uuid, { participant: selectedEvent.value.participant.uuid, ...form })
 
     if(response.ok) {
         alertStore.showAlert = false
@@ -235,10 +235,10 @@ async function printCertificate(form) {
 }
 
 async function downloadFile() {
-    const response = await certificateStore.print({ participant: certificateStore.participant, event: selectedEvent.value })
+    const response = await certificateStore.print({ participant: selectedEvent.value.participant.uuid, event: selectedEvent.value.uuid })
     const link = document.createElement('a');
     const fileURL = URL.createObjectURL(response.data)
-    link.download = `Certificado ${selectedEvent.value.name} - ${certificateStore.participant.name}`
+    link.download = `Certificado ${selectedEvent.value.name} - ${certificateStore.list.name}`
     link.href = fileURL
 
     document.body.appendChild(link)

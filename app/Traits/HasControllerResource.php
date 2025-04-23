@@ -59,7 +59,7 @@ trait HasControllerResource
     $request = $this->indexValidatorRequest();
 
     try {
-      $data = (get_class($request) ==='Illuminate\Http\Request') ? $this->getParams() : $request->validated();
+      $data = (get_class($request) ==='Illuminate\Http\Request') ? $this->getParams() : array_merge($request->validated(), $this->getParams());
       $data = $this->service->index($data);
 
       return $this->resourceCollection::collection($data);
@@ -117,7 +117,7 @@ trait HasControllerResource
     $validator = $this->deleteValidatorRequest();
 
     try {
-      $data = $validator->validated();
+      $data['uuid'] = (get_class($validator) ==='Illuminate\Http\Request') ? request()->route()->parameters()['uuid'] : $validator->validated()['uuid'];
       $response = $this->service->delete($data['uuid']);
 
       return (new $this->resourceCollection([$response]))->response()->setStatusCode(200);

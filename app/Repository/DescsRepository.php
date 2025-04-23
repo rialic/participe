@@ -14,6 +14,15 @@ class DescsRepository extends DBRepository implements DescsInterface
         return Descs::class;
     }
 
+    public function filterByAutocompleteDescsSearch($query, $data, $field): Builder
+    {
+        return $query->where(function($query) use($data) {
+            $query->orWhere('name', 'like', "%{$data}%");
+            $query->orWhere('bireme_code', 'like', "%{$data}%");
+            $query->orWhere('description', 'like', "%{$data}%");
+        });
+    }
+
     public function filterByName($query, $data, $field): Builder
     {
         return $query->orWhere($field, 'like', "%{$data}%");

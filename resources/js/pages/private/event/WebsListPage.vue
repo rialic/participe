@@ -137,10 +137,8 @@ const timeoutId = ref()
 const currentPage = ref()
 const sortBy = ref('start_at')
 const direction = ref('desc')
-// const filter = ref({ scout: null })
 const filter = ref({
     scope_search: null,
-    // type_event: 'Webaulas/palestras'
 })
 const eventsHeader = ref([
     { title: 'Tema', icon: 'fa-sort' },
@@ -220,8 +218,9 @@ function sortItems(column) {
 async function loadEvents(page, itemsPerPage) {
     loading.value = true
     currentPage.value = page
-    const payload = presetFilter(search.value, filter.value)
-    const response = await eventStore.index({ page: currentPage.value, limit: itemsPerPage, order_by: sortBy.value, direction: direction.value, ...payload })
+    filter.value.scope_search = search.value
+    const payload = { page: currentPage.value, limit: itemsPerPage, order_by: sortBy.value, direction: direction.value, ...presetFilter(filter.value) }
+    const response = await eventStore.index(payload)
     loading.value = false
 
     if (response.ok) {

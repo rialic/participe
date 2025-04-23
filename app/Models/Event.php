@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 #[ObservedBy([EventObserver::class])]
 class Event extends Model
@@ -127,5 +128,10 @@ class Event extends Model
     public function descs()
     {
         return $this->belongsToMany(Descs::class, 'tb_event_descs', 'event_id', 'descs_id');
+    }
+
+    public function attachments(): MorphMany
+    {
+        return $this->morphMany(Attachment::class, 'model');
     }
 }
