@@ -13,7 +13,7 @@ export const useEventStore = defineStore('eventStore', {
             return await axios.get(`v1/event?${query}`)
         },
         async store(payload) {
-            return await axios.post('v1/event/store', payload)
+            return await axios.post('v1/event/store', payload, { headers: { 'Content-Type': 'multipart/form-data' } })
         },
         async syncParticipants(payload) {
             return await axios.post('v1/event/sync-participants', payload)

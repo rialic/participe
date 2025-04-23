@@ -17,7 +17,7 @@ class EventController extends Controller
         protected readonly EventServiceLayer $service,
         protected readonly string $resourceCollection = EventResource::class
     ){
-        $this->filterFields = ['typeEvent', 'name', 'startAt', 'endAt', 'organization', 'biremeCode', 'eventsAvailables'];
+        $this->filterFields = ['scope_search', 'events_availables'];
         $this->storeValidatorRequest = StoreEventRequest::class;
     }
 

@@ -49,7 +49,8 @@ class StoreEventRequest extends FormRequest
             'type_notification' => 'required|in:all,cities,group,none',
             'cities_to_notify' => ['nullable', 'json', Rule::requiredIf($this->type_notification === 'cities')],
             'select_group_emails' => ['nullable', 'json', Rule::requiredIf($this->type_notification === 'group')],
-            'type_event' => ['required', Rule::enum(TypeEvent::class)]
+            'type_event' => ['required', Rule::enum(TypeEvent::class)],
+            'banner' => 'sometimes|image|mimes:png,jpg,jpeg|max:5048'
         ];
     }
 }

@@ -122,7 +122,7 @@ class EventObserver
                         'Email' => config('app.mail_from_address')
                     ],
                     'To' => $userList,
-                    'TemplateID' => 6906817,
+                    'TemplateID' => ($event->organization === 'Fiocruz') ? 6922462 : 6906817,
                     'TemplateLanguage' => true,
                     'Subject' => config('app.name') . ' - Aviso de nova agenda de webaula',
                     'Variables' => $vars
@@ -141,7 +141,7 @@ class EventObserver
             return $errorMessages;
         }
 
-        foreach ($response['Messages'] as $messageIndex => $message) {
+        foreach ($response['Messages'] as $_ => $message) {
             if (isset($message['Errors']) && is_array($message['Errors'])) {
                 $innerErrors = [];
 

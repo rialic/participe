@@ -17,6 +17,7 @@
             density="compact"
             variant="elevated"
             prominent="true"
+            max-height="80"
             :title="alertStore.getTitle"
             class="z-index-3000"
             :text="alertStore.message"

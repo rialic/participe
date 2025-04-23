@@ -16,7 +16,7 @@ class ModuleRepository extends DBRepository implements ModuleInterface
 
     public function query(array $params = []): Builder
     {
-        $params['orderBy'] = 'order';
+        $params['order_by'] = 'order';
         $params['direction'] = 'asc';
         $query = parent::query($params);
 

@@ -719,7 +719,7 @@ function clearParticipantForm() {
 }
 
 async function loadEvent() {
-  const response = await eventStore.index({eventsAvailables: 'today'})
+  const response = await eventStore.index({events_availables: 'today'})
 
   if (response.ok) {
     const data = response.data

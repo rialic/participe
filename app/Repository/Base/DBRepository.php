@@ -212,7 +212,7 @@ class DBRepository implements DBRepositoryInterface
     {
         $this->params = $params;
         $params = collect($params);
-        $exceptedKeyList = ['page', 'limit', 'orderBy', 'direction', 'deletedAt'];
+        $exceptedKeyList = ['page', 'limit', 'order_by', 'direction', 'deleted_at'];
         $params = $params->filter(fn($value, $key) => !in_array($key, $exceptedKeyList));
 
         if ($params->isEmpty()) {
@@ -241,12 +241,12 @@ class DBRepository implements DBRepositoryInterface
      */
     private function sort(object $model, array $params): Builder
     {
-        $isSortable = Arr::get($params, 'orderBy');
+        $isSortable = Arr::get($params, 'order_by');
 
         if ($isSortable) {
-            $orderBy = Arr::get($params, 'orderBy');
+            $orderBy = Arr::get($params, 'order_by');
             $direction = Arr::get($params, 'direction');
-            $method = 'orderBy' . Str::studly($orderBy);
+            $method = 'order_by' . Str::studly($orderBy);
 
             // Check for a custom orderByField method
             if (method_exists($this, $method)) {

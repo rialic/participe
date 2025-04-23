@@ -89,3 +89,14 @@ services:
     networks:
       - app
       - db
+
+  pest:
+    image: app
+    container_name: pesy
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    entrypoint: ["./vendor/bin/pest"]
+    networks:
+      - app
+      - db

@@ -44,7 +44,8 @@ import {
     faChevronRight,
     faChevronDown,
     faStepForward,
-    faTimes
+    faTimes,
+    faPaperclip
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -99,9 +100,10 @@ library.add(
     faChevronRight,
     faChevronDown,
     faStepForward,
-    faTimes,
     faCircle,
     faDotCircle,
+    faTimes,
+    faPaperclip
 )
 
 export default FontAwesomeIcon

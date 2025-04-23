@@ -17,53 +17,19 @@ class EventRepository extends DBRepository implements EventInterface
 
     public function query(array $params = []): Builder
     {
-        $query = parent::query($params);
-
-        return $query->with('descs');
+        return parent::query($params)->with('descs');
     }
 
-    public function filterByName($query, $data, $field): Builder
+    public function filterByScopeSearch($query, $data, $field): Builder
     {
-        return $query->where($field, 'like', "%{$data}%");
-    }
-
-    public function filterByTypeEvent($query, $data, $field): Builder
-    {
-        return $query->where($field, $data);
-    }
-
-    public function filterByStartAt($query, $data, $field): Builder
-    {
-        $date = Carbon::parse(strtotime(str_replace('/', '-', $data)))->toDateString();
-
-        if ($date === '1970-01-01') {
-            return $query;
-        }
-
-        return $query->orWhereRaw("date({$field}) =?", $date);
-    }
-
-    public function filterByEndAt($query, $data, $field): Builder
-    {
-        $date = Carbon::parse(strtotime(str_replace('/', '-', $data)))->toDateString();
-
-        if ($date === '1970-01-01') {
-            return $query;
-        }
-
-        return $query->orWhereRaw("date({$field}) =?", $date);
-    }
-
-    public function filterByOrganization($query, $data, $field): Builder
-    {
-        return $query->orWhere($field, 'like', "%{$data}%");
-    }
-
-    public function filterByBiremeCode($query, $data, $field): Builder
-    {
-        return $query->orWhereHas('descs', function($query) use($data, $field) {
-            $query->where($field, 'like', "%{$data}%");
-        });
+        return $query->where(function ($query) use ($data) {
+            $query->orWhere('name', 'like', "%{$data}%");
+            $query->orWhere($this->handleDate($query, $data, 'start_at'));
+            $query->orWhere($this->handleDate($query, $data, 'end_at'));
+            $query->orWhere('organization', 'like', "%{$data}%");
+            $query->orWhereHas('descs', fn($query) => $query->where('bireme_code', 'like', "%{$data}%"));
+        })
+        ->where('type_event', 'Webaulas/palestras');
     }
 
     public function filterByEventsAvailables($query, $data, $field): Builder
@@ -72,5 +38,14 @@ class EventRepository extends DBRepository implements EventInterface
                     ->whereRaw("date(start_at) = curdate()")
                     ->whereRaw('DATE_ADD(end_at, INTERVAL end_minutes_additions MINUTE) >= current_timestamp()')
                     ->where('type_event', 'Webaulas/palestras');
+    }
+
+    private function handleDate($query, $data, $field): void
+    {
+        $date = Carbon::parse(strtotime(str_replace('/', '-', $data)))->toDateString();
+
+        if ($date !== '1970-01-01') {
+            $query->orWhereRaw("date({$field}) =?", $date);
+        }
     }
 }

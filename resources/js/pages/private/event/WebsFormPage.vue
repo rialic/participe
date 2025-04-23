@@ -6,7 +6,7 @@
             variant="flat"
             color="teal-lighten-1"
             rounded="sm"
-            class="font-weight-bold text-none fs-14x"
+            class="font-weight-bold text-none"
             size="small"
             @click="save">
             Salvar
@@ -14,7 +14,7 @@
     </div>
 
     <v-form @submit.prevent="save">
-        <v-sheet class="pa-0 pa-md-6">
+        <v-sheet class="pa-0 pa-md-4">
             <v-row>
                 <v-col cols="12" md="6" class="py-1">
                     <v-text-field
@@ -103,7 +103,7 @@
             </v-row>
 
             <v-row>
-                <v-col cols="12">
+                <v-col cols="12" class="py-1">
                     <div class="position-relative">
                         <v-textarea
                             label="Emails a serem notificados do resumo da webaula"
@@ -133,7 +133,7 @@
                         </v-btn>
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-2">
                         <span>E-mails de palestrantes e/ou usuários a serem notificados dos resumos de webaulas</span>
 
                         <v-sheet v-if="emailSummaryList.length" border="thin" class="d-flex flex-wrap ga-2 pa-2">
@@ -164,8 +164,8 @@
             <v-row>
                 <v-col cols="12" md="6">
                     <v-row>
-                        <v-col cols="12" md="6">
-                            <div class="position-relative w-100 mb-1">
+                        <v-col cols="12" md="6" class="pb-1">
+                            <div class="position-relative w-100">
                                 <label
                                     :class="['dp__label fs-12x position-absolute px-1', { 'dp__label_invalid': Boolean(errorMessage('start_at')) }]">
                                     Data início *
@@ -177,10 +177,10 @@
                                     format="dd/MM/yyyy HH:mm:ss"
                                     locale="pt-br"
                                     placeholder="Data início *"
-                                    month-name-format="long"
                                     :state="!Boolean(errorMessage('start_at'))"
                                     :min-date="new Date()"
                                     :max-date="form.end_at"
+                                    month-name-format="long"
                                     select-text="Selecionar"
                                     cancel-text="Fechar"
                                     hide-offset-dates>
@@ -210,11 +210,11 @@
                                     </template>
                                 </vue-date-picker>
 
-                                <span v-if="errorMessage('start_at')" class="fs-12x px-4" style="color: #B00020"> {{ errorMessage('start_at') }}</span>
+                                <span class="fs-12x px-4" style="color: #B00020"> {{ errorMessage('start_at') }}</span>
                             </div>
                         </v-col>
 
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="6" class="pb-1">
                             <v-number-input
                                 v-model="form.start_minutes_additions"
                                 label="Acréscimos iniciais"
@@ -243,8 +243,8 @@
 
                 <v-col cols="12" md="6">
                     <v-row>
-                        <v-col cols="12" md="6">
-                            <div class="position-relative w-100 mb-1">
+                        <v-col cols="12" md="6" class="pb-1">
+                            <div class="position-relative w-100">
                                 <label
                                     :class="['dp__label fs-12x position-absolute px-1', { 'dp__label_invalid': Boolean(errorMessage('end_at')) }]">
                                     Data fim *
@@ -292,7 +292,7 @@
                             </div>
                         </v-col>
 
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="6" class="pb-1">
                             <v-number-input
                                 v-model="form.end_minutes_additions"
                                 label="Acréscimos finais"
@@ -321,7 +321,29 @@
             </v-row>
 
             <v-row>
-                <v-col cols="12">
+                <v-col cols="12" md="6" class="py-1">
+                    <v-file-input
+                        v-model="form.banner"
+                        label="Banner"
+                        density="small"
+                        variant="outlined"
+                        :error-messages="errorMessage('banner')"
+                        color="orange-darken-4"
+                        placeholder="Banner"
+                        autocomplete="false"
+                        accept="image/png, image/jpeg"
+                        show-size
+                        hint="Faça o upload do banner de divulgação. O banner será enviado por e-mail em anexo."
+                        persistent-hint
+                        prepend-icon=""
+                        :prepend-inner-icon="icon('fas fa-paperclip', 'fs-16x')"
+                        clearable>
+                    </v-file-input>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" class="py-1">
                     <span>Notifique por email usuários para participar dessa webaula</span>
 
                     <v-radio-group :center-affix="false" class="mt-1" v-model="form.type_notification" density="compact">
@@ -416,7 +438,7 @@
                 variant="flat"
                 color="teal-lighten-1"
                 rounded="sm"
-                class="font-weight-bold text-none fs-14x"
+                class="font-weight-bold text-none"
                 size="small"
                 @click="">
                 Salvar
@@ -432,11 +454,13 @@ import { useRouter } from 'vue-router'
 import { errorMessage, presetForm, presetFilter, truncateText } from '@/helpers'
 import useIcon from '@/composables/useIcon'
 
+import { useAppStore } from '@/stores/appStore'
 import { useEventStore } from '@/stores/eventStore'
 import { useDescStore } from '@/stores/descStore'
 import { useStateStore } from '@/stores/stateStore'
 import { useCityStore } from '@/stores/cityStore'
 
+const appStore = useAppStore()
 const stateStore = useStateStore()
 const cityStore = useCityStore()
 const eventStore = useEventStore()
@@ -466,7 +490,8 @@ const form = ref({
     cities_to_notify: null,
     select_group_emails: null,
     summary_emails: null,
-    type_event: 'Webaulas/palestras'
+    type_event: 'Webaulas/palestras',
+    banner: null,
 })
 const filter = ref({
     biremeCode: null,
@@ -474,7 +499,9 @@ const filter = ref({
 
 /* onMounted */
 onMounted(() => {
+    appStore.pageTitle = 'Webaulas'
     eventStore.eventTitle = 'Novo cadastro'
+    descsStore.list = []
 })
 
 /* watch */
@@ -577,15 +604,20 @@ function onObserver(value, page) {
 }
 
 async function save() {
+    const formData = new FormData()
     const payload = presetForm(form.value)
     payload.summary_emails = payload.summary_emails?.length ? JSON.stringify(payload.summary_emails.split(' ')) : null
     payload.cities_to_notify = payload.cities_to_notify?.length ? JSON.stringify(payload.cities_to_notify) : null
     payload.select_group_emails = payload.select_group_emails?.length ? JSON.stringify(payload.select_group_emails.split(' ')) : null
 
+    for (const key in payload) {
+        formData.append(key, payload[key]);
+    }
+
     const response = await eventStore.store(payload)
 
     if (response.status === 200 || response.status === 201) {
-        // router.push({ name: 'webs.view' })
+        router.push({ name: 'webs.view' })
     }
 
     if (response.status === 422) {

@@ -20,7 +20,7 @@ trait HasControllerResource
   protected int $limit = -1;
   protected ?DateTime $deletedAt = null;
   protected array $filterFields = [];
-  protected array $params = ['limit', 'orderBy', 'direction', 'page', 'deletedAt'];
+  protected array $params = ['limit', 'order_by', 'direction', 'page', 'deleted_at'];
 
   protected $showValidatorRequest = null;
   protected $indexValidatorRequest = null;
@@ -135,7 +135,7 @@ trait HasControllerResource
   private function getParams()
   {
     $params = [];
-    $params['deletedAt'] = $this->deletedAt;
+    $params['deleted_at'] = $this->deletedAt;
 
     if (!is_null($this->limit)) {
       $params['limit'] = (int) $this->limit;

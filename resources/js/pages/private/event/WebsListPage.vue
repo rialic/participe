@@ -5,7 +5,7 @@
             variant="flat"
             color="teal-lighten-1"
             rounded="sm"
-            class="font-weight-bold text-none fs-14x"
+            class="font-weight-bold text-none"
             size="small"
             @click="router.push({ name: 'webs.new' })">
             Cadastrar
@@ -17,7 +17,7 @@
             color="grey-lighten-4"
             rounded="sm"
             border
-            class="font-weight-bold text-none fs-14x"
+            class="font-weight-bold text-none"
             size="small"
             @click="">
             Relatórios
@@ -137,13 +137,10 @@ const timeoutId = ref()
 const currentPage = ref()
 const sortBy = ref('start_at')
 const direction = ref('desc')
+// const filter = ref({ scout: null })
 const filter = ref({
-    name: null,
-    startAt: null,
-    endAt: null,
-    organization: null,
-    biremeCode: null,
-    typeEvent: 'Webaulas/palestras'
+    scope_search: null,
+    // type_event: 'Webaulas/palestras'
 })
 const eventsHeader = ref([
     { title: 'Tema', icon: 'fa-sort' },
@@ -224,7 +221,7 @@ async function loadEvents(page, itemsPerPage) {
     loading.value = true
     currentPage.value = page
     const payload = presetFilter(search.value, filter.value)
-    const response = await eventStore.index({ page: currentPage.value, limit: itemsPerPage, orderBy: sortBy.value, direction: direction.value, ...payload })
+    const response = await eventStore.index({ page: currentPage.value, limit: itemsPerPage, order_by: sortBy.value, direction: direction.value, ...payload })
     loading.value = false
 
     if (response.ok) {
