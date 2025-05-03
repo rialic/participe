@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ApiException;
 use App\Http\Requests\Participant\ShowParticipantRequest;
 use App\Http\Requests\Participant\StoreUpdateParticipantRequest;
+use App\Http\Requests\Event\StoreParticipantRatingRequest;
 use App\Http\Resources\ParticipantResource;
 use App\ServiceLayer\ParticipantServiceLayer;
 

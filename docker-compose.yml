@@ -92,7 +92,7 @@ services:
 
   pest:
     image: app
-    container_name: pesy
+    container_name: pest
     working_dir: /var/www
     volumes:
       - ./:/var/www

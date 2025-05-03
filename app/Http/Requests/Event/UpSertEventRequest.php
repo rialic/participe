@@ -7,7 +7,7 @@ use App\Traits\HasRequestResource;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreEventRequest extends FormRequest
+class UpSertEventRequest extends FormRequest
 {
     use HasRequestResource;
 
@@ -36,11 +36,11 @@ class StoreEventRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => 'required|max:255',
             'organization' => 'required|in:TSMS,Fiocruz',
             'room_link' => 'required|url:http,https',
-            'descs' => 'required|exists:tb_descs,uuid',
+            'desc_bireme' => 'required|exists:tb_descs,uuid',
             'summary_emails' => 'nullable|json',
             'start_at' => 'required',
             'start_minutes_additions' => 'required|integer',
@@ -50,7 +50,13 @@ class StoreEventRequest extends FormRequest
             'cities_to_notify' => ['nullable', 'json', Rule::requiredIf($this->type_notification === 'cities')],
             'select_group_emails' => ['nullable', 'json', Rule::requiredIf($this->type_notification === 'group')],
             'type_event' => ['required', Rule::enum(TypeEvent::class)],
-            'banner' => 'sometimes|image|mimes:png,jpg,jpeg|max:5048'
+            'banner' => 'nullable|image|mimes:png,jpg,jpeg|max:5048'
         ];
+
+        if ($this->isMethod('PUT')) {
+            $rules['uuid'] = 'required|exists:tb_events,uuid';
+        }
+
+        return $rules;
     }
 }

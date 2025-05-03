@@ -7,19 +7,34 @@ export const useEventStore = defineStore('eventStore', {
         list: []
     }),
     actions: {
+        async show(uuid) {
+            return await axios.get(`v1/events/${uuid}`)
+        },
         async index(payload) {
             const query = new URLSearchParams(payload)
 
-            return await axios.get(`v1/event?${query}`)
+            return await axios.get(`v1/events?${query}`)
         },
         async store(payload) {
-            return await axios.post('v1/event/store', payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+            return await axios.post('v1/events', payload, { headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+        },
+        async update(payload, uuid) {
+            return await axios.post(`v1/events/${uuid}`, payload, { headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+        },
+        async delete(uuid) {
+            return await axios.delete(`v1/events/${uuid}`)
         },
         async syncParticipants(payload) {
-            return await axios.post('v1/event/sync-participants', payload)
+            return await axios.post('v1/events/sync-participants', payload)
         },
         async storeParticipantRating(uuid, payload) {
-            return await axios.put(`v1/event/participant-rating/${uuid}`, payload)
+            return await axios.put(`v1/events/participant-rating/${uuid}`, payload)
         }
     }
 })

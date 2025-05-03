@@ -35,9 +35,9 @@ class ServiceResource implements ServiceInterface
    * @param mixed $data
    * @return object
    */
-  public function store(array $data): object
+  public function store(array $data, ?object $model = null): object
   {
-    return $this->repository->store($data, $this->repository->getModel());
+    return $this->repository->store($data, $model);
   }
 
   /**

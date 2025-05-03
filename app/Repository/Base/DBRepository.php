@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class DBRepository implements DBRepositoryInterface
@@ -132,13 +133,15 @@ class DBRepository implements DBRepositoryInterface
      * @throws EntityNotDefined
      * @throws BindingResolutionException
      */
-    public function store(array $data, object $model): object
+    public function store(array $data, ?object $model): object
     {
-        $model = $model ?? $this->getModel();
-        $model->fill($data);
-        $model->save();
+        return DB::transaction(function() use($data, $model) {
+            $model = $model ?? $this->getModel();
+            $model->fill($data);
+            $model->save();
 
-        return $model;
+            return $model;
+        });
     }
 
     /**
@@ -164,8 +167,11 @@ class DBRepository implements DBRepositoryInterface
      */
     public function delete(string $uuid, bool $softDelete = true): bool
     {
-        $model = $this->findByUuid($uuid);
-        return ($softDelete) ? $model->delete() : $model->forceDelete();
+        return DB::transaction(function() use($uuid, $softDelete) {
+            $model = $this->findByUuid($uuid);
+
+            return ($softDelete) ? $model->delete() : $model->forceDelete();
+        });
     }
 
     /**

@@ -21,9 +21,12 @@ return new class extends Migration
             $table->timestamp('rated_at')->nullable();
             $table->timestamp('created_at')->default()->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->timestamp('deleted_at')->nullable();
+            $table->unsignedBigInteger('deleted_by')->index()->nullable();
 
             $table->foreign('user_id')->references('id')->on('tb_users')->onDelete('cascade');
             $table->foreign('event_id')->references('id')->on('tb_events')->onDelete('cascade');
+            $table->foreign('deleted_by')->references('id')->on('tb_users');
 
             $table->primary(['user_id', 'event_id']);
 

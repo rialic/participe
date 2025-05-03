@@ -13,7 +13,7 @@
         </v-btn>
     </div>
 
-    <v-form @submit.prevent="save">
+    <v-form  @submit.prevent="save">
         <v-sheet class="pa-0 pa-md-4">
             <v-row>
                 <v-col cols="12" md="6" class="py-1">
@@ -66,10 +66,10 @@
                 <v-col cols="12" class="py-1">
                     <v-autocomplete
                         label="Descritor Bireme *"
-                        v-model="form.descs"
+                        v-model="form.desc_bireme"
                         :items="descsStore.list"
-                        :item-title="(desc) => `&nbsp; ${desc.bireme_code} - ${desc.name} - ${truncateText(desc.description, 100)}`"
-                        :item-value="(desc) => desc.uuid"
+                        :item-title="(descBireme) => `&nbsp; ${descBireme.bireme_code} - ${descBireme.name} - ${truncateText(descBireme.description, 100)}`"
+                        :item-value="(descBireme) => descBireme.uuid"
                         :error-messages="errorMessage('descs')"
                         hint="Digite o código bireme que deseja pesquisar"
                         density="small"
@@ -329,10 +329,10 @@
                         variant="outlined"
                         :error-messages="errorMessage('banner')"
                         color="orange-darken-4"
+                        show-size
                         placeholder="Banner"
                         autocomplete="false"
                         accept="image/png, image/jpeg"
-                        show-size
                         hint="Faça o upload do banner de divulgação. O banner será enviado por e-mail em anexo."
                         persistent-hint
                         prepend-icon=""
@@ -346,7 +346,7 @@
                 <v-col cols="12" class="py-1">
                     <span>Notifique por email usuários para participar dessa webaula</span>
 
-                    <v-radio-group :center-affix="false" class="mt-1" v-model="form.type_notification" density="compact">
+                    <v-radio-group :center-affix="false" class="mt-1" v-model="form.type_notification" density="compact" @update:modelValue="onTypeNotification">
                         <v-radio label="Notificar todos no sistema" color="orange-darken-4" class="fs-12x" value="all"></v-radio>
                         <v-radio label="Notificar participantes por cidade" color="orange-darken-4" class="fs-12x" value="cities"></v-radio>
                         <v-radio label="Notificar um grupo seleto de participantes" color="orange-darken-4" class="fs-12x" value="group"></v-radio>
@@ -451,7 +451,7 @@
 <script setup>
 import { onMounted, ref, useTemplateRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { errorMessage, presetForm, truncateText, presetFilter } from '@/helpers'
+import { errorMessage, presetForm, truncateText, presetFilter, unmaskDate, base64ToFile } from '@/helpers'
 import useIcon from '@/composables/useIcon'
 
 import { useAppStore } from '@/stores/appStore'
@@ -459,6 +459,13 @@ import { useEventStore } from '@/stores/eventStore'
 import { useDescStore } from '@/stores/descStore'
 import { useStateStore } from '@/stores/stateStore'
 import { useCityStore } from '@/stores/cityStore'
+
+const props = defineProps({
+    uuid: {
+        type: String,
+        default: null
+    }
+})
 
 const appStore = useAppStore()
 const stateStore = useStateStore()
@@ -481,7 +488,7 @@ const form = ref({
     name: null,
     organization: null,
     room_link: null,
-    descs: null,
+    desc_bireme: null,
     start_at: null,
     start_minutes_additions: 30,
     end_at: null,
@@ -498,29 +505,26 @@ const filter = ref({
 })
 
 /* onMounted */
-onMounted(() => {
+onMounted(async () => {
     appStore.pageTitle = 'Webaulas'
-    eventStore.eventTitle = 'Novo cadastro'
+    eventStore.eventTitle = !props.uuid ? 'Novo cadastro' : 'Editar cadastro'
     descsStore.list = []
+
+    if (props.uuid) {
+        const response = await eventStore.show(props.uuid)
+
+        if (response.ok)  {
+            const data = response.data
+
+            processFormData(data, form)
+        }
+    }
 })
 
 /* watch */
 watch(() => filter.value.autocomplete_descs_search, (newValue, oldValue) => {
     if (!newValue || (newValue !== oldValue)) {
         descsStore.list = descsStore.list.filter((desc) => form.value.descs?.some((descsUuid) => desc.uuid === descsUuid))
-    }
-})
-
-
-watch(() => form.value.type_notification, (type_notification) => {
-    form.value.select_group_emails = null
-    emailNotificationList.value = []
-    emailsNotificationWithErrors.value = []
-    emailsNotificationMessageErrors.value = []
-    form.value.cities_to_notify = null
-
-    if (type_notification === 'cities' && !cityStore.list.length) {
-        loadState()
     }
 })
 
@@ -535,6 +539,56 @@ watch([() => form.value.start_minutes_additions, () => form.value.end_minutes_ad
 })
 
 /* functions */
+function processFormData(data, form) {
+    const fieldHandlers = {
+        start_at: (key, value, form) => form.value[key] = unmaskDate(value),
+        end_at: (key, value, form) => form.value[key] = unmaskDate(value),
+
+        desc_bireme: (key, value, form) => {
+            const descBireme = value
+
+            descBireme.forEach((item) => loadDescs(item.bireme_code))
+            form.value[key] = descBireme.map((item) => item.uuid);
+        },
+
+        cities_to_notify: (key, value, form) => {
+            if (!value) return
+            form.value[key] = JSON.parse(value)
+
+            loadState()
+        },
+
+        select_group_emails: (key, value, form) => {
+            if (!value) return
+            form.value[key] = JSON.parse(value).join(' ')
+
+            presetEmailsForNotification()
+        },
+
+        summary_emails: (key, value, form) => {
+            if (!value) return
+            form.value[key] = JSON.parse(value).join(' ')
+
+            presetEmailsForSummary()
+        },
+
+        attachment: (key, value, form) => {
+            if (!value) return
+            const { file, name, mime } = value
+            const fileObject = base64ToFile(file, name, mime)
+            form.value['banner'] = fileObject
+        }
+    }
+
+    Object.entries(data).forEach(([key, value]) => {
+        if (key in fieldHandlers) {
+            fieldHandlers[key](key, value, form)
+        } else {
+            form.value[key] = value
+        }
+    })
+}
+
 function searchDescs(value) {
     clearTimeout(timeoutId.value)
 
@@ -561,7 +615,7 @@ async function loadState() {
 
 async function loadCity(state, selectedCity = null) {
   if (state) {
-    const reponse = await cityStore.index({state: state})
+    const reponse = await cityStore.index({ state: state, order_by: 'name', direction: 'asc' })
 
     if (reponse.ok) {
       const data = reponse.data
@@ -612,16 +666,16 @@ function onObserver(value, page) {
 
 async function save() {
     const formData = new FormData()
-    const payload = presetForm(form.value)
-    payload.summary_emails = payload.summary_emails?.length ? JSON.stringify(payload.summary_emails.split(' ')) : null
-    payload.cities_to_notify = payload.cities_to_notify?.length ? JSON.stringify(payload.cities_to_notify) : null
-    payload.select_group_emails = payload.select_group_emails?.length ? JSON.stringify(payload.select_group_emails.split(' ')) : null
+    const payload = preparePayloadFromForm()
 
-    for (const key in payload) {
-        formData.append(key, payload[key]);
+    appendPayloadToFormData(formData, payload)
+
+    if (props.uuid) {
+        formData.append('_method', 'PUT')
     }
 
-    const response = await eventStore.store(payload)
+    const action = !props.uuid ? 'store' : 'update'
+    const response = await eventStore[action](formData, props.uuid)
 
     if (response.status === 200 || response.status === 201) {
         router.push({ name: 'webs.view' })
@@ -630,6 +684,38 @@ async function save() {
     if (response.status === 422) {
         errors.value = response.data.errors
     }
+}
+
+function preparePayloadFromForm() {
+  const payload = presetForm(form.value);
+
+  payload.summary_emails = convertToJsonArrayIfNotEmpty(payload.summary_emails, ' ')
+  payload.select_group_emails = convertToJsonArrayIfNotEmpty(payload.select_group_emails, ' ')
+  payload.cities_to_notify = convertToJsonArrayIfNotEmpty(payload.cities_to_notify)
+
+  return payload;
+}
+
+function appendPayloadToFormData(formData, payload) {
+    for (const key in payload) {
+        if (key === 'desc_bireme' && payload[key]) {
+          payload[key].forEach(biremeCode => formData.append(`${key}[]`, biremeCode))
+          continue
+        }
+
+        if (payload[key]){
+            formData.append(key, payload[key])
+        }
+    }
+}
+
+function convertToJsonArrayIfNotEmpty(value, separator) {
+  if (!value?.length) {
+    return null
+  }
+
+  const arrayValue = separator ? value.split(separator) : value
+  return JSON.stringify(arrayValue)
 }
 
 function presetEmailsForSummary() {
@@ -654,6 +740,18 @@ function handleEmailsForSummary() {
 function purgeEmailsForSummary(index) {
     emailSummaryList.value.splice(index, 1)
     form.value.summary_emails = emailSummaryList.value.join(' ')
+}
+
+function onTypeNotification(typeNotification){
+    form.value.select_group_emails = null
+    emailNotificationList.value = []
+    emailsNotificationWithErrors.value = []
+    emailsNotificationMessageErrors.value = []
+    form.value.cities_to_notify = null
+
+    if (typeNotification === 'cities' && !cityStore.list.length) {
+        loadState()
+    }
 }
 
 function presetEmailsForNotification() {

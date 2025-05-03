@@ -15,7 +15,9 @@ class Attachment extends Model
 
     protected $fillable = [
         'name',
+        'original_name',
         'path',
+        'mime',
     ];
 
     public function attachable(): MorphTo

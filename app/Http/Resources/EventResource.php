@@ -24,14 +24,19 @@ class EventResource extends JsonResource
      */
     public function toArray(Request $request)
     {
-        if (!$this->resource) {
+        $method = $request->method();
+
+        if ($method === 'DELETE') {
             return [];
         }
+
+        // dd($this->attachment);
 
         return [
             'uuid' => $this->uuid,
             'name' => $this->name,
             'desc_bireme' => $this->descs->isNotEmpty() ? $this->whenLoaded('descs', $this->descs->map(fn($bireme) => [
+                'uuid' => $bireme->uuid,
                 'bireme_code' => $bireme->bireme_code
             ])) : null,
             'start_at' => $this->start_at,
@@ -40,7 +45,16 @@ class EventResource extends JsonResource
             'end_minutes_additions' => $this->end_minutes_additions,
             'organization' => $this->organization,
             'room_link' => $this->room_link,
-            'workload' => $this->workload
+            'workload' => $this->workload,
+            'type_notification' => $this->type_notification,
+            'summary_emails' => $this->summary_emails,
+            'select_group_emails' => $this->select_group_emails,
+            'cities_to_notify' => $this->cities_to_notify,
+            'attachment' => $this->attachment->exists() ? $this->whenLoaded('attachment', [
+                'name' => $this->attachment->original_name,
+                'mime' => $this->attachment->mime,
+                'file' => base64_encode(file_get_contents(storage_path("app/private/{$this->attachment->path}")))
+            ]) : null
         ];
     }
 }

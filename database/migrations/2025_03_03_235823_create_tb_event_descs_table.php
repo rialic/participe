@@ -15,10 +15,15 @@ return new class extends Migration
         Schema::create('tb_event_descs', function (Blueprint $table) {
             $table->unsignedBigInteger('event_id')->index();
             $table->unsignedBigInteger('descs_id')->index();
+            $table->unsignedBigInteger('deleted_by')->index()->nullable();
+            $table->unsignedBigInteger('created_by')->index()->nullable();
             $table->timestamp('created_at')->default()->useCurrent();
+            $table->timestamp('deleted_at')->nullable();
 
             $table->foreign('event_id')->references('id')->on('tb_events')->onDelete('cascade');
             $table->foreign('descs_id')->references('id')->on('tb_descs')->onDelete('cascade');
+            $table->foreign('created_by')->references('id')->on('tb_users');
+            $table->foreign('deleted_by')->references('id')->on('tb_users');
 
             $table->primary(['event_id', 'descs_id']);
 

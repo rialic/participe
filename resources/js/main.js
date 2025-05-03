@@ -12,6 +12,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 import FontAwesomeIcon from '@/font-awesome'
 import VueDatePicker from '@vuepic/vue-datepicker';
 import NoContentFound from '@/components/NoContentFound.vue'
+import DeleteModal from '@/components/DeleteModal.vue'
 
 /* Directives */
 import { vMaska } from 'maska/vue'
@@ -24,6 +25,7 @@ export default (() => {
     app.component('font-awesome-icon', FontAwesomeIcon)
     app.component('vue-date-picker', VueDatePicker)
     app.component('no-content-found', NoContentFound)
+    app.component('v-delete-modal', DeleteModal)
 
     /* Directives */
     app.directive('maska', vMaska)

@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 
 #[ObservedBy([EventObserver::class])]
 class Event extends Model
 {
-    use HasFactory, HasUuids, HasIdWithUuids, HasIdWithUuids { HasIdWithUuids::uniqueIds insteadof HasUuids; }
+    use HasFactory, SoftDeletes, HasUuids, HasIdWithUuids { HasIdWithUuids::uniqueIds insteadof HasUuids; }
 
     protected $table = 'tb_events';
 
@@ -49,6 +51,20 @@ class Event extends Model
     protected $cast = [
         'type_event' => TypeEvent::class
     ];
+
+    protected static function boot() {
+        parent::boot();
+
+        static::created(function ($model) {
+            $model->created_by = auth()->user()->id;
+            $model->save();
+        });
+
+        static::deleted(function ($model) {
+            $model->deleted_by = auth()->user()->id;
+            $model->save();
+        });
+    }
 
     public function casts(): array
     {
@@ -122,16 +138,20 @@ class Event extends Model
 
     public function participants()
     {
-        return $this->belongsToMany(User::class, 'tb_event_participants', 'event_id', 'user_id');
+        return $this->belongsToMany(User::class, 'tb_event_participants', 'event_id', 'user_id')
+                    ->wherePivotNull('deleted_at')
+                    ->withPivot('created_at', 'deleted_at', 'deleted_by');
     }
 
     public function descs()
     {
-        return $this->belongsToMany(Descs::class, 'tb_event_descs', 'event_id', 'descs_id');
+        return $this->belongsToMany(Descs::class, 'tb_event_descs', 'event_id', 'descs_id')
+                    ->wherePivotNull('deleted_at')
+                    ->withPivot('created_at', 'deleted_at', 'deleted_by');
     }
 
-    public function attachments(): MorphMany
+    public function attachment(): MorphOne
     {
-        return $this->morphMany(Attachment::class, 'model');
+        return $this->morphOne(Attachment::class, 'model');
     }
 }

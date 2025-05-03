@@ -5,6 +5,7 @@ namespace App\Proxy\DataCNES;
 use App\Exceptions\ApiException;
 use Illuminate\Support\Facades\Http;
 use App\Proxy\DataCNES\DataCNESHeaders;
+use Illuminate\Support\Facades\Log;
 
 class DataCNESProxy
 {
@@ -112,15 +113,16 @@ class DataCNESProxy
 			try {
 				$response = Http::withOptions(['verify' => base_path('datacnes.pem')])
 					->withHeaders($this->dataCNESHeaders->getEstablishmentHeader())
-					->retry(3, 15000)
+					->retry(3, 30000)
 					->get(env('DTACNES_ESTABLISHMENT_URL') . $city->datacnes_id);
 			} catch (\Exception $e) {
-				$response = null;
+				Log::error('Fetch Establishments Error', [$response]);
+				// $response = null;
 
 				ApiException::handleException($e, func_get_args());
 			}
 
-			if ($response->ok()) {
+			if ($response?->ok()) {
 				$dataCNESEstablishmentList = $response->json();
 
 				$establishmentList += collect($dataCNESEstablishmentList)->reduce(function ($acc, $establishment) use ($city) {
@@ -148,7 +150,7 @@ class DataCNESProxy
 				continue;
 			}
 
-			$response->throw()->json();
+			$response?->throw()->json();
 		}
 
 		return $establishmentList;
@@ -206,7 +208,7 @@ class DataCNESProxy
 				continue;
 			}
 
-			$response->throw()->json();
+			$response?->throw()->json();
 		}
 
 		return $establishmentTeamList;

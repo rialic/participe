@@ -16,8 +16,9 @@ return new class extends Migration
             $table->uuid()->unique();
             $table->morphs('model');
             $table->string('name');
+            $table->string('original_name');
             $table->string('path');
-            $table->softDeletes();
+            $table->string('mime');
             $table->timestamps();
 
             $table->engine = 'InnoDB';

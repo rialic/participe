@@ -4,9 +4,11 @@ export const {
     presetForm,
     presetFilter,
     maskDate,
+    unmaskDate,
     deepCopy,
     truncateText,
     errorMessage,
+    base64ToFile,
     cpfValidated
   } = (() => {
     function presetForm(form) {
@@ -26,6 +28,10 @@ export const {
       return format(toDate(date), 'dd/MM/yyyy HH:mm:ss')
     }
 
+    function unmaskDate(date) {
+      return format(toDate(date), 'yyyy-MM-dd HH:mm:ss')
+    }
+
     function deepCopy(obj) {
       return JSON.parse(JSON.stringify(obj))
     }
@@ -42,6 +48,21 @@ export const {
       if (Object.keys(this.errors).length) {
         return this.errors[label]?.join(' ') || null
       }
+    }
+
+    function base64ToFile(base64String, filename, mimeType) {
+      const base64Data = base64String.includes('base64,') ? base64String.split('base64,')[1] : base64String
+      const binaryData = atob(base64Data)
+      const bytes = new Uint8Array(binaryData.length)
+
+      for (let i = 0; i < binaryData.length; i++) {
+        bytes[i] = binaryData.charCodeAt(i)
+      }
+
+      const blob = new Blob([bytes], { type: mimeType })
+      const file = new File([blob], filename, { type: mimeType, lastModified: new Date().getTime() })
+
+      return file
     }
 
     function cpfValidated(cpf) {
@@ -103,9 +124,11 @@ export const {
       presetForm,
       presetFilter,
       maskDate,
+      unmaskDate,
       deepCopy,
       truncateText,
       errorMessage,
+      base64ToFile,
       cpfValidated
     }
   })()

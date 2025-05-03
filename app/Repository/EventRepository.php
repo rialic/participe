@@ -17,7 +17,7 @@ class EventRepository extends DBRepository implements EventInterface
 
     public function query(array $params = []): Builder
     {
-        return parent::query($params)->with('descs');
+        return parent::query($params)->with('descs', 'attachment');
     }
 
     public function filterByScopeSearch($query, $data, $field): Builder

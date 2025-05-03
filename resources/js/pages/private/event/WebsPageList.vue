@@ -102,19 +102,43 @@
                     </td>
 
                     <td>
-                        {{ item.bireme }}
+                        {{ item.desc_bireme }}
                     </td>
 
                     <td class="d-flex justify-end align-center ga-3">
-                        <v-btn variant="plain" size="x-small" density="compact" icon="fas fa-pen" class="px-0"></v-btn>
+                        <v-btn
+                            type="button"
+                            @click="router.push({ name: 'webs.edit', params: { uuid: item.uuid } })"
+                            variant="plain"
+                            size="x-small"
+                            density="compact"
+                            icon="fas fa-pen"
+                            class="px-0">
+                        </v-btn>
 
-                        <v-btn variant="plain" size="x-small" density="compact" icon="fas fa-trash" class="px-0"></v-btn>
+                        <v-btn
+                            type="button"
+                            @click="onRemoveWebclass(item)"
+                            variant="plain"
+                            size="x-small"
+                            density="compact"
+                            icon="fas fa-trash"
+                            class="px-0">
+                        </v-btn>
                     </td>
                 </tr>
             </template>
         </v-data-table-server>
     </v-sheet>
   </v-card>
+
+  <v-delete-modal
+    v-model="showDestroyModal"
+    title="Exclusão de webaula"
+    message="Tem certeza que deseja excluir a webaula?"
+    :targetName="webclassToDeleted?.theme"
+    @onConfirm="removeWebclass"
+    />
 </template>
 
 <script setup>
@@ -131,6 +155,8 @@ const eventStore = useEventStore()
 
 const router = useRouter()
 const { icon } = useIcon()
+const showDestroyModal = ref(false)
+const webclassToDeleted = ref()
 const search = ref()
 const isTypingInSearch = ref(false)
 const timeoutId = ref()
@@ -232,12 +258,25 @@ async function loadEvents(page, itemsPerPage) {
             start: maskDate(event.start_at),
             end: maskDate(event.end_at),
             organization: event.organization,
-            bireme: event.desc_bireme?.reduce((acc, descBireme, index) => acc += (index === 0) ? `${descBireme.bireme_code}` : ` / ${descBireme.bireme_code}`, '')
+            desc_bireme: event.desc_bireme?.reduce((acc, descBireme, index) => acc += (index === 0) ? `${descBireme.bireme_code}` : ` / ${descBireme.bireme_code}`, '')
         }))
         eventTotal.value = response.meta?.total
         eventFrom.value = response.meta?.from
         eventTo.value = response.meta?.to
         eventItemsPerPage.value = response.meta?.per_page
+    }
+}
+
+function onRemoveWebclass(webclass) {
+    showDestroyModal.value = true
+    webclassToDeleted.value = webclass
+}
+
+async function removeWebclass() {
+    const response = await eventStore.delete(webclassToDeleted.value.uuid)
+
+    if (response.ok) {
+        loadEvents(currentPage.value, eventItemsPerPage.value)
     }
 }
 </script>
