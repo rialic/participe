@@ -170,7 +170,18 @@ class DBRepository implements DBRepositoryInterface
         return DB::transaction(function() use($uuid, $softDelete) {
             $model = $this->findByUuid($uuid);
 
-            return ($softDelete) ? $model->delete() : $model->forceDelete();
+            if ($softDelete) {
+                $modelHasDeletedByAttribute = in_array('deleted_by', array_keys($model->getAttributes()));
+
+                if($modelHasDeletedByAttribute) {
+                    $model->deleted_by = auth()->user()->id;
+                    $model->save();
+                }
+
+                return $model->delete();
+            }
+
+            return $model->forceDelete();
         });
     }
 

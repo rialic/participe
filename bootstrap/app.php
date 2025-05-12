@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\ACLMiddleware;
 use App\Http\Middleware\RequestId;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;

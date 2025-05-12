@@ -23,5 +23,5 @@ Equipe Telessáude Mato Grosso do Sul.
 <x-mail::footer>
 
 </x-mail::footer>
-</x-slot:foot>
+</x-slot:footer>
 </x-mail::layout>

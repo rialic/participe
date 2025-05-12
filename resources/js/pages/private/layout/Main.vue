@@ -13,14 +13,17 @@
         density="comfortable"
         nav>
           <template v-for="(module, moduleIndex) in moduleStore.list" :key="moduleIndex">
-            <v-list-item v-if="!module.submodules?.length" v-can:[user.abilities]="modulePermission(module.name)"
+            <v-list-item
+              v-if="!module.submodules?.length"
+              v-can:[user.abilities]="modulePermission(module.name)"
+              @click.prevent="router.push({ name: moduleRoute(module.name) })"
               :value="module"
               color="orange-darken-4">
               <template #prepend>
                 <v-icon :icon="`fas ${moduleIcon(module.name)}`" size="x-small"></v-icon>
               </template>
 
-              <v-list-item-title @click="router.push({ name: moduleRoute(module.name) })" class="fs-14x text-white font-weight-bold" v-text="module.name"></v-list-item-title>
+              <v-list-item-title class="fs-14x text-white font-weight-bold" v-text="module.name"></v-list-item-title>
             </v-list-item>
 
             <v-list-group v-else fluid
@@ -40,13 +43,14 @@
                 </v-list-item>
               </template>
 
-              <v-list-item v-for="(submodule, submoduleIndex) in module.submodules" :key="submoduleIndex"
+              <v-list-item
+                v-for="(submodule, submoduleIndex) in module.submodules" :key="submoduleIndex"
+                v-can:[user.abilities]="submodulePermission(submodule.name)"
+                @click.prevent="router.push({ name: submoduleRoute(submodule.name) })"
                 :value="submodule"
                 color="orange-darken-4">
 
                 <v-list-item-title
-                  v-can:[user.abilities]="submodulePermission(submodule.name)"
-                  @click="router.push({ name: submoduleRoute(submodule.name) })"
                   class="fs-14x text-white font-weight-bold"
                   v-text="submodule.name">
                 </v-list-item-title>

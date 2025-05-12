@@ -59,11 +59,6 @@ class Event extends Model
             $model->created_by = auth()->user()->id;
             $model->save();
         });
-
-        static::deleted(function ($model) {
-            $model->deleted_by = auth()->user()->id;
-            $model->save();
-        });
     }
 
     public function casts(): array

@@ -30,8 +30,6 @@ class EventResource extends JsonResource
             return [];
         }
 
-        // dd($this->attachment);
-
         return [
             'uuid' => $this->uuid,
             'name' => $this->name,

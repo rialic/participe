@@ -14,6 +14,11 @@ class UserRepository extends DBRepository implements UserInterface
         return User::class;
     }
 
+    public function query(array $params = []): Builder
+    {
+        return parent::query($params)->with('roles.permissions');
+    }
+
     public function filterByName($query, $data, $field): Builder
     {
         return $query->where($field, $data);

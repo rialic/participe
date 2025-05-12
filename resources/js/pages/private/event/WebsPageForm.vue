@@ -439,8 +439,7 @@
                 color="teal-lighten-1"
                 rounded="sm"
                 class="font-weight-bold text-none"
-                size="small"
-                @click="">
+                size="small">
                 Salvar
             </v-btn>
         </div>
@@ -543,35 +542,30 @@ function processFormData(data, form) {
     const fieldHandlers = {
         start_at: (key, value, form) => form.value[key] = unmaskDate(value),
         end_at: (key, value, form) => form.value[key] = unmaskDate(value),
-
         desc_bireme: (key, value, form) => {
             const descBireme = value
 
             descBireme.forEach((item) => loadDescs(item.bireme_code))
             form.value[key] = descBireme.map((item) => item.uuid);
         },
-
         cities_to_notify: (key, value, form) => {
             if (!value) return
             form.value[key] = JSON.parse(value)
 
             loadState()
         },
-
         select_group_emails: (key, value, form) => {
             if (!value) return
             form.value[key] = JSON.parse(value).join(' ')
 
             presetEmailsForNotification()
         },
-
         summary_emails: (key, value, form) => {
             if (!value) return
             form.value[key] = JSON.parse(value).join(' ')
 
             presetEmailsForSummary()
         },
-
         attachment: (key, value, form) => {
             if (!value) return
             const { file, name, mime } = value
@@ -670,10 +664,6 @@ async function save() {
 
     appendPayloadToFormData(formData, payload)
 
-    if (props.uuid) {
-        formData.append('_method', 'PUT')
-    }
-
     const action = !props.uuid ? 'store' : 'update'
     const response = await eventStore[action](formData, props.uuid)
 
@@ -697,6 +687,10 @@ function preparePayloadFromForm() {
 }
 
 function appendPayloadToFormData(formData, payload) {
+    if (props.uuid) {
+        formData.append('_method', 'PUT')
+    }
+
     for (const key in payload) {
         if (key === 'desc_bireme' && payload[key]) {
           payload[key].forEach(biremeCode => formData.append(`${key}[]`, biremeCode))

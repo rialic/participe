@@ -7,6 +7,7 @@ use App\Repository\Interfaces\CboInterface as CboRepository;
 use App\Repository\Interfaces\EstablishmentInterface as EstablishmentRepository;
 use App\Repository\Interfaces\ParticipantInterface as ParticipantRepository;
 use App\ServiceLayer\Base\ServiceResource;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ParticipantServiceLayer extends ServiceResource {
@@ -44,16 +45,19 @@ class ParticipantServiceLayer extends ServiceResource {
         return $this->user;
     }
 
-    public function store($data): object
+    public function store(array $data, ?object $model = null): object
     {
         $establishment = $this->establishmentRepository->getUuidToId($data['establishment']);
         $cbo = $this->cboRepository->getUuidToId($data['cbo']);
 
         $this->user->fill(['name' => $data['name'], 'cpf' => $data['cpf'], 'email' => $data['email'], 'sex' => $data['sex'], 'password' => Hash::make('password')]);
-        $this->user->save();
-        $this->user->establishments()->syncWithPivotValues([$establishment->id], ['cbo_id' => $cbo->id, 'primary_bond' => true], false);
 
-        return $this->user;
+        return DB::transaction(function() use($establishment, $cbo) {
+            $this->user->save();
+            $this->user->establishments()->syncWithPivotValues([$establishment->id], ['cbo_id' => $cbo->id, 'primary_bond' => true], false);
+
+            return $this->user;
+        });
     }
 
     public function update(string $uuid, array $data): object
@@ -62,13 +66,16 @@ class ParticipantServiceLayer extends ServiceResource {
         $establishment = $this->establishmentRepository->getUuidToId($data['establishment']);
         $cbo = $this->cboRepository->getUuidToId($data['cbo']);
 
-        $user->establishments()->syncWithPivotValues([$establishment->id], ['cbo_id' => $cbo->id, 'primary_bond' => true], false);
+        return DB::transaction(function() use($user, $establishment, $cbo) {
+            $user->establishments()->syncWithPivotValues([$establishment->id], ['cbo_id' => $cbo->id, 'primary_bond' => true], false);
 
-        return $user->load(['establishments' => fn($establishment) => [
-            $establishment->with('city', fn($city) => [
-                $city->with('state')
-            ])
-        ]]);
+            return $user->load(['establishments' => fn($establishment) => [
+                $establishment->with('city', fn($city) => [
+                    $city->with('state')
+                ])
+            ]]);
+        });
+
     }
 
     private function storeParticipant($user, $cpf)

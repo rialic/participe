@@ -23,16 +23,19 @@ class EventServiceLayer extends ServiceResource
 
     public function store($data, ?object $model = null): object
     {
-        $data['workload'] = (int) Carbon::parse($data['start_at'])->diffInMinutes($data['end_at']);
         $data['descs'] = collect($data['desc_bireme'])->map(fn($biremeCode) => $this->descsRepository->getUuidToId($biremeCode)->id)->all();
+        $data['summary_emails'] = $data['summary_emails'] ?? null;
+        $data['cities_to_notify'] = $data['cities_to_notify'] ?? null;
+        $data['select_group_emails'] = $data['select_group_emails'] ?? null;
+        $data['workload'] = (int) Carbon::parse($data['start_at'])->diffInMinutes($data['end_at']);
 
         return DB::transaction(function() use($data, $model) {
             $event = parent::store($data, $model);
-            $fileName = optional($data)['banner']?->hashName();
-
             $event->descs()->sync($data['descs']);
 
             if (isset(optional($data)['banner'])) {
+                $fileName = optional($data)['banner']->hashName();
+
                 if ($event->attachment) {
                     Storage::disk('local')->delete($event->attachment->path);
                     $event->attachment->delete();
@@ -54,7 +57,9 @@ class EventServiceLayer extends ServiceResource
     public function update(string $uuid, array $data): object
     {
         $event = $this->repository->findByUuid($uuid);
+        $originalEvent = clone $event;
 
+        app()->instance("original_event_{$event->id}", $originalEvent);
         return $this->store($data, $event);
     }
 
@@ -66,9 +71,6 @@ class EventServiceLayer extends ServiceResource
         $response = parent::delete($uuid);
 
         DB::transaction(function() use($event, $descsIds, $participantsIds) {
-            $deletedBy = auth()->user()->id;
-            $deletedAt = now();
-
             $event->descs()->syncWithPivotValues($descsIds, ['deleted_at' => $deletedAt, 'deleted_by' => $deletedBy]);
             $event->participants()->syncWithPivotValues($participantsIds, ['deleted_at' => $deletedAt, 'deleted_by' => $deletedBy]);
         });
