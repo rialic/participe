@@ -45,7 +45,7 @@ class WebClassJob implements ShouldQueue
     {
         $userList = $this->userRepository->getModel()->select('name', 'email')->get();
         $userList = $userList->map(fn($user) => ['Name' => $user->name,'Email' => $user->email])->all();
-        $body = $this->presetWebClassCreatedEmailNotification($event, $userList);
+        $body = $this->presetWebClassEmailNotification($event, $userList);
         $response = $this->mj->post(Resources::$Email, ['body' => $body]);
 
         if(!$response->success()) {
@@ -67,7 +67,7 @@ class WebClassJob implements ShouldQueue
                                 ->get()
                                 ->toArray();
 
-        $body = $this->presetWebClassCreatedEmailNotification($event, $userList);
+        $body = $this->presetWebClassEmailNotification($event, $userList);
 
         if (count($userList)) {
             $response = $this->mj->post(Resources::$Email, ['body' => $body]);
@@ -82,7 +82,7 @@ class WebClassJob implements ShouldQueue
     {
         $userList = (isset($this->updateVars['emails'])) ? $this->updateVars['emails'] : json_decode($event->select_group_emails);
         $userList = collect($userList)->map(fn($email) => ['Name' => substr($email, 0, strpos($email, '@')), 'Email' => $email])->values()->all();
-        $body = $this->presetWebClassCreatedEmailNotification($event, $userList);
+        $body = $this->presetWebClassEmailNotification($event, $userList);
         $response = $this->mj->post(Resources::$Email, ['body' => $body]);
 
         if(!$response->success()) {
@@ -114,9 +114,10 @@ class WebClassJob implements ShouldQueue
         $this->mj->post(Resources::$Email, ['body' => $body]);
     }
 
-    private function presetWebClassCreatedEmailNotification($event, $userList)
+    private function presetWebClassEmailNotification($event, $userList)
     {
-        $templateId = $this->presetTemplateId($event);
+        $templateId = $this->getTemplateId($event);
+        $templateSubject = $this->getTemplateSubject($event);
         $vars = $this->prepareVariables($event);
         $body = [
             'Messages' => [
@@ -128,7 +129,7 @@ class WebClassJob implements ShouldQueue
                     'To' => $userList,
                     'TemplateID' => $templateId,
                     'TemplateLanguage' => true,
-                    'Subject' => ($this->modelChanged) ? 'Aviso de alteração de webaula' : 'Aviso de nova agenda de webaula',
+                    'Subject' => $templateSubject,
                     'Variables' => $vars
                 ],
             ]
@@ -148,13 +149,30 @@ class WebClassJob implements ShouldQueue
         return $body;
     }
 
-    private function presetTemplateId($event)
+    private function getTemplateId($event)
     {
         if ($event->organization === 'Fiocruz') {
+            if (!is_null($event->deleted_at)) {
+                return 6973644;
+            }
+
             return ($this->modelChanged) ? 6968736 : 6922462;
         }
 
+        if (!is_null($event->deleted_at)) {
+            return 6973643;
+        }
+
         return ($this->modelChanged) ? 6968746 : 6906817;
+    }
+
+    private function getTemplateSubject($event)
+    {
+        if (!is_null($event->deleted_at)) {
+            return 'Aviso de webaula cancelada';
+        }
+
+        return ($this->modelChanged) ? 'Aviso de alteração de webaula' : 'Aviso de nova agenda de webaula';
     }
 
     private function prepareVariables($event): array

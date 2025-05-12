@@ -71,8 +71,8 @@ class EventServiceLayer extends ServiceResource
         $response = parent::delete($uuid);
 
         DB::transaction(function() use($event, $descsIds, $participantsIds) {
-            $event->descs()->syncWithPivotValues($descsIds, ['deleted_at' => $deletedAt, 'deleted_by' => $deletedBy]);
-            $event->participants()->syncWithPivotValues($participantsIds, ['deleted_at' => $deletedAt, 'deleted_by' => $deletedBy]);
+            $event->descs()->syncWithPivotValues($descsIds, ['deleted_at' => now(), 'deleted_by' => auth()->user()->id]);
+            $event->participants()->syncWithPivotValues($participantsIds, ['deleted_at' => now(), 'deleted_by' => auth()->user()->id]);
         });
 
         return $response;

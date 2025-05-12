@@ -12,6 +12,8 @@
         <v-card-text class="d-flex flex-column align-center ga-2">
             <h4>{{ message }}</h4>
 
+            <h4>{{ extraMessage }}</h4>
+
             <h4>{{ targetName }}</h4>
         </v-card-text>
 
@@ -56,6 +58,10 @@ const props = defineProps({
         required: false,
         type: String,
         default: 'Tem certeza que deseja excluir?'
+    },
+    extraMessage: {
+        required: false,
+        type: String,
     },
     targetName: {
         required: false,

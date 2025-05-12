@@ -136,6 +136,7 @@
     v-model="showDestroyModal"
     title="Exclusão de webaula"
     message="Tem certeza que deseja excluir a webaula?"
+    :extraMessage="webclassToDeleted?.type_notification !== 'none' ? 'O sistema irá notificar os participantes por email da exclusão dessa webaula.' : ''"
     :targetName="webclassToDeleted?.theme"
     @onConfirm="removeWebclass"
     />
@@ -258,7 +259,8 @@ async function loadEvents(page, itemsPerPage) {
             start: maskDate(event.start_at),
             end: maskDate(event.end_at),
             organization: event.organization,
-            desc_bireme: event.desc_bireme?.reduce((acc, descBireme, index) => acc += (index === 0) ? `${descBireme.bireme_code}` : ` / ${descBireme.bireme_code}`, '')
+            desc_bireme: event.desc_bireme?.reduce((acc, descBireme, index) => acc += (index === 0) ? `${descBireme.bireme_code}` : ` / ${descBireme.bireme_code}`, ''),
+            type_notification: event.type_notification
         }))
         eventTotal.value = response.meta?.total
         eventFrom.value = response.meta?.from
