@@ -48,7 +48,7 @@ class EventResource extends JsonResource
             'summary_emails' => $this->summary_emails,
             'select_group_emails' => $this->select_group_emails,
             'cities_to_notify' => $this->cities_to_notify,
-            'attachment' => $this->attachment->exists() ? $this->whenLoaded('attachment', [
+            'attachment' => $this->attachment?->exists() ? $this->whenLoaded('attachment', [
                 'name' => $this->attachment->original_name,
                 'mime' => $this->attachment->mime,
                 'file' => base64_encode(file_get_contents(storage_path("app/private/{$this->attachment->path}")))

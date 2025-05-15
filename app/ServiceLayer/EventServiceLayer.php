@@ -16,8 +16,7 @@ class EventServiceLayer extends ServiceResource
         private readonly EventRepository $eventRepository,
         private readonly UserRepository $userRepository,
         private readonly DescsRepository $descsRepository
-    )
-    {
+    ) {
         $this->repository = $eventRepository;
     }
 

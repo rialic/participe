@@ -28,8 +28,16 @@ class EventObserver implements ShouldHandleEventsAfterCommit
 
     public function updated(Event $event): void
     {
-        if (!is_null($event->deleted_at)) {
+        $eventWasUpdated = app()->has("original_event_{$event->id}");
+        $eventWasDeleted = $event->deleted_at;
+
+        if (!is_null($eventWasDeleted)) {
             $this->dispatchWebClassJob($event);
+
+            return;
+        }
+
+        if (!$eventWasUpdated) {
             return;
         }
 

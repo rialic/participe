@@ -523,6 +523,7 @@ onMounted(async () => {
 /* watch */
 watch(() => filter.value.autocomplete_descs_search, (newValue, oldValue) => {
     if (!newValue || (newValue !== oldValue)) {
+        // TODO HERE
         descsStore.list = descsStore.list.filter((desc) => form.value.descs?.some((descsUuid) => desc.uuid === descsUuid))
     }
 })

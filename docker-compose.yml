@@ -65,7 +65,11 @@ services:
   #CONTAINER SERVICES
 
   node:
-    image: node:current-alpine3.16
+    build:
+      context: ./.docker/node
+      dockerfile: Dockerfile
+    image: node
+    container_name: node
     container_name: node
     working_dir: /var/www
     volumes:
