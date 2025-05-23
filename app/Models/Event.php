@@ -46,10 +46,15 @@ class Event extends Model
         'end_at_datetime_formatted',
         'workload_formatted',
         'created_at_datetime_formatted',
+        'updated_at_datetime_formatted',
     ];
 
     protected $cast = [
         'type_event' => TypeEvent::class
+    ];
+
+    protected $with = [
+        'createdBy'
     ];
 
     protected static function boot() {
@@ -66,7 +71,8 @@ class Event extends Model
         return [
             'start_at' => 'datetime',
             'end_at' => 'datetime',
-            'created_at' => 'datetime'
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime'
         ];
     }
 
@@ -125,10 +131,19 @@ class Event extends Model
         return $this->created_at;
     }
 
+    public function getUpdatedAtDatetimeFormattedAttribute()
+    {
+        if ($this->updated_at) {
+            return $this->updated_at->format('d/m/Y H:i:s');
+        }
+
+        return $this->updated_at;
+    }
+
     // RELATIONSHIPS
     public function createdBy()
     {
-        return $this->belongsTo(User::class, 'created_by', 'user_id');
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
     public function participants()

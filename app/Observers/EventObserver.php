@@ -37,7 +37,7 @@ class EventObserver implements ShouldHandleEventsAfterCommit
             return;
         }
 
-        if (!$eventWasUpdated) {
+        if (!$eventWasUpdated && now() <= $event->end_at) {
             return;
         }
 

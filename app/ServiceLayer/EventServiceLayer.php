@@ -20,6 +20,11 @@ class EventServiceLayer extends ServiceResource
         $this->repository = $eventRepository;
     }
 
+    public function show(string|array $data): ?object
+    {
+      return $this->repository->findByUuid($data);
+    }
+
     public function store($data, ?object $model = null): object
     {
         $data['descs'] = collect($data['desc_bireme'])->map(fn($biremeCode) => $this->descsRepository->getUuidToId($biremeCode)->id)->all();

@@ -1,5 +1,5 @@
 <template>
-    <h4 class="text-grey-darken-3">{{ eventStore.eventTitle }}</h4>
+    <h4 class="text-grey-darken-3">{{ eventStore.title }}</h4>
 
     <router-view/>
 </template>

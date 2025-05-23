@@ -36,7 +36,13 @@ class UpSertEventRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
+        $rules = [];
+
+        if ($this->isMethod('PUT')) {
+            $rules['uuid'] = 'required|exists:tb_events,uuid';
+        }
+
+        return array_merge($rules, [
             'name' => 'required|max:255',
             'organization' => 'required|in:TSMS,Fiocruz',
             'room_link' => 'required|url:http,https',
@@ -47,16 +53,10 @@ class UpSertEventRequest extends FormRequest
             'end_at' => 'required',
             'end_minutes_additions' => 'required|integer',
             'type_notification' => 'required|in:all,cities,group,none',
-            'cities_to_notify' => ['sometimes', 'json', Rule::requiredIf($this->type_notification === 'cities')],
-            'select_group_emails' => ['sometimes', 'json', Rule::requiredIf($this->type_notification === 'group')],
+            'cities_to_notify' => [Rule::requiredIf($this->type_notification === 'cities'), 'json'],
+            'select_group_emails' => [Rule::requiredIf($this->type_notification === 'group'), 'json'],
             'type_event' => ['required', Rule::enum(TypeEvent::class)],
             'banner' => 'sometimes|image|mimes:png,jpg,jpeg|max:5048'
-        ];
-
-        if ($this->isMethod('PUT')) {
-            $rules['uuid'] = 'required|exists:tb_events,uuid';
-        }
-
-        return $rules;
+        ]);
     }
 }

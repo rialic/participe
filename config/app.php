@@ -4,6 +4,17 @@ use Illuminate\Support\Facades\Facade;
 use Mailjet\LaravelMailjet\MailjetServiceProvider;
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Smart params
+    |--------------------------------------------------------------------------
+    |
+    */
+    'api_smart_establishment' => env('API_SMART_ESTABLISHMENT', null),
+    'api_smart_teleeducation' => env('API_SMART_TELEEDUCATION', null),
+    'api_smart_professional' => env('API_SMART_PROFESSIONAL', null),
+    'token' => env('TOKEN', null),
+    'core_code' => env('CORE_CODE', null),
 
     /*
     |--------------------------------------------------------------------------

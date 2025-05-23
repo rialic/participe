@@ -30,6 +30,13 @@ class EstablishmentSeeder extends Seeder
                 ]);
             }
         });
+
+        $establishment::join('tb_cities', 'tb_cities.id', '=', 'tb_establishments.city_id')
+            ->join('tb_states', 'tb_states.id', '=', 'tb_cities.state_id')
+            ->where('acronym', 'MS')
+            ->where('legal_nature', 'ADMINISTRAÇÃO PÚBLICA')
+            ->where('sus', 'SIM')
+            ->update(['teduca' => 1, 'tconsul' => 1]);
     }
 
     private function getManagement($value)

@@ -52,7 +52,13 @@ class EventResource extends JsonResource
                 'name' => $this->attachment->original_name,
                 'mime' => $this->attachment->mime,
                 'file' => base64_encode(file_get_contents(storage_path("app/private/{$this->attachment->path}")))
-            ]) : null
+            ]) : null,
+            'created_by' => $this->whenLoaded('createdBy', [
+                'uuid' => $this->createdBy->uuid,
+                'name' => $this->createdBy->name,
+            ]),
+            'created_at_datetime_formatted' => $this->created_at_datetime_formatted,
+            'updated_at_datetime_formatted' => $this->updated_at_datetime_formatted
         ];
     }
 }

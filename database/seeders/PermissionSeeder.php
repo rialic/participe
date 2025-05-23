@@ -37,8 +37,8 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'EVENT.COURSE-CERTIFICATE'], ['description' => 'Permite o usuário gerar certificados de cursos']);
 
         Permission::firstOrCreate(['name' => 'SMART.ESTABLISHMENT'], ['description' => 'Permite o usuário ter acesso as funções gerais para enviar dados de estabelecimentos ao smart']);
-        Permission::firstOrCreate(['name' => 'SMART.USERS'], ['description' => 'Permite o usuário ter acesso as funções gerais para enviar dados de usuários ao smart']);
-        Permission::firstOrCreate(['name' => 'SMART.WEBLCASS'], ['description' => 'Permite o usuário ter acesso as funções gerais para enviar dados de webaula ao smart']);
+        Permission::firstOrCreate(['name' => 'SMART.PROFESSIONALS'], ['description' => 'Permite o usuário ter acesso as funções gerais para enviar dados de usuários ao smart']);
+        Permission::firstOrCreate(['name' => 'SMART.WEBCLASS'], ['description' => 'Permite o usuário ter acesso as funções gerais para enviar dados de webaula ao smart']);
         Permission::firstOrCreate(['name' => 'SMART.WEBCONSULTING'], ['description' => 'Permite o usuário ter acesso as funções gerais para enviar dados de teleconsultoria ao smart']);
 
         Permission::firstOrCreate(['name' => 'SETTINGS.USER-VIEW'], ['description' => 'Permite o usuário acessar à página de listagem de usuários e realizar pesquisas']);
@@ -68,5 +68,13 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'API.ROLES-SAVE'], ['description' => 'Permite o usuário fazer request na api para salvar novos papéis']);
         Permission::firstOrCreate(['name' => 'API.ROLES-UPDATE'], ['description' => 'Permite o usuário fazer request na api para alterar papéis']);
         Permission::firstOrCreate(['name' => 'API.ROLES-DELETE'], ['description' => 'Permite o usuário fazer request na api para excluir usuários']);
+
+        Permission::firstOrCreate(['name' => 'API.SMART.ESTABLISHMENT-GET'], ['description' => 'Permite o usuário fazer request na api para obter estabelecimentos a serem enviados ao smart']);
+        Permission::firstOrCreate(['name' => 'API.SMART.ESTABLISHMENT-SEND'], ['description' => 'Permite o usuário fazer request na api para enviar estabelecimentos ao smart']);
+        Permission::firstOrCreate(['name' => 'API.SMART.PROFESSIONALS-GET'], ['description' => 'Permite o usuário fazer request na api para obter profissionais da saúde a serem enviados ao smart']);
+        Permission::firstOrCreate(['name' => 'API.SMART.PROFESSIONALS-SEND'], ['description' => 'Permite o usuário fazer request na api para enviar profissionais da saúde ao smart']);
+        Permission::firstOrCreate(['name' => 'API.SMART.WEBCLASS-GET'], ['description' => 'Permite o usuário fazer request na api para obter tele-educações a serem enviados ao smart']);
+        Permission::firstOrCreate(['name' => 'API.SMART.WEBCLASS-SEND'], ['description' => 'Permite o usuário fazer request na api para enviar tele-educações ao smart']);
+        Permission::firstOrCreate(['name' => 'API.SMART.WEBCONSULTING'], ['description' => 'Permite o usuário fazer request na api para manipular dados do smart em teleconsultoria']);
     }
 }

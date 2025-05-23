@@ -179,6 +179,7 @@ const moduleRoute = computed(() => {
   return (moduleName) => {
     return {
       'dashboard': 'home',
+      'smart': 'smart',
     }[moduleName.toLowerCase()]
   }
 })

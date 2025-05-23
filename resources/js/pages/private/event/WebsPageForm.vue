@@ -18,13 +18,13 @@
             <v-row>
                 <v-col cols="12" md="6" class="py-1">
                     <v-text-field
-                        label="Tema *"
+                        label="Nome *"
                         v-model="form.name"
                         :error-messages="errorMessage('name')"
                         density="small"
                         required variant="outlined"
                         color="orange-darken-4"
-                        placeholder="Tema"
+                        placeholder="Nome"
                         autocomplete="false"
                         clearable>
                     </v-text-field>
@@ -454,6 +454,7 @@ import { errorMessage, presetForm, truncateText, presetFilter, unmaskDate, base6
 import useIcon from '@/composables/useIcon'
 
 import { useAppStore } from '@/stores/appStore'
+import { useAlertStore } from '@/stores/alertStore'
 import { useEventStore } from '@/stores/eventStore'
 import { useDescStore } from '@/stores/descStore'
 import { useStateStore } from '@/stores/stateStore'
@@ -467,6 +468,7 @@ const props = defineProps({
 })
 
 const appStore = useAppStore()
+const alertStore = useAlertStore()
 const stateStore = useStateStore()
 const cityStore = useCityStore()
 const eventStore = useEventStore()
@@ -523,8 +525,7 @@ onMounted(async () => {
 /* watch */
 watch(() => filter.value.autocomplete_descs_search, (newValue, oldValue) => {
     if (!newValue || (newValue !== oldValue)) {
-        // TODO HERE
-        descsStore.list = descsStore.list.filter((desc) => form.value.descs?.some((descsUuid) => desc.uuid === descsUuid))
+        descsStore.list = descsStore.list.filter((desc) => form.value.desc_bireme?.some((descsUuid) => desc.uuid === descsUuid))
     }
 })
 
@@ -661,11 +662,21 @@ function onObserver(value, page) {
 
 async function save() {
     const formData = new FormData()
+    const action = !props.uuid ? 'store' : 'update'
     const payload = preparePayloadFromForm()
+    const emailsFromFormHasErrors = validateEmailsFromForm()
+
+    if (emailsFromFormHasErrors) {
+        alertStore.showAlert = true
+
+        alertStore.setTypeAlert('error')
+        alertStore.setMessage('Erros foram encontrados.')
+
+        return
+    }
 
     appendPayloadToFormData(formData, payload)
 
-    const action = !props.uuid ? 'store' : 'update'
     const response = await eventStore[action](formData, props.uuid)
 
     if (response.status === 200 || response.status === 201) {
@@ -806,5 +817,17 @@ function validateEmail(list, emailWithErrors, emailsMessageErrors) {
             emailsMessageErrors.value.push(`${email} é um email inválido.`)
         }
     })
+}
+
+function validateEmailsFromForm() {
+    if (form.value.summary_emails) {
+        presetEmailsForSummary()
+    }
+
+    if (form.value.select_group_emails) {
+        presetEmailsForNotification()
+    }
+
+    return emailsSummaryWithErrors.value.length || emailsNotificationWithErrors.value.length
 }
 </script>

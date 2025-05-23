@@ -15,6 +15,7 @@ use App\Repository\Interfaces\{
     ParticipantInterface,
     PermissionInterface,
     RoleInterface,
+    SmartInterface,
     StateInterface,
     UserInterface
 };
@@ -30,6 +31,7 @@ use App\Repository\{
     ParticipantRepository,
     PermissionRepository,
     RoleRepository,
+    SmartRepository,
     StateRepository,
     UserRepository
 };
@@ -54,6 +56,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(EventInterface::class, EventRepository::class);
         $this->app->bind(ModuleInterface::class, ModuleRepository::class);
         $this->app->bind(ParticipantInterface::class, ParticipantRepository::class);
+        $this->app->bind(SmartInterface::class, SmartRepository::class);
     }
 
     /**

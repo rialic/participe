@@ -186,7 +186,7 @@ const eventTo = ref()
 /* onMounted */
 onMounted(async () => {
     appStore.pageTitle = 'Webaulas'
-    eventStore.eventTitle = 'List de webaulas'
+    eventStore.title = 'Lista de webaulas'
 })
 
 /* watch */

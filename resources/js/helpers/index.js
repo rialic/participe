@@ -3,6 +3,7 @@ import { format, toDate } from 'date-fns'
 export const {
     presetForm,
     presetFilter,
+    maskCpf,
     maskDate,
     unmaskDate,
     deepCopy,
@@ -17,11 +18,28 @@ export const {
               .reduce((acc, [key, value]) => acc = { ...acc, [key]: value }, {})
     }
 
-    function presetFilter(filter) {
-      return Object.entries({ ...filter })
-              .map(([key, value]) => [key, value?.trim() ])
-              .filter(([_, value]) => value)
-              .reduce((acc, [key, value]) => acc = { ...acc, [key]: value }, {})
+    function presetFilter(filter, allowEmptyFilter = false) {
+      if (!allowEmptyFilter) {
+        return Object.entries({ ...filter })
+                .map(([key, value]) => [key, value?.trim() ])
+                .filter(([_, value]) => value)
+                .reduce((acc, [key, value]) => acc = { ...acc, [key]: value }, {})
+              }
+
+        return Object.entries({ ...filter })
+                .map(([key, value]) => [key, value?.trim() ])
+                .reduce((acc, [key, value]) => acc = { ...acc, [key]: value || '' }, {})
+
+    }
+
+    function maskCpf(cpf) {
+      let strFormat = '###.###.###-##';
+
+      for (let i = 0; i < cpf.length; i++) {
+          strFormat = strFormat.replace('#', cpf[i]);
+      }
+
+      return strFormat;
     }
 
     function maskDate(date) {
@@ -123,6 +141,7 @@ export const {
     return {
       presetForm,
       presetFilter,
+      maskCpf,
       maskDate,
       unmaskDate,
       deepCopy,

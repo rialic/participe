@@ -3,7 +3,7 @@ import axios from '@/configs/axios'
 
 export const useEventStore = defineStore('eventStore', {
     state: () => ({
-        eventTitle: null,
+        title: null,
         list: []
     }),
     actions: {

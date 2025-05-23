@@ -45,7 +45,8 @@ import {
     faChevronDown,
     faStepForward,
     faTimes,
-    faPaperclip
+    faPaperclip,
+    faUserNurse,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -54,6 +55,7 @@ import {
     faSquare,
     faCircle,
     faDotCircle,
+    faHospital
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -103,7 +105,9 @@ library.add(
     faCircle,
     faDotCircle,
     faTimes,
-    faPaperclip
+    faPaperclip,
+    faHospital,
+    faUserNurse,
 )
 
 export default FontAwesomeIcon

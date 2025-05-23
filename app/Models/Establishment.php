@@ -21,7 +21,10 @@ class Establishment extends Model
         'management',
         'legal_nature',
         'sus',
-        'datacnes_id'
+        'datacnes_id',
+        'tdiagn',
+        'teduca',
+        'tconsul',
     ];
 
     // RELATIONSHIPS

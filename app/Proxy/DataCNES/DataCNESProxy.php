@@ -117,7 +117,6 @@ class DataCNESProxy
 					->get(env('DTACNES_ESTABLISHMENT_URL') . $city->datacnes_id);
 			} catch (\Exception $e) {
 				Log::error('Fetch Establishments Error', [$response]);
-				// $response = null;
 
 				ApiException::handleException($e, func_get_args());
 			}

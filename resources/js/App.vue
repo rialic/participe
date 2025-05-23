@@ -11,7 +11,7 @@
         </v-overlay>
 
         <v-alert
-            v-if="alertStore.showAlert"
+            v-model="alertStore.showAlert"
             position="sticky"
             location="top top"
             density="compact"

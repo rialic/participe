@@ -195,14 +195,14 @@ class DBRepository implements DBRepositoryInterface
         $isPaginable = Arr::get($params, 'page');
         $limit = Arr::get($params, 'limit') ?: -1;
         $deletedAt = Arr::get($params, 'deleted');
-        $model = $this->query($params);
-        $model = (!$deletedAt) ? $model->whereNull('deleted_at') : $model->where('deleted_at', $deletedAt);
+        $query = $this->query($params);
+        $query = (!$deletedAt) ? $query->whereNull("{$query->getModel()->getTable()}.deleted_at") : $query->where('deleted_at', $deletedAt);
 
         if ($isPaginable) {
-            return ($limit !== -1) ? $model->paginate($limit)->onEachSide(1) : $model->paginate()->onEachSide(1);
+            return ($limit !== -1) ? $query->paginate($limit)->onEachSide(1) : $query->paginate()->onEachSide(1);
         }
 
-        return ($limit !== -1) ? $model->limit($limit)->get() : $model->get();
+        return ($limit !== -1) ? $query->limit($limit)->get() : $query->get();
     }
 
     /**

@@ -58,15 +58,16 @@ export default (() => {
     function({ response, message }) {
       if (response.status === 422 || response.status === 400) {
         alertStore.value.showAlert = true
+
         alertStore.value.setTypeAlert('error')
         alertStore.value.setMessage(`ReqId: ${response.data.requestId || response.headers['x-request-id']} - Erros foram encontrados.`)
       }
 
       if (response.status === 500) {
         alertStore.value.showAlert = true
-        alertStore.value.setTypeAlert('error')
-        alertStore.value.setMessage(`ReqId: ${response.data.requestId || response.headers['x-request-id']} - Ops... tivemos algum erro em nosso sistema.`)
 
+        alertStore.value.setTypeAlert('error')
+        alertStore.value.setMessage(`ReqId: ${response.data.requestId || response.headers['x-request-id']} - Ops... tivemos algum erro em nosso sistema. ${response.data.errors?.message || ''}`)
         appStore.value.setOverlay(false)
 
         return
