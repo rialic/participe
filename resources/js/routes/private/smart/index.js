@@ -18,7 +18,7 @@ export default [
         meta: { guards: ['SMART.ESTABLISHMENT'], requiresAuth: true },
     },
     {
-        path: 'smart/tele-educação',
+        path: 'smart/tele-educacao',
         name: 'smart.webs',
         component: () => import('@/pages/private/smart/Webs.vue'),
         meta: { guards: ['SMART.WEBCLASS'], requiresAuth: true },

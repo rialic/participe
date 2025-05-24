@@ -12,12 +12,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Log;
 
 #[ObservedBy([EventObserver::class])]
 class Event extends Model
 {
-    use HasFactory, SoftDeletes, HasUuids, HasIdWithUuids { HasIdWithUuids::uniqueIds insteadof HasUuids; }
+    use HasFactory, SoftDeletes, HasUuids, HasIdWithUuids {
+        HasIdWithUuids::uniqueIds insteadof HasUuids;
+    }
 
     protected $table = 'tb_events';
 
@@ -54,10 +55,11 @@ class Event extends Model
     ];
 
     protected $with = [
-        'createdBy'
+        'createdBy',
     ];
 
-    protected static function boot() {
+    protected static function boot()
+    {
         parent::boot();
 
         static::created(function ($model) {
@@ -149,15 +151,15 @@ class Event extends Model
     public function participants()
     {
         return $this->belongsToMany(User::class, 'tb_event_participants', 'event_id', 'user_id')
-                    ->wherePivotNull('deleted_at')
-                    ->withPivot('created_at', 'deleted_at', 'deleted_by');
+            ->wherePivotNull('deleted_at')
+            ->withPivot('rating_event', 'created_at', 'deleted_at', 'deleted_by');
     }
 
     public function descs()
     {
         return $this->belongsToMany(Descs::class, 'tb_event_descs', 'event_id', 'descs_id')
-                    ->wherePivotNull('deleted_at')
-                    ->withPivot('created_at', 'deleted_at', 'deleted_by');
+            ->wherePivotNull('deleted_at')
+            ->withPivot('created_at', 'deleted_at', 'deleted_by');
     }
 
     public function attachment(): MorphOne

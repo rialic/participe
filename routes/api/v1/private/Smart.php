@@ -8,4 +8,6 @@ Route::prefix('smart')->controller(SmartController::class)->group(function() {
     Route::post('establishments', 'sendEstablishments')->name('API.SMART.ESTABLISHMENT-SEND');
     Route::get('professionals', 'index')->name('API.SMART.PROFESSIONALS-GET');
     Route::post('professionals', 'sendProfessionals')->name('API.SMART.PROFESSIONALS-SEND');
+    Route::get('webs', 'index')->name('API.SMART.WEBCLASS-GET');
+    Route::post('webs', 'sendWebs')->name('API.SMART.WEBCLASS-SEND');
 });

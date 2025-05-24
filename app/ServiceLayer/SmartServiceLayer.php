@@ -36,15 +36,15 @@ class SmartServiceLayer extends ServiceResource
         $this->coreCode = config('app.core_code');
     }
 
-    public function sendEstablishments($data): JsonResource|JsonResponse
+    public function sendEstablishments(array $data): JsonResource|JsonResponse
     {
         $establishmentList = $this->buildEstablishmentsQuery($data)->get();
-        $payload = $this->preparePayload($data, 'estabeleciomentos', $establishmentList->toArray());
+        $payload = $this->preparePayload($data, 'estabelecimentos', $establishmentList->toArray());
 
         return $this->sendToSmartApi($this->apiSmartEstablishment, $payload);
     }
 
-    public function sendProfessionals($data): JsonResource|JsonResponse
+    public function sendProfessionals(array $data): JsonResource|JsonResponse
     {
         $professionalsList = $this->buildProfessionalsQuery($data)->get();
         $formattedProfessionals = $this->formatProfessionalsData($professionalsList);
@@ -53,9 +53,15 @@ class SmartServiceLayer extends ServiceResource
         return $this->sendToSmartApi($this->apiSmartHealthProfessional, $payload);
     }
 
-    /**
-     * Constrói a query para estabelecimentos
-     */
+    public function sendWebs(array $data): JsonResource|JsonResponse
+    {
+        $websList = $this->buildWebsQuery()->get();
+        $websList = $this->formatWebsData($websList);
+        $payload = $this->preparePayload($data, 'atividades_teleeducacao', $websList);
+
+        return $this->sendToSmartApi($this->apiSmartTeleEducation, $payload);
+    }
+
     private function buildEstablishmentsQuery($data): Builder
     {
         $query = $this->establishment
@@ -70,9 +76,6 @@ class SmartServiceLayer extends ServiceResource
         return $this->applyTagFilters($query, $data, 'cnes');
     }
 
-    /**
-     * Constrói a query para profissionais
-     */
     private function buildProfessionalsQuery($data): Builder
     {
         $eventsQuery = $this->buildEventsParticipantsQuery($data);
@@ -81,9 +84,42 @@ class SmartServiceLayer extends ServiceResource
         return $eventsQuery->union($usersQuery);
     }
 
-    /**
-     * Constrói a query para participantes de eventos
-     */
+    private function buildWebsQuery(): Builder
+    {
+        return $this->event
+            ->whereNull('deleted_at')
+            ->whereRaw("start_at between date_format(date_sub(curdate(), interval 1 month), '%Y-%m-01') and last_day(date_sub(curdate(), interval 1 month))")
+            ->whereHas('participants')
+            ->with([
+                'participants.cbos' => fn($query) => $query->where('primary_bond', true),
+                'participants.establishments' => fn($query) => $query->where('primary_bond', true),
+                'descs'
+            ]);
+    }
+
+    private function formatWebsData($websList): array
+    {
+        $typeEventList = ['Curso' => 1, 'Webaulas/palestras' => 2];
+        return $websList->map(fn($event) => [
+            'id' => "MS{$event->id}",
+            'tipo' => $typeEventList[$event->type_event],
+            'origemf' => '',
+            'dtdispo' => $event->start_at_datetime_formatted,
+            'cargah' => $event->workload,
+            'decs' => $event->descs->map(fn($descs) => $descs->bireme_code)->toArray(),
+            'participacoes_teleeducacao' => $event->participants->map(fn($participant) => [
+                'id' => "MS{$event->id}",
+                'satisf' => $participant->pivot->rating_event,
+                'dtparti' => $participant->pivot->created_at->format('d/m/Y H:i:s'),
+                'cpf' => str_replace(['.', '-'], ['', ''], $participant->cpf),
+                'cbo' => $participant->cbos->first()->code,
+                'cnes' => $participant->establishments->first()->cnes,
+                'ine' => ''
+            ])
+        ])
+            ->all();
+    }
+
     private function buildEventsParticipantsQuery($data): Builder
     {
         $query = $this->event
@@ -100,9 +136,6 @@ class SmartServiceLayer extends ServiceResource
         return $this->applyTagFilters($query, $data, 'cpf');
     }
 
-    /**
-     * Constrói a query para usuários
-     */
     private function buildUsersQuery($data): Builder
     {
         $query = $this->user
@@ -116,9 +149,6 @@ class SmartServiceLayer extends ServiceResource
         return $this->applyIncludeTagFilter($query, $data, 'cpf');
     }
 
-    /**
-     * Aplica filtros de inclusão e exclusão por tags
-     */
     private function applyTagFilters(Builder $query, $data, string $field): Builder
     {
         return $query->where(function ($subQuery) use ($data, $field) {
@@ -132,9 +162,6 @@ class SmartServiceLayer extends ServiceResource
         });
     }
 
-    /**
-     * Aplica apenas filtro de inclusão por tags
-     */
     private function applyIncludeTagFilter(Builder $query, $data, string $field): Builder
     {
         return $query->where(function ($subQuery) use ($data, $field) {
@@ -144,17 +171,11 @@ class SmartServiceLayer extends ServiceResource
         });
     }
 
-    /**
-     * Retorna a condição SQL para o intervalo do mês anterior
-     */
     private function gePreviousMonthDateRange(): string
     {
         return "start_at between date_format(date_sub(curdate(), interval 1 month), '%Y-%m-01') and last_day(date_sub(curdate(), interval 1 month))";
     }
 
-    /**
-     * Formata os dados dos profissionais
-     */
     private function formatProfessionalsData($professionalsList): array
     {
         return $professionalsList->map(function ($professional) {
@@ -171,25 +192,16 @@ class SmartServiceLayer extends ServiceResource
         })->toArray();
     }
 
-    /**
-     * Formata CPF removendo pontos e hífens
-     */
     private function formatCpf(string $cpf): string
     {
         return str_replace(['.', '-'], '', $cpf);
     }
 
-    /**
-     * Formata sexo para retornar apenas a primeira letra
-     */
     private function formatSex(string $sex): string
     {
         return substr($sex, 0, 1);
     }
 
-    /**
-     * Prepara o payload para envio à API
-     */
     private function preparePayload($data, string $listName, array $list): array
     {
         return [
@@ -200,9 +212,6 @@ class SmartServiceLayer extends ServiceResource
         ];
     }
 
-    /**
-     * Envia dados para a API Smart
-     */
     private function sendToSmartApi(string $api, array $payload): JsonResource|JsonResponse
     {
         try {
@@ -214,9 +223,6 @@ class SmartServiceLayer extends ServiceResource
         }
     }
 
-    /**
-     * Realiza a requisição HTTP
-     */
     private function makeHttpRequest(string $api, array $payload)
     {
         return Http::withHeaders([
@@ -230,9 +236,6 @@ class SmartServiceLayer extends ServiceResource
         })->post($api, $payload);
     }
 
-    /**
-     * Trata a resposta da API
-     */
     private function handleApiResponse(): JsonResponse
     {
         $status = $this->apiResponse->status();
@@ -251,18 +254,12 @@ class SmartServiceLayer extends ServiceResource
         ], $status);
     }
 
-    /**
-     * Extrai mensagem da resposta da API
-     */
     private function extractMessageFromResponse(): string
     {
         $responseData = $this->apiResponse->json();
         return isset($responseData['message']) ? implode(' ', $responseData['message']) : 'Resposta sem mensagem';
     }
 
-    /**
-     * Trata exceções
-     */
     private function handleException(\Exception $e): JsonResponse
     {
         $message = $this->apiResponse ? $this->extractMessageFromResponse() : $e->getMessage();
