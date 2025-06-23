@@ -345,7 +345,6 @@ async function loadItems(page, itemsPerPageValue) {
         direction: direction.value,
         ...presetFilter(filter.value, true)
     }
-    console.log(payload)
     const response = await smartStore[props.loadFunction](payload)
     loading.value = false
 

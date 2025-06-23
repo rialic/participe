@@ -62,9 +62,9 @@ export const {
       return value?.slice(0, limit).trim() + '...'
     }
 
-    function errorMessage(label) {
-      if (Object.keys(this.errors).length) {
-        return this.errors[label]?.join(' ') || null
+    function errorMessage(label, errors) {
+      if (Object.keys(errors).length) {
+        return errors[label]?.join(' ') || null
       }
     }
 

@@ -19,7 +19,7 @@
                                         label="CPF *"
                                         v-model="cpf"
                                         :rules="[rules.cpf]"
-                                        :error-messages="errorMessage('cpf')"
+                                        :error-messages="errorMessage('cpf', errors)"
                                         density="small"
                                         required variant="outlined"
                                         color="orange-darken-4"

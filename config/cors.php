@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => explode(',', env('VITE_URL', 'https://localhost:3000')),
+    'allowed_origins' => explode(',', env('VITE_URL')),
 
     'allowed_origins_patterns' => [],
 

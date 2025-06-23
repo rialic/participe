@@ -47,5 +47,23 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./resources/js', import.meta.url)),
             '@images': fileURLToPath(new URL('./resources/images', import.meta.url))
         },
+    },
+    build: {
+        target: ['es2015', 'chrome58', 'firefox57', 'safari11'],
+        minify: 'esbuild',
+        rollupOptions: {
+            output: {
+                format: 'es',
+                entryFileNames: '[name]-[hash].js',
+                chunkFileNames: '[name]-[hash].js',
+                assetFileNames: '[name]-[hash].[ext]'
+            }
+        }
+    },
+    esbuild: {
+        target: 'es2015',
+        supported: {
+            'top-level-await': false
+        }
     }
 });

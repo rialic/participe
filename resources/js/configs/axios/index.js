@@ -26,7 +26,12 @@ export default (() => {
     })
 
     instance.interceptors.request.use(function(config) {
-    appStore.value.setOverlay(true)
+      const token = document.querySelector('meta[name="csrf-token"]');
+      appStore.value.setOverlay(true)
+
+      if (token) {
+        config.headers['X-CSRF-TOKEN'] = token.getAttribute('content');
+      }
 
       return config
     }, null)

@@ -7,7 +7,6 @@ ARG UID
 # Enviorement
 ENV TZ=America/Campo_Grande
 
-COPY php.ini-development /usr/local/etc/php
 COPY --from=composer:2.8.5 /usr/bin/composer /usr/bin/composer
 
 RUN apk --no-cache --update add git curl tzdata shadow imagemagick imagemagick-dev gcc g++ autoconf libpng libpng-dev libjpeg libwebp make pkgconfig libzip libzip-dev \

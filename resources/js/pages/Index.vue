@@ -24,7 +24,7 @@
                                                                     label="Email"
                                                                     placeholder="Email"
                                                                     v-model="form.email"
-                                                                    :error-messages="errorMessage('email')"
+                                                                    :error-messages="errorMessage('email', errors)"
                                                                     density="small"
                                                                     clearable
                                                                     variant="outlined"
@@ -36,7 +36,7 @@
                                                                     label="Senha"
                                                                     placeholder="Senha"
                                                                     v-model="form.password"
-                                                                    :error-messages="errorMessage('password')"
+                                                                    :error-messages="errorMessage('password', errors)"
                                                                     density="small"
                                                                     variant="outlined"
                                                                     color="orange-darken-4"
@@ -96,7 +96,7 @@
                                                                     label="Email"
                                                                     placeholder="Email"
                                                                     v-model="form.email"
-                                                                    :error-messages="errorMessage('email')"
+                                                                    :error-messages="errorMessage('email', errors)"
                                                                     density="small"
                                                                     clearable
                                                                     variant="outlined"

@@ -20,7 +20,7 @@
                     <v-text-field
                         label="Nome *"
                         v-model="form.name"
-                        :error-messages="errorMessage('name')"
+                        :error-messages="errorMessage('name', errors)"
                         density="small"
                         required variant="outlined"
                         color="orange-darken-4"
@@ -35,7 +35,7 @@
                         label="Organização *"
                         v-model="form.organization"
                         :items="['TSMS', 'Fiocruz']"
-                        :error-messages="errorMessage('organization')"
+                        :error-messages="errorMessage('organization', errors)"
                         density="small"
                         required variant="outlined"
                         color="orange-darken-4"
@@ -51,7 +51,7 @@
                     <v-text-field
                         label="Link *"
                         v-model="form.room_link"
-                        :error-messages="errorMessage('room_link')"
+                        :error-messages="errorMessage('room_link', errors)"
                         density="small"
                         required variant="outlined"
                         color="orange-darken-4"
@@ -70,7 +70,7 @@
                         :items="descsStore.list"
                         :item-title="(descBireme) => `&nbsp; ${descBireme.bireme_code} - ${descBireme.name} - ${truncateText(descBireme.description, 100)}`"
                         :item-value="(descBireme) => descBireme.uuid"
-                        :error-messages="errorMessage('descs')"
+                        :error-messages="errorMessage('desc_bireme', errors)"
                         hint="Digite o código bireme que deseja pesquisar"
                         density="small"
                         required variant="outlined"
@@ -167,7 +167,7 @@
                         <v-col cols="12" md="6" class="pb-1">
                             <div class="position-relative w-100">
                                 <label
-                                    :class="['dp__label fs-12x position-absolute px-1', { 'dp__label_invalid': Boolean(errorMessage('start_at')) }]">
+                                    :class="['dp__label fs-12x position-absolute px-1', { 'dp__label_invalid': Boolean(errorMessage('start_at', errors)) }]">
                                     Data início *
                                 </label>
 
@@ -177,7 +177,7 @@
                                     format="dd/MM/yyyy HH:mm:ss"
                                     locale="pt-br"
                                     placeholder="Data início *"
-                                    :state="!Boolean(errorMessage('start_at'))"
+                                    :state="!Boolean(errorMessage('start_at', errors))"
                                     :min-date="new Date()"
                                     :max-date="form.end_at"
                                     month-name-format="long"
@@ -202,7 +202,7 @@
                                                 viewBox="0 0 512 512">
                                                 <path
                                                     class=""
-                                                    :fill="errorMessage('start_at') ? '#B00020' : 'currentColor'"
+                                                    :fill="errorMessage('start_at', errors) ? '#B00020' : 'currentColor'"
                                                     d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z">
                                                 </path>
                                             </svg>
@@ -210,7 +210,7 @@
                                     </template>
                                 </vue-date-picker>
 
-                                <span class="fs-12x px-4" style="color: #B00020"> {{ errorMessage('start_at') }}</span>
+                                <span class="fs-12x px-4" style="color: #B00020"> {{ errorMessage('start_at', errors) }}</span>
                             </div>
                         </v-col>
 
@@ -246,7 +246,7 @@
                         <v-col cols="12" md="6" class="pb-1">
                             <div class="position-relative w-100">
                                 <label
-                                    :class="['dp__label fs-12x position-absolute px-1', { 'dp__label_invalid': Boolean(errorMessage('end_at')) }]">
+                                    :class="['dp__label fs-12x position-absolute px-1', { 'dp__label_invalid': Boolean(errorMessage('end_at', errors)) }]">
                                     Data fim *
                                 </label>
 
@@ -256,7 +256,7 @@
                                     format="dd/MM/yyyy HH:mm:ss"
                                     locale="pt-br"
                                     placeholder="Data fim *"
-                                    :state="!Boolean(errorMessage('end_at'))"
+                                    :state="!Boolean(errorMessage('end_at', errors))"
                                     :min-date="form.start_at || new Date()"
                                     month-name-format="long"
                                     select-text="Selecionar"
@@ -280,7 +280,7 @@
                                                 viewBox="0 0 512 512">
                                                 <path
                                                     class=""
-                                                    :fill="errorMessage('end_at') ? '#B00020' : 'currentColor'"
+                                                    :fill="errorMessage('end_at', errors) ? '#B00020' : 'currentColor'"
                                                     d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z">
                                                 </path>
                                             </svg>
@@ -288,7 +288,7 @@
                                     </template>
                                 </vue-date-picker>
 
-                                <span class="fs-12x px-4" style="color: #B00020"> {{ errorMessage('end_at') }}</span>
+                                <span class="fs-12x px-4" style="color: #B00020"> {{ errorMessage('end_at', errors) }}</span>
                             </div>
                         </v-col>
 
@@ -327,7 +327,7 @@
                         label="Banner"
                         density="small"
                         variant="outlined"
-                        :error-messages="errorMessage('banner')"
+                        :error-messages="errorMessage('banner', errors)"
                         color="orange-darken-4"
                         show-size
                         placeholder="Banner"
@@ -360,7 +360,7 @@
                         :items="cityStore.list"
                         :item-title="(city) => `&nbsp; ${city.name}`"
                         :item-value="(city) => city.uuid"
-                        :error-messages="errorMessage('cities_to_notify')"
+                        :error-messages="errorMessage('cities_to_notify', errors)"
                         density="small"
                         no-data-text="Nenhum item encontrado."
                         required variant="outlined"
@@ -377,7 +377,7 @@
                             label="Emails a serem notificados de uma nova agenda de webaula *"
                             v-model="form.select_group_emails"
                             rows="3"
-                            :error-messages="emailsNotificationMessageErrors.join(' ') || errorMessage('select_group_emails')"
+                            :error-messages="emailsNotificationMessageErrors.join(' ') || errorMessage('select_group_emails', errors)"
                             density="small"
                             required variant="outlined"
                             color="orange-darken-4"
