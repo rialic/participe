@@ -25,7 +25,7 @@ services:
     build:
       args:
         UID: 1000
-        GROUP: www-data
+        GROUP: 1000
       context: ./.docker/php-fpm
       dockerfile: Dockerfile
     image: app
@@ -69,7 +69,6 @@ services:
       context: ./.docker/node
       dockerfile: Dockerfile
     image: node
-    container_name: node
     container_name: node
     working_dir: /var/www
     volumes:

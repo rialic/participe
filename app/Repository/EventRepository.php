@@ -35,7 +35,7 @@ class EventRepository extends DBRepository implements EventInterface
     public function filterByEventsAvailables($query, $data, $field): Builder
     {
         return $query
-                    ->whereRaw("date(start_at) = curdate()")
+                    ->whereRaw("DATE_SUB(start_at, INTERVAL start_minutes_additions MINUTE) <= current_timestamp()")
                     ->whereRaw('DATE_ADD(end_at, INTERVAL end_minutes_additions MINUTE) >= current_timestamp()')
                     ->where('type_event', 'Webaulas/palestras');
     }

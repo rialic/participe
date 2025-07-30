@@ -11,6 +11,9 @@ use App\Repository\Interfaces\{
     DescsInterface,
     EstablishmentInterface,
     EventInterface,
+    EventReportInterface,
+    MacroZoneInterface,
+    MicroZoneInterface,
     ModuleInterface,
     ParticipantInterface,
     PermissionInterface,
@@ -26,7 +29,10 @@ use App\Repository\{
     DashboardRepository,
     DescsRepository,
     EstablishmentRepository,
+    EventReportRepository,
     EventRepository,
+    MacroZoneRepository,
+    MicroZoneRepository,
     ModuleRepository,
     ParticipantRepository,
     PermissionRepository,
@@ -52,8 +58,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CityInterface::class, CityRepository::class);
         $this->app->bind(DashboardInterface::class, DashboardRepository::class);
         $this->app->bind(DescsInterface::class, DescsRepository::class);
+        $this->app->bind(MacroZoneInterface::class, MacroZoneRepository::class);
+        $this->app->bind(MicroZoneInterface::class, MicroZoneRepository::class);
         $this->app->bind(EstablishmentInterface::class, EstablishmentRepository::class);
         $this->app->bind(EventInterface::class, EventRepository::class);
+        $this->app->bind(EventReportInterface::class, EventReportRepository::class);
         $this->app->bind(ModuleInterface::class, ModuleRepository::class);
         $this->app->bind(ParticipantInterface::class, ParticipantRepository::class);
         $this->app->bind(SmartInterface::class, SmartRepository::class);

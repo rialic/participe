@@ -35,6 +35,16 @@ export const useEventStore = defineStore('eventStore', {
         },
         async storeParticipantRating(uuid, payload) {
             return await axios.put(`v1/events/participant-rating/${uuid}`, payload)
-        }
+        },
+        async eventReport(payload) {
+            const query = new URLSearchParams(payload)
+
+            return await axios.get(`v1/events-report?${query}`)
+        },
+        async print(payload, type) {
+            const query = new URLSearchParams(payload)
+
+            return await axios({ url: `v1/events-report/export/${type}?${query}`, method: 'get', responseType: 'blob'})
+        },
     }
 })

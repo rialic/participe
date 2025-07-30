@@ -5,9 +5,6 @@ use App\Http\Middleware\ACLMiddleware;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
-// TODO QUANDO O USUÁRIO FICA PARADO POR MUITO TEMPO NA PÁGINA PÚBLICA O TOKEN DO LARAVEL É PERDIDO E QUANDO O MESMO FAZ ALGUM REQUEST PARA O BACK-END É RETORNADO 419, RESOLVER ISSO
-// TODO - COMPONENTIZAR o Webclass - Final de Semana
-
 Route::group(['prefix' => 'v1'], function () {
     Route::post('magic-link', [UserController::class, 'sendMagicLink']);
 

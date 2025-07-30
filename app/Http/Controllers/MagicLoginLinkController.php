@@ -10,6 +10,6 @@ class MagicLoginLinkController extends Controller
     {
         auth()->login($user);
 
-        return redirect(config('app.url') . '/home');
+        return redirect(config('app.url') . '');
     }
 }

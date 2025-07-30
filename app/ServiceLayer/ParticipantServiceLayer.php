@@ -4,6 +4,7 @@ namespace App\ServiceLayer;
 
 use App\Models\User;
 use App\Repository\Interfaces\CboInterface as CboRepository;
+use App\Repository\Interfaces\RoleInterface as RoleRepository;
 use App\Repository\Interfaces\EstablishmentInterface as EstablishmentRepository;
 use App\Repository\Interfaces\ParticipantInterface as ParticipantRepository;
 use App\ServiceLayer\Base\ServiceResource;
@@ -14,6 +15,7 @@ class ParticipantServiceLayer extends ServiceResource {
     public function __construct(
         private readonly ParticipantRepository $participantRepository,
         private CboRepository $cboRepository,
+        private RoleRepository $roleRepository,
         private EstablishmentRepository $establishmentRepository,
         private User $user,
     )
@@ -47,12 +49,12 @@ class ParticipantServiceLayer extends ServiceResource {
 
     public function store(array $data, ?object $model = null): object
     {
-        $establishment = $this->establishmentRepository->getUuidToId($data['establishment']);
         $cbo = $this->cboRepository->getUuidToId($data['cbo']);
+        $establishment = $this->establishmentRepository->getUuidToId($data['establishment']);
 
         $this->user->fill(['name' => $data['name'], 'cpf' => $data['cpf'], 'email' => $data['email'], 'sex' => $data['sex'], 'password' => Hash::make('password')]);
 
-        return DB::transaction(function() use($establishment, $cbo) {
+        return DB::transaction(function() use($cbo, $establishment) {
             $this->user->save();
             $this->user->establishments()->syncWithPivotValues([$establishment->id], ['cbo_id' => $cbo->id, 'primary_bond' => true], false);
 
@@ -80,17 +82,19 @@ class ParticipantServiceLayer extends ServiceResource {
 
     private function storeParticipant($user, $cpf)
     {
+        $role = $this->roleRepository->getFirstData(['name' => 'USUARIO']);
         $userBonds = $user['vinculos'] ?? $user[0]['vinculos'] ?? null;
 
         $this->user->fill(['name' => $user['nome'] ?? $user[0]['nome'], 'cpf' => $cpf, 'email' => uniqid() . '@email.com', 'sexo' => 'Outro', 'password' => Hash::make('password')]);
         $this->user->save();
+        $this->user->roles()->sync([$role->id]);
 
         if (is_array($userBonds)) {
             $establishmentCboList = [];
 
             $establishmentCboList += collect($userBonds)->reduce(function($acc, $bond) {
-                $establishment = $this->establishmentRepository->getFirstData(['cnes' => $bond['cnes']]);
                 $cbo = $this->cboRepository->getFirstData(['code' => $bond['cbo']]);
+                $establishment = $this->establishmentRepository->getFirstData(['cnes' => $bond['cnes']]);
 
                 $acc[] = ['establishment' => $establishment->id, 'cbo' => $cbo->id];
 

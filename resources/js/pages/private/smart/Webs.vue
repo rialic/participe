@@ -18,7 +18,7 @@
                 <td>{{ item.bireme_code }}</td>
                 <td>{{ item.organization }}</td>
                 <td>{{ item.participant }}</td>
-                <td>{{ item.enrolled_at }}</td>
+                <td>{{ item.signed_up_at }}</td>
                 <td>{{ item.cpf }}</td>
                 <td>{{ item.cnes }}</td>
                 <td>{{ item.cbo }}</td>

@@ -16,6 +16,6 @@ class PermissionRepository extends DBRepository implements PermissionInterface
 
     public function filterByName($query, $data, $field): Builder
     {
-        return $query->where($field, 'like', "%{$data}%");
+        return $query->where($field, $data);
     }
 }

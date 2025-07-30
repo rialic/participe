@@ -10,7 +10,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 /* Components */
 import FontAwesomeIcon from '@/font-awesome'
-import VueDatePicker from '@vuepic/vue-datepicker';
+import VueDatePicker from '@vuepic/vue-datepicker'
 import NoContentFound from '@/components/NoContentFound.vue'
 import DeleteModal from '@/components/DeleteModal.vue'
 

@@ -16,8 +16,12 @@ RUN apk --no-cache --update add git curl tzdata shadow imagemagick imagemagick-d
 && ./configure \
 && make \
 && make install \
-&& docker-php-ext-install pdo pdo_mysql gd \
+&& docker-php-ext-install pdo pdo_mysql gd zip \
 && docker-php-ext-enable imagick \
-&& usermod -u $UID $GROUP \
+# && usermod -u $UID $GROUP \
+&& usermod -u $UID www-data \
+&& groupmod -g $UID www-data \
 && apk del git imagemagick-dev gcc g++ autoconf libpng-dev make pkgconfig libzip-dev \
 && rm -Rf /var/cache/apk/*
+
+USER www-data

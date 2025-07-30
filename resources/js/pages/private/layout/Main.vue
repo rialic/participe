@@ -96,13 +96,13 @@
 
       <template #append>
         <v-btn class="text-none me-2" height="48" icon slim>
-          <v-avatar color="surface-light" image="https://cdn.vuetifyjs.com/images/john.png" size="32" />
+          <v-icon :icon="'fas fa-user'" size="x-small"></v-icon>
 
           <v-menu activator="parent">
             <v-list density="compact" nav>
-              <v-list-item link title="Settings" />
+              <v-list-item link title="Perfil" />
 
-              <v-list-item link title="Logout" />
+              <v-list-item @click.prevent.stop="logout()" link title="Sair" />
             </v-list>
           </v-menu>
         </v-btn>
@@ -178,7 +178,7 @@ const moduleIcon = computed(() => {
 const moduleRoute = computed(() => {
   return (moduleName) => {
     return {
-      'dashboard': 'home',
+      'dashboard': 'dashboard',
       'smart': 'smart',
     }[moduleName.toLowerCase()]
   }

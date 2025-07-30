@@ -24,7 +24,7 @@ export const {
                 .map(([key, value]) => [key, value?.trim() ])
                 .filter(([_, value]) => value)
                 .reduce((acc, [key, value]) => acc = { ...acc, [key]: value }, {})
-              }
+      }
 
         return Object.entries({ ...filter })
                 .map(([key, value]) => [key, value?.trim() ])

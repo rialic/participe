@@ -15,7 +15,8 @@ class PermissionSeeder extends Seeder
     {
         Permission::firstOrCreate(['name' => 'ADMIN']);
 
-        Permission::firstOrCreate(['name' => 'HOME'], ['description' => 'Permite acesso à página inicial na qual é possível ver o dashboard']);
+        Permission::firstOrCreate(['name' => 'HOME'], ['description' => 'Permite acesso à página inicial padrão']);
+        Permission::firstOrCreate(['name' => 'DASHBOARD'], ['description' => 'Permite acesso à página inicial na qual é possível ver o dashboard']);
 
         Permission::firstOrCreate(['name' => 'MENU.DASHBOARD'], ['description' => 'Permite visualizar o menu lateral Dashboard']);
         Permission::firstOrCreate(['name' => 'MENU.EVENT'], ['description' => 'Permite visualizar o menu lateral de Tele-educação']);
@@ -29,12 +30,8 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-VIEW'], ['description' => 'Permite o usuário acessar à página de listagem de webaulas e realizar pesquisas']);
         Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-CREATE'], ['description' => 'Permite o usuário acessar à página para criar webaulas']);
         Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-EDIT'], ['description' => 'Permite o usuário acessar à página para editar webaulas']);
+        Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-REPORT'], ['description' => 'Permite o usuário acessar à página de relatórios de webaulas e realizar pesquisas']);
         Permission::firstOrCreate(['name' => 'EVENT.WEBCLASS-CERTIFICATE'], ['description' => 'Permite o usuário gerar certificados de webaulas']);
-
-        Permission::firstOrCreate(['name' => 'EVENT.COURSE-VIEW'], ['description' => 'Permite o usuário acessar à página de listagem de cursos e realizar pesquisas']);
-        Permission::firstOrCreate(['name' => 'EVENT.COURSE-CREATE'], ['description' => 'Permite o usuário acessar à página para criar cursos']);
-        Permission::firstOrCreate(['name' => 'EVENT.COURSE-EDIT'], ['description' => 'Permite o usuário acessar à página para editar cursos']);
-        Permission::firstOrCreate(['name' => 'EVENT.COURSE-CERTIFICATE'], ['description' => 'Permite o usuário gerar certificados de cursos']);
 
         Permission::firstOrCreate(['name' => 'SMART.ESTABLISHMENT'], ['description' => 'Permite o usuário ter acesso as funções gerais para enviar dados de estabelecimentos ao smart']);
         Permission::firstOrCreate(['name' => 'SMART.PROFESSIONALS'], ['description' => 'Permite o usuário ter acesso as funções gerais para enviar dados de usuários ao smart']);
@@ -55,6 +52,9 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'API.EVENT.WEBCLASS-SAVE'], ['description' => 'Permite o usuário fazer request na api para inserir novas webaulas']);
         Permission::firstOrCreate(['name' => 'API.EVENT.WEBCLASS-UPDATE'], ['description' => 'Permite o usuário fazer request na api para alterar webaulas']);
         Permission::firstOrCreate(['name' => 'API.EVENT.WEBCLASS-DELETE'], ['description' => 'Permite o usuário fazer request na api para excluir webaulas']);
+        Permission::firstOrCreate(['name' => 'API.EVENT.WEBCLASS-REPORT'], ['description' => 'Permite o usuário fazer request na api para imprimir webaulas']);
+        Permission::firstOrCreate(['name' => 'API.EVENT.WEBCLASS-REPORT-PDF'], ['description' => 'Permite o usuário imprimir relatórios de webaulas em PDF']);
+        Permission::firstOrCreate(['name' => 'API.EVENT.WEBCLASS-REPORT-EXCEL'], ['description' => 'Permite o usuário imprimir relatórios de webaulas em Excel']);
         Permission::firstOrCreate(['name' => 'API.EVENT.COURSE-SAVE'], ['description' => 'Permite o usuário fazer request na api para criar novos cursos']);
         Permission::firstOrCreate(['name' => 'API.EVENT.COURSE-UPDATE'], ['description' => 'Permite o usuário fazer request na api para alterar cursos']);
         Permission::firstOrCreate(['name' => 'API.EVENT.COURSE-DELETE'], ['description' => 'Permite o usuário fazer request na api para excluir os cursos']);
@@ -68,6 +68,9 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'API.ROLES-SAVE'], ['description' => 'Permite o usuário fazer request na api para salvar novos papéis']);
         Permission::firstOrCreate(['name' => 'API.ROLES-UPDATE'], ['description' => 'Permite o usuário fazer request na api para alterar papéis']);
         Permission::firstOrCreate(['name' => 'API.ROLES-DELETE'], ['description' => 'Permite o usuário fazer request na api para excluir usuários']);
+
+        Permission::firstOrCreate(['name' => 'API.MACRO-ZONE'], ['description' => 'Permite o usuário a realizar consulta as macro regiões']);
+        Permission::firstOrCreate(['name' => 'API.MICRO-ZONE'], ['description' => 'Permite o usuário a realizar consulta as micro regiões']);
 
         Permission::firstOrCreate(['name' => 'API.SMART.ESTABLISHMENT-GET'], ['description' => 'Permite o usuário fazer request na api para obter estabelecimentos a serem enviados ao smart']);
         Permission::firstOrCreate(['name' => 'API.SMART.ESTABLISHMENT-SEND'], ['description' => 'Permite o usuário fazer request na api para enviar estabelecimentos ao smart']);

@@ -23,6 +23,8 @@ class DataCNESProxy
 
 	public function fetch(string $typeObject, string $data = null)
 	{
+		$this->updateDataCnesCertificate();
+
 		$fetchList = [
 			'descs' => fn() => $this->fetchDescs(),
 			'cities' => fn() => $this->fetchCities(),
@@ -266,5 +268,11 @@ class DataCNESProxy
 		}
 
 		return null;
+	}
+
+	private function updateDataCnesCertificate()
+	{
+		$command = "openssl s_client -showcerts -connect cnes.datasus.gov.br:443 </dev/null 2>/dev/null | openssl x509 -outform PEM > /var/www/datacnes.pem";
+		shell_exec($command);
 	}
 }

@@ -24,7 +24,8 @@ class CertificateResource extends JsonResource
             'end_at' => $this->end_at,
             'participant' => [
                 'uuid' => $this->participants->first()->uuid,
-                'name' => $this->participants->first()->name
+                'name' => $this->participants->first()->name,
+                'rated_at' => $this->participants->first()->rated_at
             ]
         ];
     }

@@ -17,7 +17,7 @@ class CertificateRepository extends DBRepository implements CertificateInterface
     public function filterByCpf($query, $data, $field): Builder
     {
         return $query->whereHas('participants', fn($query) => $query->where($field, $data))
-        ->with(['participants' => fn($query) => $query->select(['tb_users.uuid', 'tb_users.name'])->where('cpf', $data)])
+        ->with(['participants' => fn($query) => $query->select(['tb_users.uuid', 'tb_users.name', 'rated_at'])->where('cpf', $data)])
         ->whereRaw('DATE_ADD(end_at, INTERVAL end_minutes_additions MINUTE) <= current_timestamp()');
     }
 }

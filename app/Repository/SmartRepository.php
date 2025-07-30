@@ -105,10 +105,10 @@ class SmartRepository extends DBRepository implements SmartInterface
             tb_users.cpf as cpf,
             tb_establishments.cnes as cnes,
             tb_cbos.code as cbo,
-            date_format(tb_event_participants.created_at, '%d/%m/%Y %H:%i:%s') as enrolled_at,
+            date_format(tb_event_participants.created_at, '%d/%m/%Y %H:%i:%s') as signed_up_at,
             tb_states.acronym as state,
             tb_cities.name as city
-        ")
+            ")
             ->join('tb_event_descs', 'tb_event_descs.event_id', '=', 'tb_events.id')
             ->join('tb_descs', 'tb_event_descs.descs_id', '=', 'tb_descs.id')
             ->join('tb_event_participants', 'tb_event_participants.event_id', '=', 'tb_events.id')

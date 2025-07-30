@@ -216,7 +216,7 @@ async function onSearchParticipant() {
 
 async function onPrintCertificate(item) {
     selectedEvent.value = item
-    certificateStore.showRatingModal = !selectedEvent.value.rated_at
+    certificateStore.showRatingModal = !selectedEvent.value.participant.rated_at
 
     if (!certificateStore.showRatingModal) {
         downloadFile()
@@ -229,16 +229,16 @@ async function printCertificate(form) {
 
     if(response.ok) {
         alertStore.showAlert = false
-        selectedEvent.value.rated_at = new Date()
+        selectedEvent.value.participant.rated_at = new Date()
         downloadFile()
     }
 }
 
 async function downloadFile() {
     const response = await certificateStore.print({ participant: selectedEvent.value.participant.uuid, event: selectedEvent.value.uuid })
-    const link = document.createElement('a');
+    const link = document.createElement('a')
     const fileURL = URL.createObjectURL(response.data)
-    link.download = `Certificado ${selectedEvent.value.name} - ${certificateStore.list.name}`
+    link.download = `Certificado ${selectedEvent.value.name} - ${selectedEvent.value.participant.name}`
     link.href = fileURL
 
     document.body.appendChild(link)

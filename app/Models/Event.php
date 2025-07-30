@@ -74,7 +74,8 @@ class Event extends Model
             'start_at' => 'datetime',
             'end_at' => 'datetime',
             'created_at' => 'datetime',
-            'updated_at' => 'datetime'
+            'updated_at' => 'datetime',
+            'enrolled_at' => 'datetime'
         ];
     }
 

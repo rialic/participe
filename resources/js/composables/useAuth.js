@@ -16,7 +16,6 @@ export default function useAuth() {
     axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
     async function attemptAuth() {
-      if (!state.user) {
         const { me } = useUserStore()
         const response = await me()
         const user = response.data
@@ -28,7 +27,6 @@ export default function useAuth() {
         if (response.status === 401) {
             authenticate(null, false)
         }
-      }
     }
 
     function authenticate(user, authenticated = true) {
@@ -44,9 +42,10 @@ export default function useAuth() {
 
           if (response.status === 200) {
             const user = response.data
+            const isDefaultUser = !!user.abilities.find((ability) => ability === 'HOME')
 
             authenticate(user)
-            router.replace({ name: 'home' })
+            router.replace({ name: isDefaultUser ? 'home' : 'dashboard' })
           }
 
           return response
@@ -70,8 +69,9 @@ export default function useAuth() {
       async function logout() {
         try {
           const response = await axios({ method: 'post', url: `/api/logout` })
+          const statusList = [200, 204, 401]
 
-          if (response.status === 200 || response.status === 204) {
+          if (statusList.includes(response.status)) {
             authenticate(null, false)
             router.push({ name: 'guest.login' })
           }

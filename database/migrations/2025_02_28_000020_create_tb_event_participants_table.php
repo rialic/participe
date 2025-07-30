@@ -15,8 +15,8 @@ return new class extends Migration
         Schema::create('tb_event_participants', function (Blueprint $table) {
             $table->unsignedBigInteger('event_id')->index();
             $table->unsignedBigInteger('user_id')->index();
-            $table->integer('rating_event')->default(0);
-            $table->integer('rating_event_schedule')->default(0);
+            $table->integer('rating_event')->default(9);
+            $table->integer('rating_event_schedule')->default(9);
             $table->text('hint')->nullable();
             $table->timestamp('rated_at')->nullable();
             $table->timestamp('created_at')->default()->useCurrent();

@@ -13,6 +13,26 @@
         </v-btn>
     </div>
 
+    <div v-if="form.created_by" class="d-flex flex-column align-end pa-0 pa-md-4 mb-4">
+        <span class="fs-14x">
+            <strong>Criado em:</strong>
+
+            {{ form.created_at_datetime_formatted }}
+        </span>
+
+        <span class="fs-14x">
+            <strong>Criado por:</strong>
+
+            {{ form.created_by.name }}
+        </span>
+
+        <span v-if="form.created_at_datetime_formatted !== form.updated_at_datetime_formatted" class="fs-14x">
+            <strong>Última alteração:</strong>
+
+            {{ form.updated_at_datetime_formatted }}
+        </span>
+    </div>
+
     <v-form  @submit.prevent="save">
         <v-sheet class="pa-0 pa-md-4">
             <v-row>
@@ -508,7 +528,7 @@ const filter = ref({
 /* onMounted */
 onMounted(async () => {
     appStore.pageTitle = 'Webaulas'
-    eventStore.eventTitle = !props.uuid ? 'Novo cadastro' : 'Editar cadastro'
+    eventStore.title = !props.uuid ? 'Novo cadastro' : 'Editar cadastro'
     descsStore.list = []
 
     if (props.uuid) {

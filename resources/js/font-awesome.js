@@ -55,7 +55,9 @@ import {
     faSquare,
     faCircle,
     faDotCircle,
-    faHospital
+    faHospital,
+    faFileExcel,
+    faFilePdf
 } from '@fortawesome/free-regular-svg-icons'
 
 library.add(
@@ -108,6 +110,8 @@ library.add(
     faPaperclip,
     faHospital,
     faUserNurse,
+    faFileExcel,
+    faFilePdf
 )
 
 export default FontAwesomeIcon

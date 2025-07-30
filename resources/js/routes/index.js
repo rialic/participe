@@ -5,7 +5,6 @@ import useAuth from '@/composables/useAuth'
 import guestRoutes from '@/routes/guest'
 import privateRoutes from '@/routes/private'
 
-
 const { user, authenticated, attemptAuth } = useAuth()
 
 export default (() => {
@@ -33,7 +32,7 @@ export default (() => {
     const hasAnyAuthRouteTo = to.matched.some((route) => route.meta.requiresAuth)
 
     if (hasAnyAuthRouteTo) {
-      if(!user.value) await attemptAuth()
+      await attemptAuth()
 
       const routeToHasGuards = guards?.length > 0
       const userHasGuards = guards?.every((guard) => user.value?.abilities.includes(guard))
@@ -43,7 +42,9 @@ export default (() => {
       }
 
       if(routeToHasGuards && !userHasGuards) {
-        return next({ name: 'home' })
+        const isDefaultUser = !!user.value.abilities.find((ability) => ability === 'HOME')
+
+        return next({ name: isDefaultUser ? 'home' : 'dashboard' })
       }
     }
 
@@ -51,7 +52,9 @@ export default (() => {
       if(!user.value) await attemptAuth()
 
       if (authenticated.value) {
-        return next({ name: 'home' })
+        const isDefaultUser = !!user.value.abilities.find((ability) => ability === 'HOME')
+
+        return next({ name: isDefaultUser ? 'home' : 'dashboard' })
       }
     }
 

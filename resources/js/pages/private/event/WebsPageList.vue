@@ -12,6 +12,7 @@
         </v-btn>
 
         <v-btn
+            v-can:[user.abilities]="'EVENT.WEBCLASS-REPORT'"
             :prepend-icon="icon('far fa-file-lines')"
             variant="flat"
             color="grey-lighten-4"
@@ -19,7 +20,7 @@
             border
             class="font-weight-bold text-none"
             size="small"
-            @click="">
+            @click="router.push({ name: 'webs.report' })">
             Relatórios
         </v-btn>
     </div>
@@ -31,7 +32,6 @@
             <v-text-field
                 v-model="search"
                 density="compact"
-                label="Pesquisar"
                 variant="solo-filled"
                 flat
                 hide-details
@@ -146,6 +146,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { maskDate, presetFilter } from '@/helpers'
 import { useRouter } from 'vue-router'
+import useAuth from '@/composables/useAuth'
 import useIcon from '@/composables/useIcon'
 
 import { useAppStore } from '@/stores/appStore'
@@ -155,6 +156,7 @@ const appStore = useAppStore()
 const eventStore = useEventStore()
 
 const router = useRouter()
+const { user } = useAuth()
 const { icon } = useIcon()
 const showDestroyModal = ref(false)
 const webclassToDeleted = ref()

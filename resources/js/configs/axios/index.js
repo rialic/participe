@@ -2,6 +2,7 @@ import { computed } from 'vue'
 import axios from 'axios'
 import { useAlertStore } from '@/stores/alertStore'
 import { useAppStore } from '@/stores/appStore'
+import useAuth from '@/composables/useAuth'
 
 export default (() => {
   let instance
@@ -21,17 +22,12 @@ export default (() => {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json, application/octet-stream',
-        'X-Requested-With': 'XMLHttpRequest',
+        'X-Requested-With': 'XMLHttpRequest'
       },
     })
 
-    instance.interceptors.request.use(function(config) {
-      const token = document.querySelector('meta[name="csrf-token"]');
+    instance.interceptors.request.use(async function(config) {
       appStore.value.setOverlay(true)
-
-      if (token) {
-        config.headers['X-CSRF-TOKEN'] = token.getAttribute('content');
-      }
 
       return config
     }, null)
@@ -60,7 +56,7 @@ export default (() => {
         message: data?.message
       }
     },
-    function({ response, message }) {
+    async function({ response, message }) {
       if (response.status === 422 || response.status === 400) {
         alertStore.value.showAlert = true
 

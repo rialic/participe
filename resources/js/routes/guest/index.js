@@ -1,15 +1,16 @@
 import Index from '@/pages/Index.vue'
+import WebClass from '@/pages/guest/WebClass.vue'
 
 export default [
     {
-        path: '/',
+        path: '',
         name: 'guest.login',
         component: Index
     },
     {
         path: '/webaulas',
         name: 'guest.webclass',
-        component: () => import('@/pages/guest/WebClass.vue'),
+        component: WebClass,
     },
     {
         path: '/certificados',

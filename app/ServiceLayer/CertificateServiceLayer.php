@@ -90,7 +90,7 @@ class CertificateServiceLayer extends ServiceResource
             $coordinatorSignature = 'data:image/png;base64,' . base64_encode(file_get_contents(resource_path('/images/ass-rosangela.png')));
         }
 
-        $pdf = Pdf::loadView('certificate', [
+        $pdf = Pdf::loadView('participant-certificate', [
             'event' => $event,
             'directorSignature' => $directorSignature,
             'coordinatorSignature' => $coordinatorSignature,

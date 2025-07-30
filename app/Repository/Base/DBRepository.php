@@ -126,6 +126,26 @@ class DBRepository implements DBRepositoryInterface
     }
 
     /**
+     * Query data with or without pagination
+     * @param array $params
+     * @return Collection|LengthAwarePaginator
+     */
+    public function getData(array $params = []): Collection|LengthAwarePaginator
+    {
+        $isPaginable = Arr::get($params, 'page');
+        $limit = Arr::get($params, 'limit') ?: -1;
+        $deletedAt = Arr::get($params, 'deleted');
+        $query = $this->query($params);
+        $query = (!$deletedAt) ? $query->whereNull("{$query->getModel()->getTable()}.deleted_at") : $query->where('deleted_at', $deletedAt);
+
+        if ($isPaginable) {
+            return ($limit !== -1) ? $query->paginate($limit)->onEachSide(1) : $query->paginate()->onEachSide(1);
+        }
+
+        return ($limit !== -1) ? $query->limit($limit)->get() : $query->get();
+    }
+
+    /**
      *
      * @param array $data
      * @param object|null $model
@@ -183,26 +203,6 @@ class DBRepository implements DBRepositoryInterface
 
             return $model->forceDelete();
         });
-    }
-
-    /**
-     * Query data with or without pagination
-     * @param array $params
-     * @return Collection|LengthAwarePaginator
-     */
-    public function getData(array $params = []): Collection|LengthAwarePaginator
-    {
-        $isPaginable = Arr::get($params, 'page');
-        $limit = Arr::get($params, 'limit') ?: -1;
-        $deletedAt = Arr::get($params, 'deleted');
-        $query = $this->query($params);
-        $query = (!$deletedAt) ? $query->whereNull("{$query->getModel()->getTable()}.deleted_at") : $query->where('deleted_at', $deletedAt);
-
-        if ($isPaginable) {
-            return ($limit !== -1) ? $query->paginate($limit)->onEachSide(1) : $query->paginate()->onEachSide(1);
-        }
-
-        return ($limit !== -1) ? $query->limit($limit)->get() : $query->get();
     }
 
     /**
