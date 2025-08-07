@@ -1,7 +1,6 @@
 networks:
   app:
   nginx:
-  db:
 
 services:
   nginx:
@@ -39,28 +38,6 @@ services:
     networks:
       - app
       - nginx
-      - db
-
-  db:
-    image: mysql/mysql-server:8.0.23
-    container_name: db
-    volumes:
-      - ./.docker/mysql:/var/lib/mysql
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      TZ: "America/Campo_Grande"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 500M
-    networks:
-      - db
 
   scheduler:
     image: app
@@ -106,7 +83,6 @@ services:
     entrypoint: ["php", "artisan"]
     networks:
       - app
-      - db
 
   pest:
     image: app
@@ -117,4 +93,3 @@ services:
     entrypoint: ["./vendor/bin/pest"]
     networks:
       - app
-      - db

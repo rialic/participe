@@ -106,7 +106,6 @@
 						<th>Desc. Bireme</th>
 						<th>Participante</th>
 						<th>Data Participação</th>
-						<th>Ocupação</th>
 						<th>UF</th>
 						<th>Cidade</th>
 						<th>Macro Região</th>
@@ -123,7 +122,6 @@
 						<td>{{ $event->descs }}</td>
 						<td>{{ $event->participant }}</td>
 						<td>{{ $event->signed_up_at }}</td>
-						<td>{{ $event->cbo }}</td>
 						<td>{{ $event->state }}</td>
 						<td>{{ $event->city }}</td>
 						<td>{{ $event->macro_zone }}</td>

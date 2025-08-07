@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->uuid()->unique();
             $table->string('name');
-            $table->enum('type_event', ['Curso', 'Webaulas/palestras', 'Webseminários', 'Fórum de discussão', 'Reunião de matriciamento'])->default('Curso');
-            $table->enum('organization', ['TSMS', 'Fiocruz']);
+            $table->enum('type_event', ['Curso', 'Webaulas/palestras', 'Webseminários', 'Fórum de discussão', 'Reunião de matriciamento'])->default('Webaulas/palestras');
+            $table->enum('organization', ['TSMS', 'Fiocruz'])->default('TSMS');
             $table->string('room_link', 500);
-            $table->timestamp('start_at');
+            $table->timestamp('start_at')->nullable();
             $table->integer('start_minutes_additions')->default(30);
-            $table->timestamp('end_at');
+            $table->timestamp('end_at')->nullable();
             $table->integer('end_minutes_additions')->default(30);
             $table->integer('workload');
             $table->softDeletes();

@@ -2,11 +2,21 @@
 
 namespace App\Http\Resources;
 
+use App\Traits\HasJsonResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
+    use HasJsonResource;
+
+    public function __construct($resource)
+    {
+        parent::__construct($resource);
+
+        $this->model = 'Usuário';
+    }
+
     /**
      * Transform the resource into an array.
      *

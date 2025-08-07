@@ -8,8 +8,9 @@ ARG UID
 ENV TZ=America/Campo_Grande
 
 COPY --from=composer:2.8.5 /usr/bin/composer /usr/bin/composer
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN apk --no-cache --update add git curl tzdata shadow imagemagick imagemagick-dev gcc g++ autoconf libpng libpng-dev libjpeg libwebp make pkgconfig libzip libzip-dev \
+RUN apk --no-cache --update add git curl tzdata shadow imagemagick imagemagick-dev gcc g++ autoconf libpng libpng-dev libjpeg libwebp make pkgconfig libzip libzip-dev supervisor dcron \
 && git clone https://github.com/Imagick/imagick.git --depth 1 /tmp/imagick \
 && cd /tmp/imagick \
 && phpize \
@@ -18,9 +19,9 @@ RUN apk --no-cache --update add git curl tzdata shadow imagemagick imagemagick-d
 && make install \
 && docker-php-ext-install pdo pdo_mysql gd zip \
 && docker-php-ext-enable imagick \
-# && usermod -u $UID $GROUP \
 && usermod -u $UID www-data \
 && groupmod -g $UID www-data \
+&& chmod 0644 /etc/crontabs/root \
 && apk del git imagemagick-dev gcc g++ autoconf libpng-dev make pkgconfig libzip-dev \
 && rm -Rf /var/cache/apk/*
 

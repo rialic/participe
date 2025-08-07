@@ -8,6 +8,7 @@ const state = reactive({ user: null, authenticated: false })
 export default function useAuth() {
     const router = useRouter()
     const getUser = computed(() => state.user)
+    const userStore = computed(() => useUserStore())
     const getAuthenticated = computed(() => state.authenticated)
     axios.defaults.baseURL = import.meta.env.VITE_URL
     axios.defaults.withCredentials = true
@@ -16,8 +17,7 @@ export default function useAuth() {
     axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
     async function attemptAuth() {
-        const { me } = useUserStore()
-        const response = await me()
+        const response = await userStore.value.me()
         const user = response.data
 
         if (response.status === 200) {

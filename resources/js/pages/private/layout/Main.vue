@@ -100,7 +100,7 @@
 
           <v-menu activator="parent">
             <v-list density="compact" nav>
-              <v-list-item link title="Perfil" />
+              <v-list-item @click.prevent.stop="router.push({ name: 'user.account' })" link title="Minha conta" />
 
               <v-list-item @click.prevent.stop="logout()" link title="Sair" />
             </v-list>

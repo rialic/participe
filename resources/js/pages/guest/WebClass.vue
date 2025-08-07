@@ -675,7 +675,7 @@ async function onSearchParticipant() {
 
       form.value.uuid = data.uuid
       form.value.name = data.name?.toUpperCase()
-      form.value.sex = data.email?.includes('@email.com') ? null : form.value.sex
+      form.value.sex = data.email?.includes('@email.com') ? null : (data.sex || form.value.sex)
       form.value.email = data.email?.includes('@email.com') ? null : data.email
       form.value.cbo = data.cbo?.uuid
       form.value.state = data.establishment?.city.state.uuid || form.value.state.uuid

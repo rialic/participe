@@ -3,13 +3,13 @@ import Home from '@/pages/private/Home.vue'
 import Dashboard from '@/pages/private/Dashboard.vue'
 import Event from '@/routes/private/event'
 import Smart from '@/routes/private/smart'
+import User from '@/routes/private/user'
 
 export default [
     {
         path: '/',
         name: 'main',
         component: Main,
-        // redirect: () => ({ name: 'dashboard' }),
         meta: { requiresAuth: true },
         children: [
             {
@@ -25,7 +25,8 @@ export default [
                 meta: { requiresAuth: true }
             },
             ...Event,
-            ...Smart
+            ...Smart,
+            ...User
         ]
     }
 ]

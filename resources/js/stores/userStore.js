@@ -1,37 +1,16 @@
-import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import axios from '@/configs/axios'
 
-export const useUserStore = defineStore('userStore', () => {
-    const UserStore = {}
-    UserStore.mount = function() {
-        if (localStorage.getItem('user')) {
-            state.value.user = JSON.parse(localStorage.getItem('user'))
+export const useUserStore = defineStore('userStore', {
+    state: () => ({
+        list: []
+    }),
+    actions: {
+        async update(payload, uuid) {
+            return await axios.put(`v1/user/${uuid}`, payload)
+        },
+        async me() {
+            return await axios.get('v1/user/me')
         }
-
-        if (localStorage.getItem('userAuthenticated')) {
-            state.value.userAuthenticated = JSON.parse(localStorage.getItem('userAuthenticated'))
-        }
-    }
-
-    const state = ref({
-        user: {}
-    })
-
-    const me = async () => {
-        return await axios.get('v1/user/me')
-    }
-
-    watch([() => state.value.userAuthenticated, () => state.value.user], ([userAuthenticated, user]) => {
-        localStorage.setItem('userAuthenticated', userAuthenticated)
-        localStorage.setItem('user', JSON.stringify(user))
-    }, { deep: true })
-
-
-    UserStore.mount()
-
-    return {
-        state,
-        me
     }
 })

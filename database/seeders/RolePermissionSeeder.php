@@ -48,9 +48,6 @@ class RolePermissionSeeder extends Seeder
         $isCreated = $this->hasRolePermission('ADJUTOR', 'MENU.EVENT-WEBCLASS');
         $this->createRolePermission($isCreated);
 
-        $isCreated = $this->hasRolePermission('ADJUTOR', 'MENU.EVENT-COURSE');
-        $this->createRolePermission($isCreated);
-
         $isCreated = $this->hasRolePermission('ADJUTOR', 'EVENT.WEBCLASS-VIEW');
         $this->createRolePermission($isCreated);
 
@@ -60,9 +57,6 @@ class RolePermissionSeeder extends Seeder
         $isCreated = $this->hasRolePermission('ADJUTOR', 'EVENT.WEBCLASS-EDIT');
         $this->createRolePermission($isCreated);
 
-        $isCreated = $this->hasRolePermission('ADJUTOR', 'EVENT.WEBCLASS-CERTIFICATE');
-        $this->createRolePermission($isCreated);
-
         $isCreated = $this->hasRolePermission('ADJUTOR', 'EVENT.WEBCLASS-REPORT');
         $this->createRolePermission($isCreated);
 
@@ -70,6 +64,9 @@ class RolePermissionSeeder extends Seeder
         $this->createRolePermission($isCreated);
 
         $isCreated = $this->hasRolePermission('ADJUTOR', 'API.USER-ME');
+        $this->createRolePermission($isCreated);
+
+        $isCreated = $this->hasRolePermission('ADJUTOR', 'API.EVENT.WEBCLASS-SHOW');
         $this->createRolePermission($isCreated);
 
         $isCreated = $this->hasRolePermission('ADJUTOR', 'API.EVENT.WEBCLASS-SAVE');
@@ -116,6 +113,9 @@ class RolePermissionSeeder extends Seeder
         $this->createRolePermission($isCreated);
 
         $isCreated = $this->hasRolePermission('USUARIO', 'API.USER-ME');
+        $this->createRolePermission($isCreated);
+
+        $isCreated = $this->hasRolePermission('ADJUTOR', 'API.USER-UPDATE');
         $this->createRolePermission($isCreated);
     }
 

@@ -29,7 +29,24 @@ class EventReportServiceLayer extends ServiceResource {
 
     public function excelPrint($data)
     {
-        $headers = ['Tema', 'Início', 'Fim', 'Organização', 'Desc. Bireme', 'Participante', 'Data Participação', 'Ocupação', 'UF', 'Cidade', 'Macro Região', 'Micro Região'];
+        $headers = [
+            'Tema',
+            'Início',
+            'Fim',
+            'Organização',
+            'Desc. Bireme',
+            'Participante',
+            'Data Participação',
+            'Ocupação',
+            'UF',
+            'Cidade',
+            'Macro Região',
+            'Micro Região',
+            'Data avaliação',
+            'Avaliação',
+            'Avaliação sobre o horário',
+            'Sugestão'
+        ];
         $eventList = $this->eventReportRepository->getData($data);
         $eventList = $eventList->map(fn($event) => [
             'name' => $event->name,
@@ -43,7 +60,11 @@ class EventReportServiceLayer extends ServiceResource {
             'state' => $event->state,
             'city' => $event->city,
             'macro_zone' => $event->macro_zone,
-            'micro_zone' => $event->micro_zone
+            'micro_zone' => $event->micro_zone,
+            'rated_at' => $event->rated_at ?? 'Não avaliado',
+            'rating_event' => $this->processRating($event->rating_event),
+            'rating_event_schedule' => $this->processRating($event->rating_event_schedule),
+            'hint' => $event->hint ?? 'Não informado'
         ])
         ->toArray();
 
@@ -55,7 +76,7 @@ class EventReportServiceLayer extends ServiceResource {
             $sheet = $spreadsheet->getActiveSheet();
             $headerStyle = ['font' => ['bold' => true], 'size' => 14];
 
-            $sheet->getStyle('A1:L1')->applyfromArray($headerStyle);
+            $sheet->getStyle('A1:P1')->applyfromArray($headerStyle);
             $sheet->fromArray($eventList, null, 'A1');
             $writer->save('php://output');
         }, 200, [
@@ -63,5 +84,17 @@ class EventReportServiceLayer extends ServiceResource {
             'Content-Disposition' => "attachment; filename='arquivo.xlsx'",
             'Cache-Control' => 'no-cache, no-store, must-revalidate'
         ]);
+    }
+
+    private function processRating($rating)
+    {
+        return [
+            9 => 'Não informado',
+            1 => 'Muito insatisfeito',
+            2 => 'Insatisfeito',
+            3 => 'Indiferente',
+            4 => 'Satisfeito',
+            5 => 'Muito satisfeito',
+        ][$rating];
     }
 }

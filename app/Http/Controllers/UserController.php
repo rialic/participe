@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ApiException;
 use App\Http\Requests\User\SendMagicLinkRequest;
+use App\Http\Requests\User\UpSertUserRequest;
 use App\Http\Resources\UserResource;
 use App\ServiceLayer\UserServiceLayer;
 use App\Traits\HasControllerResource;
@@ -17,7 +18,10 @@ class UserController extends Controller
     public function __construct(
         private readonly UserServiceLayer $service,
         private readonly string $resourceCollection = UserResource::class
-    ) {}
+    ) {
+        $this->storeValidatorRequest = UpSertUserRequest::class;
+        $this->updateValidatorRequest = UpSertUserRequest::class;
+    }
 
     public function me(): JsonResource|JsonResponse
     {

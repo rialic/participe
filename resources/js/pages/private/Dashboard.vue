@@ -7,143 +7,171 @@
 
     <v-divider class="mb-4 mt-1"></v-divider>
 
-    <v-row>
-        <v-col cols="12" sm="6" md="3">
-            <v-sheet color rounded="xl">
-                <v-card elevation="0" color="grey-lighten-5" rounded="xl">
-                    <v-card-text>
-                        <div class="d-flex flex-column align-center ga-3">
-                            <v-avatar color="orange-darken-3" variant="tonal" size="x-large">
-                                <v-icon icon="fas fa-user" color="orange-darken-3"></v-icon>
-                            </v-avatar>
+    <v-sheet border rounded class="pa-2">
+        <div class="d-flex flex-column">
+            <div class="d-flex align-center ga-1">
+                <v-sheet height="4" width="10" rounded :color="'grey-darken-2'"></v-sheet>
 
-                            <h3 class="text-h5 font-weight-bold text-orange-darken-3">
-                                <vue3autocounter :startAmount="0" :endAmount="participantsCount" :duration="2" :autoinit="true" separator="."/>
-                            </h3>
+                <small>
+                    <span class="font-weight-bold text-grey-darken-2">Participantes</span> são atualizadas após o fim da webaula
+                </small>
+            </div>
 
-                            <div v-if="participantsList?.length" class="d-flex justify-center ga-3 align-center">
-                                <template v-for="(property, index) in participantsList" :key="index">
-                                    <div class="d-flex ga-2">
-                                        <v-sheet height="15" width="15" rounded :color="propertyColor(property.name)"></v-sheet>
-                                        {{ property.name }} -
-                                        <vue3autocounter class="font-weight-bold" :startAmount="0" :endAmount="property.count" :duration="2" :autoinit="true" separator="."/>
-                                    </div>
-                                </template>
+            <div class="d-flex align-center ga-1">
+                <v-sheet height="4" width="10" rounded :color="'grey-darken-2'"></v-sheet>
+
+                <small>
+                    <span class="font-weight-bold text-grey-darken-2">Webaulas realizadas</span> são atualizadas após o fim da webaula
+                </small>
+            </div>
+
+            <div class="d-flex align-center ga-1">
+                <v-sheet height="4" width="10" rounded :color="'grey-darken-2'"></v-sheet>
+
+                <small>
+                    <span class="font-weight-bold text-grey-darken-2">Média Participantes x Webaula</span> é uma média do Total de Participantes ÷ Total Webaulas realizadas (Participantes ÷ Webaulas realizadas)
+                </small>
+            </div>
+        </div>
+
+        <v-row class="mt-1">
+            <v-col cols="12" sm="6" md="3">
+                <v-sheet color rounded="xl">
+                    <v-card elevation="0" color="grey-lighten-5" rounded="xl">
+                        <v-card-text>
+                            <div class="d-flex flex-column align-center ga-3">
+                                <v-avatar color="orange-darken-3" variant="tonal" size="x-large">
+                                    <v-icon icon="fas fa-user" color="orange-darken-3"></v-icon>
+                                </v-avatar>
+
+                                <h3 class="text-h5 font-weight-bold text-orange-darken-3">
+                                    <vue3autocounter :startAmount="0" :endAmount="participantsCount" :duration="2" :autoinit="true" separator="."/>
+                                </h3>
+
+                                <div v-if="participantsList?.length" class="d-flex justify-center ga-3 align-center">
+                                    <template v-for="(property, index) in participantsList" :key="index">
+                                        <div class="d-flex ga-2">
+                                            <v-sheet height="15" width="15" rounded :color="propertyColor(property.name)"></v-sheet>
+                                            {{ property.name }} -
+                                            <vue3autocounter class="font-weight-bold" :startAmount="0" :endAmount="property.count" :duration="2" :autoinit="true" separator="."/>
+                                        </div>
+                                    </template>
+                                </div>
+
+                                <div v-else class="d-flex justify-center ga-3 align-center">
+                                    &nbsp;
+                                </div>
+
+                                <span class="font-weight-bold text-orange-darken-3">Participantes</span>
                             </div>
+                        </v-card-text>
+                    </v-card>
+                </v-sheet>
+            </v-col>
 
-                            <div v-else class="d-flex justify-center ga-3 align-center">
-                                &nbsp;
+            <v-col cols="12" sm="6" md="3">
+                <v-sheet color rounded="xl">
+                    <v-card elevation="0" color="grey-lighten-5" rounded="xl">
+                        <v-card-text>
+                            <div class="d-flex flex-column align-center ga-3">
+                                <v-avatar color="blue-darken-3" variant="tonal" size="x-large">
+                                    <v-icon icon="fas fa-calendar-days" color="blue-darken-3"></v-icon>
+                                </v-avatar>
+
+                                <h3 class="text-h5 font-weight-bold text-blue-darken-3">
+                                    <vue3autocounter :startAmount="0" :endAmount="webclassCountDone" :duration="2" :autoinit="true" separator="."/>
+                                </h3>
+
+                                <div v-if="webclassDoneList?.length" class="d-flex justify-center ga-3 align-center">
+                                    <template v-for="(property, index) in webclassDoneList" :key="index">
+                                        <div class="d-flex ga-2">
+                                            <v-sheet height="15" width="15" rounded :color="propertyColor(property.name)"></v-sheet>
+                                            {{ property.name }} -
+                                            <vue3autocounter class="font-weight-bold" :startAmount="0" :endAmount="property.count" :duration="2" :autoinit="true" separator="."/>
+                                        </div>
+                                    </template>
+                                </div>
+
+                                <div v-else class="d-flex justify-center ga-3 align-center">
+                                    &nbsp;
+                                </div>
+
+                                <span class="font-weight-bold text-blue-darken-3">Webaulas realizadas</span>
                             </div>
+                        </v-card-text>
+                    </v-card>
+                </v-sheet>
+            </v-col>
 
-                            <span class="font-weight-bold text-orange-darken-3">Participações</span>
-                        </div>
-                    </v-card-text>
-                </v-card>
-            </v-sheet>
-        </v-col>
+            <v-col cols="12" sm="6" md="3">
+                <v-sheet color rounded="xl">
+                    <v-card elevation="0" color="grey-lighten-5" rounded="xl">
+                        <v-card-text>
+                            <div class="d-flex flex-column align-center ga-3">
+                                <v-avatar color="blue-darken-3" variant="tonal" size="x-large">
+                                    <v-icon icon="fas fa-calendar-days" color="blue-darken-3"></v-icon>
+                                </v-avatar>
 
-        <v-col cols="12" sm="6" md="3">
-            <v-sheet color rounded="xl">
-                <v-card elevation="0" color="grey-lighten-5" rounded="xl">
-                    <v-card-text>
-                        <div class="d-flex flex-column align-center ga-3">
-                            <v-avatar color="blue-darken-3" variant="tonal" size="x-large">
-                                <v-icon icon="fas fa-calendar-days" color="blue-darken-3"></v-icon>
-                            </v-avatar>
+                                <h3 class="text-h5 font-weight-bold text-blue-darken-3">
+                                    <vue3autocounter :startAmount="0" :endAmount="webclassCountScheduled" :duration="2" :autoinit="true" separator="."/>
+                                </h3>
 
-                            <h3 class="text-h5 font-weight-bold text-blue-darken-3">
-                                <vue3autocounter :startAmount="0" :endAmount="webclassCountDone" :duration="2" :autoinit="true" separator="."/>
-                            </h3>
+                                <div v-if="webclassScheduledList?.length" class="d-flex justify-center ga-3 align-center">
+                                    <template v-for="(property, index) in webclassScheduledList" :key="index">
+                                        <div class="d-flex ga-2">
+                                            <v-sheet height="15" width="15" rounded :color="propertyColor(property.name)"></v-sheet>
+                                            {{ property.name }} -
+                                            <vue3autocounter class="font-weight-bold" :startAmount="0" :endAmount="property.count" :duration="2" :autoinit="true" separator="."/>
+                                        </div>
+                                    </template>
+                                </div>
 
-                            <div v-if="webclassDoneList?.length" class="d-flex justify-center ga-3 align-center">
-                                <template v-for="(property, index) in webclassDoneList" :key="index">
-                                    <div class="d-flex ga-2">
-                                        <v-sheet height="15" width="15" rounded :color="propertyColor(property.name)"></v-sheet>
-                                        {{ property.name }} -
-                                        <vue3autocounter class="font-weight-bold" :startAmount="0" :endAmount="property.count" :duration="2" :autoinit="true" separator="."/>
-                                    </div>
-                                </template>
+                                <div v-else class="d-flex justify-center ga-3 align-center">
+                                    &nbsp;
+                                </div>
+
+                                <span class="font-weight-bold text-blue-darken-3">Webaulas agendadas</span>
                             </div>
+                        </v-card-text>
+                    </v-card>
+                </v-sheet>
+            </v-col>
 
-                            <div v-else class="d-flex justify-center ga-3 align-center">
-                                &nbsp;
+            <v-col cols="12" sm="6" md="3">
+                <v-sheet color rounded="xl">
+                    <v-card elevation="0" color="grey-lighten-5" rounded="xl">
+                        <v-card-text>
+                            <div class="d-flex flex-column align-center ga-3">
+                                <v-avatar color="green-darken-3" variant="tonal" size="x-large">
+                                    <v-icon icon="fas fa-users" color="text-green-darken-3"></v-icon>
+                                </v-avatar>
+
+                                <h3 class="text-h5 font-weight-bold text-green-darken-3">
+                                    {{ participantsAvgCount }}
+                                </h3>
+
+                                <div v-if="participantsAvgList?.length" class="d-flex justify-center ga-3 align-center">
+                                    <template v-for="(property, index) in participantsAvgList" :key="index">
+                                        <div class="d-flex ga-2">
+                                            <v-sheet height="15" width="15" rounded :color="propertyColor(property.name)"></v-sheet>
+                                            {{ property.name }} -
+                                            <vue3autocounter class="font-weight-bold" :startAmount="0" :endAmount="property.count" :duration="2" :autoinit="true" separator="."/>
+                                        </div>
+                                    </template>
+                                </div>
+
+                                <div v-else class="d-flex justify-center ga-3 align-center">
+                                    &nbsp;
+                                </div>
+
+                                <span class="font-weight-bold text-green-darken-3">Média Participantes x Web aula</span>
                             </div>
-
-                            <span class="font-weight-bold text-blue-darken-3">Webaulas realizadas</span>
-                        </div>
-                    </v-card-text>
-                </v-card>
-            </v-sheet>
-        </v-col>
-
-        <v-col cols="12" sm="6" md="3">
-            <v-sheet color rounded="xl">
-                <v-card elevation="0" color="grey-lighten-5" rounded="xl">
-                    <v-card-text>
-                        <div class="d-flex flex-column align-center ga-3">
-                            <v-avatar color="blue-darken-3" variant="tonal" size="x-large">
-                                <v-icon icon="fas fa-calendar-days" color="blue-darken-3"></v-icon>
-                            </v-avatar>
-
-                            <h3 class="text-h5 font-weight-bold text-blue-darken-3">
-                                <vue3autocounter :startAmount="0" :endAmount="webclassCountScheduled" :duration="2" :autoinit="true" separator="."/>
-                            </h3>
-
-                            <div v-if="webclassScheduledList?.length" class="d-flex justify-center ga-3 align-center">
-                                <template v-for="(property, index) in webclassScheduledList" :key="index">
-                                    <div class="d-flex ga-2">
-                                        <v-sheet height="15" width="15" rounded :color="propertyColor(property.name)"></v-sheet>
-                                        {{ property.name }} -
-                                        <vue3autocounter class="font-weight-bold" :startAmount="0" :endAmount="property.count" :duration="2" :autoinit="true" separator="."/>
-                                    </div>
-                                </template>
-                            </div>
-
-                            <div v-else class="d-flex justify-center ga-3 align-center">
-                                &nbsp;
-                            </div>
-
-                            <span class="font-weight-bold text-blue-darken-3">Webaulas agendadas</span>
-                        </div>
-                    </v-card-text>
-                </v-card>
-            </v-sheet>
-        </v-col>
-
-        <v-col cols="12" sm="6" md="3">
-            <v-sheet color rounded="xl">
-                <v-card elevation="0" color="grey-lighten-5" rounded="xl">
-                    <v-card-text>
-                        <div class="d-flex flex-column align-center ga-3">
-                            <v-avatar color="green-darken-3" variant="tonal" size="x-large">
-                                <v-icon icon="fas fa-users" color="text-green-darken-3"></v-icon>
-                            </v-avatar>
-
-                            <h3 class="text-h5 font-weight-bold text-green-darken-3">
-                                {{ participantsAvgCount }}
-                            </h3>
-
-                            <div v-if="participantsAvgList?.length" class="d-flex justify-center ga-3 align-center">
-                                <template v-for="(property, index) in participantsAvgList" :key="index">
-                                    <div class="d-flex ga-2">
-                                        <v-sheet height="15" width="15" rounded :color="propertyColor(property.name)"></v-sheet>
-                                        {{ property.name }} -
-                                        <vue3autocounter class="font-weight-bold" :startAmount="0" :endAmount="property.count" :duration="2" :autoinit="true" separator="."/>
-                                    </div>
-                                </template>
-                            </div>
-
-                            <div v-else class="d-flex justify-center ga-3 align-center">
-                                &nbsp;
-                            </div>
-
-                            <span class="font-weight-bold text-green-darken-3">Participantes por web aula</span>
-                        </div>
-                    </v-card-text>
-                </v-card>
-            </v-sheet>
-        </v-col>
-    </v-row>
+                        </v-card-text>
+                    </v-card>
+                </v-sheet>
+            </v-col>
+        </v-row>
+    </v-sheet>
 </template>
 
 <script setup>
