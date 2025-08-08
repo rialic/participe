@@ -7,14 +7,13 @@ services:
     build:
       context: ./.docker/nginx
       dockerfile: Dockerfile
-    image: nginx
+    image: participe-nginx
     container_name: nginx
     volumes:
       - ./:/var/www
     restart: unless-stopped
     ports:
       - 80:80
-      - 443:443
     depends_on:
       - app
     networks:
@@ -23,11 +22,11 @@ services:
   app:
     build:
       args:
-        UID: 1000
-        GROUP: 1000
+        UID: 1003
+        GROUP: www-data
       context: ./.docker/php-fpm
       dockerfile: Dockerfile
-    image: app
+    image: participe-app
     container_name: app
     working_dir: /var/www
     volumes:
@@ -40,7 +39,7 @@ services:
       - nginx
 
   scheduler:
-    image: app
+    image: participe-app
     container_name: scheduler
     working_dir: /var/www
     user: root
@@ -58,14 +57,14 @@ services:
     build:
       context: ./.docker/node
       dockerfile: Dockerfile
-    image: node
+    image: participe-node
     container_name: node
     working_dir: /var/www
     volumes:
       - ./:/var/www
 
   composer:
-    image: app
+    image: participe-app
     container_name: composer
     working_dir: /var/www
     volumes:
@@ -75,21 +74,11 @@ services:
       - app
 
   artisan:
-    image: app
+    image: participe-app
     container_name: artisan
     working_dir: /var/www
     volumes:
       - ./:/var/www
     entrypoint: ["php", "artisan"]
-    networks:
-      - app
-
-  pest:
-    image: app
-    container_name: pest
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-    entrypoint: ["./vendor/bin/pest"]
     networks:
       - app
