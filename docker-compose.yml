@@ -48,6 +48,7 @@ services:
       - ./.docker/mysql:/var/lib/mysql
     ports:
       - "3306:3306"
+    command: --federated
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USERNAME}
@@ -108,13 +109,13 @@ services:
       - app
       - db
 
-  pest:
-    image: app
-    container_name: pest
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-    entrypoint: ["./vendor/bin/pest"]
-    networks:
-      - app
-      - db
+  # pest:
+  #   image: app
+  #   container_name: pest
+  #   working_dir: /var/www
+  #   volumes:
+  #     - ./:/var/www
+  #   entrypoint: ["./vendor/bin/pest"]
+  #   networks:
+  #     - app
+  #     - db
